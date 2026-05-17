@@ -15,10 +15,34 @@ body {
   color: #f4ecdf;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  /* Stop iOS Safari from auto-zooming text on orientation change */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  /* Kill the blue tap flash on every interactive element by default */
+  -webkit-tap-highlight-color: transparent;
 }
 
 html {
   scroll-behavior: smooth;
+  /* Belt-and-suspenders against horizontal scroll on iOS */
+  overflow-x: hidden;
+}
+
+/* iOS Safari: inputs with font-size < 16px trigger a zoom-in on focus.
+   Force ≥16px on touch devices so the page stays stable when typing. */
+@media (hover: none) and (pointer: coarse) {
+  input,
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+}
+
+/* Faster, less-finicky tap response on touch elements */
+a,
+button,
+[role="button"] {
+  touch-action: manipulation;
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -34,9 +34,14 @@ export function Navbar() {
 
   return (
     <header
+      style={{
+        // Respect iPhone notch / Dynamic Island safe areas
+        paddingTop: `calc(${scrolled ? "0.5rem" : "1rem"} + env(safe-area-inset-top, 0px))`,
+        paddingLeft: "env(safe-area-inset-left, 0px)",
+        paddingRight: "env(safe-area-inset-right, 0px)",
+      }}
       className={cn(
         "fixed top-0 inset-x-0 z-50 transition-all duration-500",
-        scrolled ? "pt-2" : "pt-4",
       )}
     >
       <div className="container">
@@ -98,6 +103,9 @@ export function Navbar() {
       {/* Mobile menu */}
       <div
         id="mobile-menu"
+        style={{
+          paddingBottom: "env(safe-area-inset-bottom, 0px)",
+        }}
         className={cn(
           "md:hidden fixed inset-x-0 top-[72px] bottom-0 z-40 transition-all duration-300",
           open
@@ -110,7 +118,7 @@ export function Navbar() {
           className="absolute inset-0 bg-ink-950/80 backdrop-blur-xl"
           onClick={() => setOpen(false)}
         />
-        <div className="relative container pt-6">
+        <div className="relative container pt-6 pb-6">
           <ul className="flex flex-col gap-1 rounded-3xl border border-white/[0.08] bg-ink-900/80 p-3">
             {links.map((l) => (
               <li key={l.href}>
