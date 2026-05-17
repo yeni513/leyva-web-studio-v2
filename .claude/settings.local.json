@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx next *)",
+      "Bash(node -e \"const l = require\\('lucide-react'\\); const keys = Object.keys\\(l\\); console.log\\('total exports:', keys.length\\); console.log\\('has Linkedin:', 'Linkedin' in l, '| Linkedin2:', 'Linkedin2' in l\\); console.log\\('has Twitter:', 'Twitter' in l, '| X:', 'X' in l\\); console.log\\('linked-like:', keys.filter\\(k => /link/i.test\\(k\\)\\).slice\\(0,20\\)\\); console.log\\('twitter-like:', keys.filter\\(k => /twit|^x$|^X/i.test\\(k\\)\\).slice\\(0,20\\)\\); console.log\\('github-like:', keys.filter\\(k => /git|hub/i.test\\(k\\)\\).slice\\(0,10\\)\\);\")",
+      "Bash(node -e \"const l=require\\('lucide-react'\\); ['Wand2','Sparkles','Repeat','RefreshCw','PaintRoller','MapPin','Search','Globe','TrendingUp','ShieldCheck','Wrench','LifeBuoy','Compass','LayoutTemplate','Star','ArrowUpRight','Zap','Check'].forEach\\(n=>console.log\\(n.padEnd\\(20\\), n in l\\)\\);\")",
+      "Bash(node -e \"const l=require\\('lucide-react'\\); ['Compass','PenTool','Code2','Rocket','Check'].forEach\\(n=>console.log\\(n.padEnd\\(12\\), n in l\\)\\);\")",
+      "Bash(node -e \"const l=require\\('lucide-react'\\); ['MessageCircle','Mail','Phone','MapPin','ChevronDown','ArrowUpRight','ShieldCheck','Clock','Send','Sparkles','Lock'].forEach\\(n=>console.log\\(n.padEnd\\(16\\), n in l\\)\\);\")",
+      "Bash(node -e \"const l=require\\('lucide-react'\\); ['HardHat','UtensilsCrossed','Refrigerator','Home','Building2','ArrowUpRight','Check','Lock','Globe','Star','MoveRight'].forEach\\(n=>console.log\\(n.padEnd\\(18\\), n in l\\)\\);\")",
+      "Bash(dir /B)",
+      "PowerShell(Add-Type -AssemblyName System.Drawing; $img = [System.Drawing.Image]::FromFile\\(\"d:\\\\Programacion Claude\\\\Proyecto pro\\\\leyva-web-studio\\\\hf_20260515_045531_073bcaff-f5e1-476c-a147-02ba1149d61e.png\"\\); Write-Output \"Width: $\\($img.Width\\) Height: $\\($img.Height\\)\"; $img.Dispose\\(\\))",
+      "Bash(npm list *)",
+      "Bash(npx tsc *)",
+      "Bash(del \"src\\\\components\\\\ui\\\\celestial-sphere.tsx\")",
+      "Bash(npm run *)",
+      "Bash(npm ls *)",
+      "Bash(node scripts/extract-logo.mjs)",
+      "Bash(node scripts/extract-icon.mjs)",
+      "Bash(node -e \"import\\('sharp'\\).then\\(s => s.default\\('public/leyva-logo.png'\\).metadata\\(\\).then\\(m => console.log\\(JSON.stringify\\(m, null, 2\\)\\)\\)\\)\")",
+      "Bash(node -e ' *)",
+      "Bash(node -e \"import\\('sharp'\\).then\\(s => s.default\\('public/leyva-logo.png'\\).metadata\\(\\).then\\(m => console.log\\('hasAlpha:', m.hasAlpha, '| channels:', m.channels\\)\\)\\)\")",
+      "Bash(node -e \"import\\('sharp'\\).then\\(s => s.default\\('public/leyva-logo.png'\\).metadata\\(\\).then\\(m => console.log\\('hasAlpha:', m.hasAlpha, '| channels:', m.channels, '| size:', m.width, 'x', m.height\\)\\)\\)\")",
+      "Bash(node -e \"import\\('sharp'\\).then\\(s => s.default\\('public/leyva-logo-clean.png'\\).metadata\\(\\).then\\(m => console.log\\('clean.png:', m.width, 'x', m.height, '| hasAlpha:', m.hasAlpha\\)\\)\\)\")",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)",
+      "Bash(git ls-remote *)"
+    ]
+  }
+}
