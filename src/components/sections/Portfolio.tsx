@@ -206,13 +206,16 @@ const EASE_PREMIUM = cubicBezier(0.22, 1, 0.36, 1);
 
 function PortfolioScroll() {
   const ref = useRef<HTMLDivElement>(null);
-  // Stretched scroll range — animation lives across the entire section
-  // traversal, from "first peek at viewport bottom" to "section bottom at
-  // viewport center". Roughly 2× the previous span so cards keep arriving
-  // as the user keeps scrolling.
+  // Offset is aligned so progress=1 fires EXACTLY when the section is
+  // centered in the viewport — i.e. the user's "moment of arrival". All
+  // four cards finish their animation by ~progress 0.85, leaving a 15%
+  // buffer where everything is settled before the user reaches center.
+  // With "end center" we previously had progress=1 firing when the
+  // section's BOTTOM was at viewport center, which meant the user was
+  // already past the cards visually while card 3 was still mid-flight.
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start end", "end center"],
+    offset: ["start end", "center center"],
   });
 
   // Header parallax — drifts up + grows slightly through the entry
@@ -323,14 +326,16 @@ function FlyInCard({
     [fromLeft ? 8 : -8, 0],
     ease,
   );
-  // Combined filter: motion blur that focuses + drop shadow that grows
-  // as the card lands. Both strings have identical structure so framer
-  // can interpolate them frame-perfect.
+  // Combined filter: motion blur clears at 70% of the window (well before
+  // the card finishes its slide) so the card is sharp by the time the
+  // user's eyes land on it. Drop shadow grows over the full window.
+  const focusEnd = start + (end - start) * 0.7;
   const filter = useTransform(
     progress,
-    [start, end],
+    [start, focusEnd, end],
     [
       "blur(8px) drop-shadow(0 0 0 rgba(0,0,0,0))",
+      "blur(0px) drop-shadow(0 20px 35px rgba(0,0,0,0.40))",
       "blur(0px) drop-shadow(0 30px 45px rgba(0,0,0,0.50))",
     ],
   );
