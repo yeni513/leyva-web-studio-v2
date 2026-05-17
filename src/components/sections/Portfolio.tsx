@@ -277,57 +277,61 @@ function FlyInCard({
   index: number;
   progress: MotionValue<number>;
 }) {
+  // Cards arrive STRICTLY one after the other — no overlap.
+  // Each card owns a 20% slice of the scroll progress. The 0–5% intro and
+  // 85–100% outro give breathing room before the first card arrives and
+  // after the last one lands so the user can admire the finished grid.
+  //
+  //  scroll progress:  0    0.05    0.25    0.45    0.65    0.85    1.0
+  //  card 0          : ░░  [  card 0  ] ──────── settled ────────────
+  //  card 1          : ░░  ─ wait ──   [  card 1  ] ── settled ─────
+  //  card 2          : ░░  ───── wait ─────────   [ card 2 ] ── set.
+  //  card 3          : ░░  ───────── wait ───────────────   [ card 3 ]
   const fromLeft = index % 2 === 0;
-  const col = index % 2;
-  const row = Math.floor(index / 2);
-
-  // Spread arrivals across a much wider progress range with a real stagger
-  // between sibling cards. Each card has its own window inside the journey.
-  // Top-left → top-right → bottom-left → bottom-right.
-  // Cards keep arriving as the user keeps scrolling past first contact.
-  const start = 0.05 + row * 0.22 + col * 0.05;
-  const end = 0.50 + row * 0.22 + col * 0.05;
+  const start = 0.05 + index * 0.20;
+  const end = 0.25 + index * 0.20;
 
   const ease = { ease: EASE_PREMIUM };
 
   const x = useTransform(
     progress,
     [start, end],
-    [fromLeft ? "-180%" : "180%", "0%"],
+    [fromLeft ? "-220%" : "220%", "0%"],
     ease,
   );
   const opacity = useTransform(
     progress,
-    [start, end - 0.10],
-    [0, 1],
+    [start, start + 0.04, end - 0.02],
+    [0, 0.85, 1],
     ease,
   );
   const rotate = useTransform(
     progress,
     [start, end],
-    [fromLeft ? -16 : 16, 0],
+    [fromLeft ? -22 : 22, 0],
     ease,
   );
   const scale = useTransform(
     progress,
     [start, end],
-    [0.78, 1],
+    [0.72, 1],
     ease,
   );
-  // Subtle skew that flattens — extra "in-flight" feel
   const skewX = useTransform(
     progress,
     [start, end],
-    [fromLeft ? 6 : -6, 0],
+    [fromLeft ? 8 : -8, 0],
     ease,
   );
-  // Drop shadow grows as the card lands
+  // Combined filter: motion blur that focuses + drop shadow that grows
+  // as the card lands. Both strings have identical structure so framer
+  // can interpolate them frame-perfect.
   const filter = useTransform(
     progress,
     [start, end],
     [
-      "drop-shadow(0 0 0 rgba(0,0,0,0))",
-      "drop-shadow(0 30px 40px rgba(0,0,0,0.45))",
+      "blur(8px) drop-shadow(0 0 0 rgba(0,0,0,0))",
+      "blur(0px) drop-shadow(0 30px 45px rgba(0,0,0,0.50))",
     ],
   );
 
