@@ -247,10 +247,29 @@ function OrbitRing({
 }) {
   return (
     <>
+      {/* Outer halo — radial glow that extends ~20px past the ring on both sides */}
+      <div
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none"
+        style={{
+          width: radius * 2,
+          height: radius * 2,
+          background:
+            "radial-gradient(circle, transparent 74%, rgba(236,139,42,0.18) 90%, rgba(236,139,42,0.38) 99%, transparent 100%)",
+        }}
+        aria-hidden
+      />
+
+      {/* Main visible ring — solid ember border + tube glow (inset + outset) */}
       <motion.div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-ember-300/15 pointer-events-none"
-        style={{ width: radius * 2, height: radius * 2 }}
-        animate={{ opacity: [0.4, 0.85, 0.4] }}
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none"
+        style={{
+          width: radius * 2,
+          height: radius * 2,
+          border: "1px solid rgba(236, 139, 42, 0.55)",
+          boxShadow:
+            "0 0 22px -2px rgba(236,139,42,0.40), inset 0 0 22px -2px rgba(236,139,42,0.28)",
+        }}
+        animate={{ opacity: [0.7, 1, 0.7] }}
         transition={{
           duration: 4.5,
           repeat: Infinity,
@@ -259,13 +278,14 @@ function OrbitRing({
         }}
         aria-hidden
       />
+
+      {/* Hairline accent — a fainter, slightly inset second ring for "double tube" depth */}
       <div
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none"
         style={{
-          width: radius * 2,
-          height: radius * 2,
-          background:
-            "radial-gradient(circle, transparent 80%, rgba(236,139,42,0.10) 95%, rgba(236,139,42,0.18) 100%)",
+          width: radius * 2 - 6,
+          height: radius * 2 - 6,
+          border: "1px solid rgba(255, 244, 224, 0.06)",
         }}
         aria-hidden
       />
