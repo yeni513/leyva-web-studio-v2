@@ -16,10 +16,10 @@ import { site, whatsappLink, mailtoLink } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 const budgetOptions = [
-  "Menos de $10K MXN",
-  "$10K – $20K MXN",
-  "$20K – $40K MXN",
-  "$40K+ MXN",
+  "Menos de $1,500 USD",
+  "$1,500 – $3,500 USD",
+  "$3,500 – $7,000 USD",
+  "$7,000+ USD",
 ];
 
 const projectTypes = [

@@ -7,8 +7,8 @@ import { cn } from "@/lib/utils";
 const packages = [
   {
     name: "Esencial",
-    price: "$8,900",
-    priceSuffix: "MXN",
+    price: "$1,500",
+    priceSuffix: "USD",
     tag: "Lanzamiento rápido",
     desc: "Para negocios que necesitan presencia online profesional y un canal directo de contacto.",
     features: [
@@ -23,8 +23,8 @@ const packages = [
   },
   {
     name: "Crecimiento",
-    price: "$16,900",
-    priceSuffix: "MXN",
+    price: "$3,500",
+    priceSuffix: "USD",
     tag: "Más popular",
     desc: "Para negocios que quieren ganar autoridad, mostrar trabajo y convertir más visitantes.",
     features: [
@@ -40,8 +40,8 @@ const packages = [
   },
   {
     name: "Autoridad",
-    price: "Desde $29,900",
-    priceSuffix: "MXN",
+    price: "Desde $6,500",
+    priceSuffix: "USD",
     tag: "Negocio establecido",
     desc: "Para marcas que ya facturan y quieren un sitio que les abra puertas y precios más altos.",
     features: [

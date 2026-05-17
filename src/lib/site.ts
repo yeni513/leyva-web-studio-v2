@@ -3,12 +3,12 @@ export const site = {
   brandSub: "Web Studio",
   url: "https://leyvawebstudio.com",
   description:
-    "Estudio web premium en México. Diseñamos y desarrollamos sitios cinematográficos para negocios locales que quieren verse profesionales, generar confianza y convertir visitantes en clientes.",
+    "Estudio web premium con base en Ohio, EE. UU. Diseñamos y desarrollamos sitios cinematográficos para negocios locales que quieren verse profesionales, generar confianza y convertir visitantes en clientes.",
   contact: {
-    whatsapp: "528000000000",
-    whatsappDisplay: "+52 800 000 0000",
+    whatsapp: "16140000000",
+    whatsappDisplay: "+1 (614) 000-0000",
     email: "hola@leyvawebstudio.com",
-    location: "México · trabajamos remoto en LATAM y EE. UU.",
+    location: "Ohio, EE. UU. · trabajamos en todo el país y LATAM",
   },
 };
 

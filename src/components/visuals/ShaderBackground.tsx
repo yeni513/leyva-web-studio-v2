@@ -34,9 +34,10 @@ precision highp float;
 in vec4 position;
 void main(){gl_Position=position;}`;
 
-    // Warm cinematic ember shader — adapted from the 21st.dev hero source
-    // but recolored and recomposed for Leyva's identity (deep amber, bronze,
-    // gold light trails over cinematic black).
+    // Warm cinematic ember shader — adapted from the 21st.dev hero source,
+    // tuned for Leyva. The trick to thin, distinguishable streaks is to keep
+    // the streak's natural high-intensity peaks and warm-tint them in-place
+    // (no luma → palette remap, which flattens hotspots into mush).
     const fragmentSrc = `#version 300 es
 precision highp float;
 out vec4 O;
@@ -75,58 +76,59 @@ float clouds(vec2 p){
   return t;
 }
 
-// Warm cinematic palette: deep ink → bronze → ember → gold highlight
-vec3 palette(float t){
-  vec3 a = vec3(0.030, 0.022, 0.030);   // deep ink
-  vec3 b = vec3(0.55, 0.26, 0.07);      // bronze
-  vec3 c = vec3(1.00, 0.62, 0.20);      // ember
-  vec3 d = vec3(1.00, 0.86, 0.55);      // gold highlight
-  float k = clamp(t, 0.0, 1.0);
-  vec3 col = mix(a, b, smoothstep(0.0, 0.45, k));
-  col = mix(col, c, smoothstep(0.35, 0.85, k));
-  col = mix(col, d, smoothstep(0.80, 1.0, k));
-  return col;
-}
-
 void main(void){
   vec2 uv = (FC - .5*R) / MN;
   vec2 st = uv * vec2(2.0, 1.0);
 
-  // Slow drifting cloud field — the cinematic smoke
-  float bg = clouds(vec2(st.x + T*0.18, -st.y * 0.9 + T*0.05));
+  // Slow drifting warm cloud field — cinematic bronze smoke
+  float bg = clouds(vec2(st.x + T*0.16, -st.y * 0.92 + T*0.05));
 
-  // Subtle pointer parallax (desktop) — gently offsets the orbit
+  // Subtle pointer parallax
   vec2 ptr = (pointer/R - 0.5);
-  uv -= ptr * 0.06;
+  uv -= ptr * 0.05;
 
-  uv *= 1.0 - 0.18 * (sin(T*0.18) * 0.5 + 0.5);
+  // Gentle breath
+  uv *= 1.0 - 0.14 * (sin(T*0.18) * 0.5 + 0.5);
 
   vec3 col = vec3(0.0);
 
-  // Orbit / particle trails — warm ember sparks
-  for (float i=1.0; i<11.0; i++){
-    uv += 0.085 * cos(i * vec2(0.10 + 0.012*i, 0.78) + i*i + T*0.45 + 0.1*uv.x);
+  // Warm tint constants — used to color the trails in-place, preserving
+  // the streak's natural sharp intensity falloff.
+  vec3 emberCore = vec3(1.00, 0.62, 0.22);   // mid amber
+  vec3 emberHot  = vec3(1.00, 0.78, 0.40);   // bright gold (hotspot)
+
+  for (float i = 1.0; i < 12.0; i++) {
+    uv += 0.10 * cos(i * vec2(0.10 + 0.011*i, 0.80) + i*i + T*0.45 + 0.10*uv.x);
     vec2 p = uv;
     float d = length(p);
-    col += 0.0012 / d * (cos(sin(i) * vec3(1.0, 1.3, 1.8)) + 1.0);
+
+    // Radial glow halo — softer, gives depth around streaks
+    col += 0.00115 / d * (cos(sin(i) * vec3(1.0, 0.85, 0.65)) + 1.0) * emberCore;
+
+    // ── Thin horizontal light streak ──
+    // The anisotropic max() makes distance grow much faster perpendicular
+    // to the streak than along it. Smaller x-factor = thinner streak.
+    // 0.012 (was 0.020) tightens the streak considerably.
     float b = noise(i + p + bg * 1.731);
-    col += 0.0019 * b / length(max(p, vec2(b*p.x*0.02, p.y)));
-    col = mix(col, vec3(bg*0.30, bg*0.16, bg*0.06), d * 0.85);
+    float streak = b / length(max(p, vec2(b*p.x*0.012, p.y)));
+    col += 0.0026 * streak * emberHot;
+
+    // Mix toward warm bronze cloud — keeps cinematic depth in dark zones
+    col = mix(col, vec3(bg*0.36, bg*0.17, bg*0.05), d * 0.85);
   }
 
-  // Remap to warm palette — keep cinematic depth, kill any cool tint
-  float lum = clamp(dot(col, vec3(0.6, 0.3, 0.2)) * 2.4, 0.0, 1.0);
-  vec3 warm = palette(lum);
-
-  // Soft vignette to push focus to the headline
+  // Light vignette — pushes focus to the headline without washing streaks
   float r = length(uv);
-  float vignette = smoothstep(1.35, 0.25, r);
-  warm *= mix(0.55, 1.10, vignette);
+  float vignette = smoothstep(1.45, 0.30, r);
+  col *= mix(0.68, 1.08, vignette);
 
-  // Deep base tint so we never wash out to grey
-  warm = mix(vec3(0.025, 0.018, 0.028), warm, 0.92);
+  // Lift just the deepest blacks so we never get totally flat patches
+  col = max(col, vec3(0.012, 0.008, 0.018));
 
-  O = vec4(warm, 1.0);
+  // Subtle warm bias to kill any residual coolness in mids
+  col *= vec3(1.06, 1.00, 0.92);
+
+  O = vec4(col, 1.0);
 }`;
 
     function compile(type: number, src: string) {
