@@ -24,8 +24,9 @@ body {
 
 html {
   scroll-behavior: smooth;
-  /* Belt-and-suspenders against horizontal scroll on iOS */
-  overflow-x: hidden;
+  /* Note: do NOT set overflow-x: hidden on <html>. It breaks
+     position: sticky in descendants (Chrome/Safari quirk).
+     The body already has overflow-x-hidden as the safety net. */
 }
 
 /* iOS Safari: inputs with font-size < 16px trigger a zoom-in on focus.
