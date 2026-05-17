@@ -96,10 +96,10 @@ const services: Service[] = [
   },
 ];
 
-const INNER_RADIUS = 175;
-const OUTER_RADIUS = 285;
-const INNER_SPEED = 0.18; // rad/s
-const OUTER_SPEED = -0.11;
+const INNER_RADIUS = 220;
+const OUTER_RADIUS = 355;
+const INNER_SPEED = 0.16; // rad/s — slightly slower so the bigger orbit still feels graceful
+const OUTER_SPEED = -0.095;
 const EASE_PREMIUM = cubicBezier(0.22, 1, 0.36, 1);
 
 export function Services() {
@@ -117,7 +117,7 @@ export function Services() {
     >
       {/* Ambient warm glow centered behind the orbit */}
       <div
-        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[900px] max-w-[120vw] max-h-[120vw] rounded-full bg-[radial-gradient(50%_50%_at_50%_50%,rgba(236,139,42,0.10),transparent_70%)] pointer-events-none"
+        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[1100px] h-[1100px] max-w-[125vw] max-h-[125vw] rounded-full bg-[radial-gradient(50%_50%_at_50%_50%,rgba(236,139,42,0.12),transparent_70%)] pointer-events-none"
         aria-hidden
       />
 
@@ -192,9 +192,9 @@ function ServicesOrbit() {
   }, []);
 
   return (
-    <div className="mt-14 sm:mt-16 flex justify-center">
+    <div className="mt-16 sm:mt-20 flex justify-center">
       <div
-        className="relative w-[640px] h-[640px] max-w-[92vw] aspect-square"
+        className="relative w-[800px] h-[800px] max-w-[95vw] aspect-square"
         onMouseEnter={() => setPaused(true)}
         onMouseLeave={() => setPaused(false)}
       >
@@ -292,6 +292,7 @@ function OrbitingIcon({
   initialY: number;
 }) {
   const Icon = service.icon;
+  const isOuter = service.orbit === "outer";
   return (
     <button
       ref={refCallback}
@@ -303,10 +304,11 @@ function OrbitingIcon({
         transform: `translate3d(calc(${initialX}px - 50%), calc(${initialY}px - 50%), 0)`,
       }}
       className={cn(
-        "group/icon absolute top-1/2 left-1/2 grid place-items-center w-[64px] h-[64px] sm:w-[72px] sm:h-[72px] rounded-full border bg-gradient-to-b from-ink-900 to-ink-950 transition-[box-shadow,border-color,background-color,scale] duration-300 will-change-transform no-tap-highlight z-10",
+        "group/icon absolute top-1/2 left-1/2 grid place-items-center rounded-full border bg-gradient-to-b from-ink-900 to-ink-950 transition-[box-shadow,border-color,background-color,scale] duration-300 will-change-transform no-tap-highlight z-10",
+        isOuter ? "w-[88px] h-[88px]" : "w-[76px] h-[76px]",
         isActive
-          ? "border-ember-300/65 bg-ember-300/[0.10] shadow-[0_0_30px_-3px_rgba(236,139,42,0.65)] scale-110 z-20"
-          : "border-ember-300/25 hover:border-ember-300/55 hover:bg-ember-300/[0.07] hover:scale-110 hover:shadow-[0_0_24px_-5px_rgba(236,139,42,0.50)] hover:z-20",
+          ? "border-ember-300/65 bg-ember-300/[0.10] shadow-[0_0_36px_-3px_rgba(236,139,42,0.70)] scale-110 z-20"
+          : "border-ember-300/25 hover:border-ember-300/55 hover:bg-ember-300/[0.07] hover:scale-110 hover:shadow-[0_0_28px_-5px_rgba(236,139,42,0.55)] hover:z-20",
       )}
     >
       {/* inner ring accent */}
@@ -317,14 +319,15 @@ function OrbitingIcon({
         )}
         style={{
           background:
-            "radial-gradient(circle at 30% 25%, rgba(236,139,42,0.18), transparent 60%)",
+            "radial-gradient(circle at 30% 25%, rgba(236,139,42,0.20), transparent 60%)",
         }}
         aria-hidden
       />
 
       <Icon
         className={cn(
-          "relative w-6 h-6 sm:w-7 sm:h-7 transition-colors duration-300",
+          "relative transition-colors duration-300",
+          isOuter ? "w-8 h-8" : "w-7 h-7",
           isActive
             ? "text-ember-100"
             : "text-ember-300 group-hover/icon:text-ember-200",
@@ -334,7 +337,7 @@ function OrbitingIcon({
       {/* Label */}
       <span
         className={cn(
-          "absolute top-full mt-3 left-1/2 -translate-x-1/2 whitespace-nowrap text-[10px] uppercase tracking-[0.18em] pointer-events-none transition-all duration-300",
+          "absolute top-full mt-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap text-[11px] uppercase tracking-[0.20em] pointer-events-none transition-all duration-300",
           isActive
             ? "opacity-100 text-ember-300 -translate-y-0"
             : "opacity-0 group-hover/icon:opacity-100 text-ember-50/85 -translate-y-1 group-hover/icon:translate-y-0",
@@ -357,20 +360,20 @@ function CenterHub({
   onClear: () => void;
 }) {
   return (
-    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[260px] h-[260px] z-30 pointer-events-none">
+    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[320px] h-[320px] z-30 pointer-events-none">
       {/* Outer warm glow */}
       <div
         className="absolute inset-0 rounded-full bg-ember-400/15 blur-2xl"
         aria-hidden
       />
       <div
-        className="absolute inset-3 rounded-full bg-ember-300/[0.06] blur-md"
+        className="absolute inset-4 rounded-full bg-ember-300/[0.06] blur-md"
         aria-hidden
       />
 
       <div className="relative w-full h-full rounded-full border border-ember-300/30 bg-gradient-to-b from-ink-900/95 to-ink-950 backdrop-blur-md flex items-center justify-center overflow-hidden pointer-events-auto">
         {/* Top hairline */}
-        <div className="absolute inset-x-14 top-0 h-px bg-gradient-to-r from-transparent via-ember-300/45 to-transparent" />
+        <div className="absolute inset-x-16 top-0 h-px bg-gradient-to-r from-transparent via-ember-300/45 to-transparent" />
 
         {/* Subtle inner glow following the curve */}
         <div
@@ -394,7 +397,7 @@ function CenterHub({
           </button>
         )}
 
-        <div className="relative w-[220px] text-center">
+        <div className="relative w-[270px] text-center">
           <AnimatePresence mode="wait">
             {selected ? (
               <SelectedView key={selected.id} service={selected} />
@@ -417,21 +420,21 @@ function SelectedView({ service }: { service: Service }) {
       exit={{ opacity: 0, scale: 0.92, y: -10 }}
       transition={{ duration: 0.35, ease: EASE_PREMIUM }}
     >
-      <span className="inline-grid place-items-center w-12 h-12 rounded-2xl border border-ember-300/35 bg-ember-300/[0.10] text-ember-300 shadow-[0_0_24px_-4px_rgba(236,139,42,0.55)]">
-        <Icon className="w-6 h-6" />
+      <span className="inline-grid place-items-center w-14 h-14 rounded-2xl border border-ember-300/35 bg-ember-300/[0.10] text-ember-300 shadow-[0_0_28px_-4px_rgba(236,139,42,0.60)]">
+        <Icon className="w-7 h-7" />
       </span>
-      <h3 className="mt-4 font-display text-[15px] font-semibold text-ember-50 leading-tight tracking-tight text-balance">
+      <h3 className="mt-4 font-display text-[18px] font-semibold text-ember-50 leading-tight tracking-tight text-balance">
         {service.title}
       </h3>
-      <p className="mt-2 text-[11px] leading-snug text-ember-50/70 text-pretty">
+      <p className="mt-2.5 text-[12.5px] leading-relaxed text-ember-50/75 text-pretty">
         {service.detail}
       </p>
       <a
         href="#contact"
-        className="mt-4 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-ember-300/35 bg-ember-300/[0.08] text-[10px] uppercase tracking-[0.18em] text-ember-300 hover:bg-ember-300/[0.16] hover:border-ember-300/55 transition-colors"
+        className="mt-5 inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-ember-300/35 bg-ember-300/[0.08] text-[11px] uppercase tracking-[0.18em] text-ember-300 hover:bg-ember-300/[0.16] hover:border-ember-300/55 transition-colors"
       >
         Cotizar este servicio
-        <ArrowUpRight className="w-3 h-3" />
+        <ArrowUpRight className="w-3.5 h-3.5" />
       </a>
     </motion.div>
   );
@@ -445,20 +448,20 @@ function DefaultView() {
       exit={{ opacity: 0, scale: 0.92 }}
       transition={{ duration: 0.3, ease: EASE_PREMIUM }}
     >
-      <div className="relative inline-grid place-items-center w-12 h-12 rounded-full border border-ember-300/30 bg-ember-300/[0.06]">
-        <Sparkles className="w-6 h-6 text-ember-300" />
+      <div className="relative inline-grid place-items-center w-14 h-14 rounded-full border border-ember-300/30 bg-ember-300/[0.06]">
+        <Sparkles className="w-7 h-7 text-ember-300" />
         <span
           className="absolute inset-0 rounded-full border border-ember-300/30 animate-pulse-glow"
           aria-hidden
         />
       </div>
-      <p className="mt-4 font-display text-[15px] text-ember-50 font-medium">
+      <p className="mt-4 font-display text-[18px] text-ember-50 font-medium">
         Servicios premium
       </p>
-      <p className="mt-1.5 text-[11px] leading-snug text-ember-50/65">
+      <p className="mt-2 text-[12.5px] leading-relaxed text-ember-50/65">
         Haz clic en cualquier ícono para explorar lo que entregamos.
       </p>
-      <div className="mt-4 inline-flex items-center gap-1.5 text-[10px] uppercase tracking-[0.22em] text-ember-300/70">
+      <div className="mt-5 inline-flex items-center gap-1.5 text-[10px] uppercase tracking-[0.22em] text-ember-300/70">
         <span className="w-1 h-1 rounded-full bg-ember-300 animate-pulse-glow" />
         Hover para pausar
       </div>
