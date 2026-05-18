@@ -112,7 +112,9 @@ export function About() {
 
                 <div className="mt-5 flex flex-wrap gap-3">
                   <Pill icon={MapPin}>Ohio, EE. UU.</Pill>
-                  <Pill icon={Code2}>Next.js + TypeScript</Pill>
+                  <Pill icon={Code2}>
+                    Next.js + TypeScript + Tailwind CSS + shadcn/ui + Framer Motion
+                  </Pill>
                   <Pill icon={Coffee}>Disponible Lun–Vie</Pill>
                 </div>
               </div>
