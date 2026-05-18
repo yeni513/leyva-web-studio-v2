@@ -7,11 +7,10 @@ export const site = {
   description:
     "Estudio web con base en Ohio, EE. UU. Diseñamos y desarrollamos sitios cinematográficos a la medida para negocios locales que quieren atraer mejores clientes y cobrar precios más altos.",
   contact: {
-    // TODO: Replace placeholders with real WhatsApp + email before launch.
-    whatsapp: "16140000000",
-    whatsappDisplay: "+1 (614) 000-0000",
-    email: "hola@leyvawebstudio.com",
-    location: "Ohio, EE. UU. · trabajamos en todo el país y LATAM",
+    whatsapp: "12166225575",
+    whatsappDisplay: "+1 (216) 622-5575",
+    email: "alexspark513@yahoo.com",
+    location: "Cleveland, Ohio · trabajamos en todo EE. UU. y LATAM",
   },
 };
 

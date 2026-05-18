@@ -1,6 +1,10 @@
+import Image from "next/image";
 import { Code2, Coffee, MapPin } from "lucide-react";
 import { SectionHeading } from "@/components/section-heading";
 import { Reveal } from "@/components/ui/reveal";
+
+/** Set to true once /public/founder.jpg is added. */
+const HAS_FOUNDER_PHOTO = true;
 
 export function About() {
   return (
@@ -37,38 +41,54 @@ export function About() {
                 aria-hidden
               />
 
-              {/* Founder portrait — SVG monogram until real photo is added */}
+              {/* Founder portrait */}
               <div className="relative shrink-0 mx-auto md:mx-0">
                 <div className="relative w-32 h-32 sm:w-36 sm:h-36 rounded-2xl overflow-hidden border border-ember-300/30 shadow-[0_15px_40px_-10px_rgba(236,139,42,0.45)]">
-                  <svg
-                    viewBox="0 0 100 100"
-                    className="w-full h-full"
-                    aria-label="Founder portrait placeholder"
-                    role="img"
-                  >
-                    <defs>
-                      <radialGradient id="founder" cx="0.35" cy="0.30" r="0.85">
-                        <stop offset="0%" stopColor="#fdc97a" />
-                        <stop offset="55%" stopColor="#ec8b2a" />
-                        <stop offset="100%" stopColor="#5a2c0a" />
-                      </radialGradient>
-                    </defs>
-                    <rect width="100" height="100" fill="url(#founder)" />
-                    <circle cx="32" cy="30" r="20" fill="rgba(255, 244, 224, 0.18)" />
-                    <circle cx="80" cy="85" r="32" fill="rgba(7, 6, 8, 0.20)" />
-                    <text
-                      x="50"
-                      y="60"
-                      textAnchor="middle"
-                      fontSize="34"
-                      fontWeight="700"
-                      fill="#fff4e0"
-                      fontFamily="Inter, sans-serif"
-                      letterSpacing="-1"
+                  {HAS_FOUNDER_PHOTO ? (
+                    <Image
+                      src="/founder.jpg"
+                      alt="Alexander, fundador de Leyva Web Studio"
+                      width={288}
+                      height={288}
+                      priority={false}
+                      className="w-full h-full object-cover saturate-[0.90] contrast-[1.05]"
+                    />
+                  ) : (
+                    <svg
+                      viewBox="0 0 100 100"
+                      className="w-full h-full"
+                      aria-label="Founder portrait placeholder"
+                      role="img"
                     >
-                      L
-                    </text>
-                  </svg>
+                      <defs>
+                        <radialGradient id="founder" cx="0.35" cy="0.30" r="0.85">
+                          <stop offset="0%" stopColor="#fdc97a" />
+                          <stop offset="55%" stopColor="#ec8b2a" />
+                          <stop offset="100%" stopColor="#5a2c0a" />
+                        </radialGradient>
+                      </defs>
+                      <rect width="100" height="100" fill="url(#founder)" />
+                      <circle cx="32" cy="30" r="20" fill="rgba(255, 244, 224, 0.18)" />
+                      <circle cx="80" cy="85" r="32" fill="rgba(7, 6, 8, 0.20)" />
+                      <text
+                        x="50"
+                        y="60"
+                        textAnchor="middle"
+                        fontSize="34"
+                        fontWeight="700"
+                        fill="#fff4e0"
+                        fontFamily="Inter, sans-serif"
+                        letterSpacing="-1"
+                      >
+                        L
+                      </text>
+                    </svg>
+                  )}
+                  {/* Warm tint overlay to tie photo into ember palette */}
+                  <div
+                    className="absolute inset-0 bg-gradient-to-br from-ember-300/8 via-transparent to-ember-700/15 mix-blend-overlay pointer-events-none"
+                    aria-hidden
+                  />
                 </div>
               </div>
 
