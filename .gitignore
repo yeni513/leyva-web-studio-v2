@@ -16,3 +16,6 @@ tsconfig.tsbuildinfo
 .wrangler
 cloudflare-env.d.ts
 .dev.vars
+
+# Local backups of optimized assets
+*.bak
