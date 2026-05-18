@@ -603,7 +603,7 @@ function TransformationScroll() {
 
 function TransformationStatic() {
   return (
-    <section className="relative py-24 sm:py-32">
+    <section className="relative py-16 sm:py-24">
       <div className="container">
         <Reveal>
           <SectionHeading

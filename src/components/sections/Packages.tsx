@@ -86,7 +86,7 @@ const packages: Package[] = [
 
 export function Packages() {
   return (
-    <section id="paquetes" className="relative py-24 sm:py-32">
+    <section id="paquetes" className="relative py-16 sm:py-24">
       <div className="container">
         <Reveal>
           <SectionHeading

@@ -241,7 +241,7 @@ export function Footer() {
   return (
     <footer className="relative border-t border-white/[0.06] bg-ink-950">
       {/* Big CTA strip */}
-      <div className="container py-20 sm:py-24">
+      <div className="container py-14 sm:py-20">
         <div className="relative overflow-hidden rounded-3xl border border-ember-300/25 bg-gradient-to-br from-ember-300/[0.10] via-white/[0.02] to-white/[0.01] p-8 sm:p-12 shadow-glow">
           <div className="absolute -top-32 -right-32 w-96 h-96 rounded-full bg-ember-400/20 blur-3xl pointer-events-none" />
           <div className="absolute -bottom-32 -left-32 w-96 h-96 rounded-full bg-ember-600/15 blur-3xl pointer-events-none" />

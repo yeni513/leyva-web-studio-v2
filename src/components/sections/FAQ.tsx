@@ -118,7 +118,7 @@ export function FAQ() {
   return (
     <section
       id="faq"
-      className="relative py-24 sm:py-32 bg-ink-950/40 overflow-hidden"
+      className="relative py-16 sm:py-24 bg-ink-950/40 overflow-hidden"
     >
       {/* Ambient warm glow */}
       <div

@@ -114,7 +114,7 @@ export function Services() {
   return (
     <section
       id="servicios"
-      className="relative py-24 sm:py-32 overflow-hidden"
+      className="relative py-16 sm:py-24 overflow-hidden"
     >
       {/* Ambient warm glow centered behind the orbit */}
       <div

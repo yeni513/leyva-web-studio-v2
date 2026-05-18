@@ -368,7 +368,7 @@ function PortfolioStatic() {
     <>
       <section
         id="trabajo"
-        className="relative py-24 sm:py-32 bg-ink-950/40 overflow-hidden"
+        className="relative py-16 sm:py-24 bg-ink-950/40 overflow-hidden"
       >
         <div className="container">
           <Reveal>
@@ -430,7 +430,7 @@ function PortfolioScroll() {
       <section
         ref={ref}
         id="trabajo"
-        className="relative py-24 sm:py-32 bg-ink-950/40 overflow-x-hidden"
+        className="relative py-16 sm:py-24 bg-ink-950/40 overflow-x-hidden"
       >
         <div className="container relative">
           {/* Ambient glow behind the assembly */}
