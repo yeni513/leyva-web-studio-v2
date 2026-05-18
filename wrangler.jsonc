@@ -20,5 +20,13 @@
   },
   "observability": {
     "enabled": true
-  }
+  },
+  // Deploy directly to the custom domain registered in this Cloudflare
+  // account. Routes both apex and www subdomain to the worker. Requires
+  // leyvawebstudio.com to be active on Cloudflare DNS (it is).
+  "workers_dev": false,
+  "routes": [
+    { "pattern": "leyvawebstudio.com", "custom_domain": true },
+    { "pattern": "www.leyvawebstudio.com", "custom_domain": true }
+  ]
 }
