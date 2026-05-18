@@ -125,7 +125,7 @@ export function Contact() {
       prefilledFrom && `Vengo desde: ${prefilledFrom}.`,
       "",
       form.message ||
-        "Me gustaría cotizar un sitio web premium para mi negocio.",
+        "Me gustaría cotizar un sitio web a la medida para mi negocio.",
     ]
       .filter(Boolean)
       .join("\n");
@@ -190,7 +190,7 @@ export function Contact() {
             <div className="mt-10 flex flex-wrap gap-4 text-sm">
               <a
                 href={whatsappLink(
-                  "Hola Leyva, me gustaría cotizar un sitio web premium para mi negocio.",
+                  "Hola Leyva, me gustaría cotizar un sitio web a la medida para mi negocio.",
                 )}
                 target="_blank"
                 rel="noopener noreferrer"

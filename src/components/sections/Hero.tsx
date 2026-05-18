@@ -60,7 +60,7 @@ export function Hero() {
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-ember-300/25 bg-ember-300/[0.04] backdrop-blur-md text-xs sm:text-sm text-ember-50/85 animate-fade-in">
           <Sparkles className="w-3.5 h-3.5 text-ember-300" />
           <span>
-            Estudio web premium para negocios locales en LATAM y EE. UU.
+            El estudio que tu competencia preferiría que no conocieras.
           </span>
         </div>
 
@@ -72,9 +72,10 @@ export function Hero() {
         </h1>
 
         <p className="mt-6 sm:mt-7 max-w-2xl text-base sm:text-lg text-ember-50/75 leading-relaxed text-pretty">
-          Diseñamos y desarrollamos páginas web cinematográficas para
-          contratistas, restaurantes, inmobiliarias y comercios locales que
-          quieren atraer mejores clientes y cobrar más por su servicio.
+          Atrae mejores clientes y cobra precios más altos con un sitio
+          cinematográfico hecho a la medida — listo en 7–14 días, sin
+          plantillas, sin atajos. Para contratistas, restaurantes,
+          inmobiliarias y servicios locales.
         </p>
 
         <div className="mt-9 sm:mt-10 flex flex-col sm:flex-row items-center gap-3 sm:gap-4 w-full sm:w-auto">
@@ -96,21 +97,19 @@ export function Hero() {
           </AnchorButton>
         </div>
 
-        {/* Social proof strip */}
-        <div className="mt-12 sm:mt-14 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-xs sm:text-sm text-ember-50/60">
-          <div className="flex items-center gap-1.5">
-            <div className="flex">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <Star
-                  key={i}
-                  className="w-3.5 h-3.5 fill-ember-300 text-ember-300"
-                />
-              ))}
-            </div>
-            <span className="text-ember-50/80">5.0 calidad de entrega</span>
-          </div>
+        {/* Reassurance line — immediate trust signal under CTAs */}
+        <p className="mt-5 text-xs sm:text-sm text-ember-50/55">
+          Primera llamada gratis · Cero compromiso · Respuesta el mismo día
+        </p>
+
+        {/* Trust strip — concrete, verifiable claims about the offer */}
+        <div className="mt-10 sm:mt-12 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-xs sm:text-sm text-ember-50/60">
+          <span className="inline-flex items-center gap-1.5">
+            <Star className="w-3.5 h-3.5 fill-ember-300 text-ember-300" />
+            Hecho a la medida, sin plantillas
+          </span>
           <span className="hidden sm:block w-1 h-1 rounded-full bg-ember-50/20" />
-          <span>Entregas en 7–14 días</span>
+          <span>Entrega en 7–14 días</span>
           <span className="hidden sm:block w-1 h-1 rounded-full bg-ember-50/20" />
           <span>Soporte directo con el desarrollador</span>
         </div>

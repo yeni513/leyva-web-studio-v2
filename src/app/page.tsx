@@ -4,6 +4,7 @@ import { IndustryMarquee } from "@/components/sections/IndustryMarquee";
 import { Services } from "@/components/sections/Services";
 import { Transformation } from "@/components/sections/Transformation";
 import { Process } from "@/components/sections/Process";
+import { About } from "@/components/sections/About";
 import { Packages } from "@/components/sections/Packages";
 import { Portfolio } from "@/components/sections/Portfolio";
 import { Testimonials } from "@/components/sections/Testimonials";
@@ -21,6 +22,7 @@ export default function HomePage() {
         <Services />
         <Transformation />
         <Process />
+        <About />
         <Packages />
         <Portfolio />
         <Testimonials />

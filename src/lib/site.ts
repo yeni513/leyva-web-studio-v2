@@ -1,10 +1,13 @@
 export const site = {
   brand: "LEYVA",
   brandSub: "Web Studio",
-  url: "https://leyvawebstudio.com",
+  // TODO: Replace with real custom domain when ready. Currently points to
+  // Vercel-managed production URL so OG previews and canonical URLs resolve.
+  url: "https://leyva-web-studio-v2.vercel.app",
   description:
-    "Estudio web premium con base en Ohio, EE. UU. Diseñamos y desarrollamos sitios cinematográficos para negocios locales que quieren verse profesionales, generar confianza y convertir visitantes en clientes.",
+    "Estudio web con base en Ohio, EE. UU. Diseñamos y desarrollamos sitios cinematográficos a la medida para negocios locales que quieren atraer mejores clientes y cobrar precios más altos.",
   contact: {
+    // TODO: Replace placeholders with real WhatsApp + email before launch.
     whatsapp: "16140000000",
     whatsappDisplay: "+1 (614) 000-0000",
     email: "hola@leyvawebstudio.com",

@@ -49,7 +49,7 @@ const estudioItems: FooterItem[] = [
     modalDesc:
       "Diseño hecho a la medida con todo lo que tu negocio necesita para verse profesional online — sin plantillas, sin templates de WordPress.",
     bullets: [
-      "Diseño cinematográfico premium",
+      "Diseño cinematográfico hecho a la medida",
       "Mobile-first probado en celulares reales",
       "Velocidad y Core Web Vitals optimizados",
       "SEO local + Google Maps",
@@ -61,7 +61,7 @@ const estudioItems: FooterItem[] = [
     prefill: {
       type: "Sitio nuevo",
       message:
-        "Quiero información sobre los servicios premium: diseño cinematográfico, mobile-first, velocidad, SEO local, catálogos/reservas y soporte mensual.",
+        "Quiero información sobre los servicios: diseño cinematográfico, mobile-first, velocidad, SEO local, catálogos/reservas y soporte mensual.",
       fromLabel: "Servicios (footer)",
     },
   },
@@ -96,7 +96,7 @@ const estudioItems: FooterItem[] = [
     modalDesc:
       "Tres paquetes para distintos momentos de tu negocio. Si necesitas algo a la medida también lo cotizamos.",
     bullets: [
-      "Esencial — $1,500 USD · Sitio premium de una página",
+      "Esencial — $1,500 USD · Sitio de una página hecho a la medida",
       "Crecimiento — $3,500 USD · Multipágina + reservas (más popular)",
       "Autoridad — Desde $6,500 USD · Sistema de marca completo",
       "Pagos en USD · 50% de anticipo, 50% al entregar",
@@ -155,7 +155,7 @@ const negociosItems: FooterItem[] = [
       type: "Sitio nuevo",
       industry: "Restaurante",
       message:
-        "Tengo un restaurante y quiero un sitio premium con menú digital, reservas por WhatsApp y galería de platos.",
+        "Tengo un restaurante y quiero un sitio a la medida con menú digital, reservas por WhatsApp y galería de platos.",
       fromLabel: "Restaurantes",
     },
   },
@@ -289,7 +289,7 @@ export function Footer() {
           <div className="md:col-span-5">
             <BrandMark />
             <p className="mt-4 max-w-sm text-sm text-ember-50/60 leading-relaxed">
-              Estudio web premium para negocios locales. Diseñamos sitios
+              Estudio web hecho a la medida para negocios locales. Diseñamos sitios
               cinematográficos que convierten visitantes en clientes.
             </p>
             <div className="mt-5 flex flex-col gap-2 text-sm text-ember-50/70">
@@ -337,7 +337,23 @@ export function Footer() {
             © {new Date().getFullYear()} {site.brand} {site.brandSub}. Todos
             los derechos reservados.
           </p>
-          <p>Hecho con Next.js, cuidado y café fuerte.</p>
+          <div className="flex items-center gap-4">
+            <a
+              href="/privacidad"
+              className="hover:text-ember-300 transition-colors"
+            >
+              Privacidad
+            </a>
+            <span className="w-1 h-1 rounded-full bg-ember-50/20" />
+            <a
+              href="/terminos"
+              className="hover:text-ember-300 transition-colors"
+            >
+              Términos
+            </a>
+            <span className="w-1 h-1 rounded-full bg-ember-50/20" />
+            <span>Hecho con Next.js y café fuerte</span>
+          </div>
         </div>
       </div>
 
@@ -492,7 +508,7 @@ function ExplainerModal({
               type="button"
               aria-label="Cerrar"
               onClick={onClose}
-              className="absolute top-4 right-4 grid place-items-center w-9 h-9 rounded-full border border-white/[0.10] bg-white/[0.04] text-ember-50/70 hover:text-ember-50 hover:bg-white/[0.10] hover:border-white/[0.20] transition-colors no-tap-highlight"
+              className="absolute top-3 right-3 grid place-items-center w-11 h-11 rounded-full border border-white/[0.10] bg-white/[0.04] text-ember-50/70 hover:text-ember-50 hover:bg-white/[0.10] hover:border-white/[0.20] transition-colors no-tap-highlight"
             >
               <X className="w-4 h-4" />
             </button>

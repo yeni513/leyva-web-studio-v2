@@ -14,9 +14,10 @@ import {
 import {
   ArrowLeft,
   ArrowRight,
-  Briefcase,
   Heart,
   Quote,
+  RefreshCw,
+  ShieldCheck,
   Star,
   X,
   Zap,
@@ -117,28 +118,28 @@ interface Stat {
 
 const stats: Stat[] = [
   {
-    icon: Briefcase,
-    to: 40,
-    format: (v) => `${Math.round(v)}+`,
-    label: "Proyectos entregados",
-  },
-  {
     icon: Zap,
     to: 14,
     format: (v) => `${Math.round(v)}d`,
-    label: "Tiempo promedio",
+    label: "Tiempo de entrega",
+  },
+  {
+    icon: ShieldCheck,
+    to: 100,
+    format: (v) => `${Math.round(v)}%`,
+    label: "Código a tu nombre",
+  },
+  {
+    icon: RefreshCw,
+    to: 2,
+    format: (v) => `${Math.round(v)}×`,
+    label: "Rondas de revisión",
   },
   {
     icon: Heart,
-    to: 98,
-    format: (v) => `${Math.round(v)}%`,
-    label: "Satisfacción",
-  },
-  {
-    icon: Star,
-    to: 5,
-    format: (v) => v.toFixed(1),
-    label: "Calidad de entrega",
+    to: 60,
+    format: (v) => `${Math.round(v)}d`,
+    label: "Soporte post-lanzamiento",
   },
 ];
 
@@ -160,14 +161,14 @@ export function Testimonials() {
       <div className="container relative">
         <Reveal>
           <SectionHeading
-            eyebrow="Confianza"
+            eyebrow="Voces del negocio local"
             title={
               <>
-                Lo que dicen los negocios que ya{" "}
-                <span className="gradient-text">trabajan con nosotros.</span>
+                Lo que escucharás cuando tu sitio{" "}
+                <span className="gradient-text">empiece a vender.</span>
               </>
             }
-            description="Negocios reales en EE. UU. y LATAM que pasaron de un sitio básico a uno que vende. Pasa el mouse para pausar y haz clic en cualquier tarjeta para leer el testimonio completo."
+            description="Ejemplos del tipo de feedback que recibirás de tus clientes y operadores cuando tu negocio tenga un sitio que realmente funciona. Pasa el mouse para pausar."
           />
         </Reveal>
       </div>
@@ -192,21 +193,44 @@ export function Testimonials() {
 // ─────────────────────────────────────────────────
 function Carousel({ items }: { items: Testimonial[] }) {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
   const [canLeft, setCanLeft] = useState(false);
   const [canRight, setCanRight] = useState(true);
   const [hovering, setHovering] = useState(false);
   const [interacted, setInteracted] = useState(false);
   const [expanded, setExpanded] = useState<Testimonial | null>(null);
+  const [inView, setInView] = useState(false);
   const reduced = useReducedMotion();
   const isMobile = useIsMobile();
 
   const interactionTimerRef = useRef<number | null>(null);
 
   // Auto-scroll is paused while hovering, while a modal is expanded,
-  // while the user is in the middle of an arrow interaction, or for
-  // reduced-motion / mobile users.
+  // while the user is in the middle of an arrow interaction, when the
+  // section is not in the viewport, or for reduced-motion / mobile users.
   const autoPaused =
-    hovering || expanded !== null || interacted || !!reduced || isMobile;
+    hovering ||
+    expanded !== null ||
+    interacted ||
+    !inView ||
+    !!reduced ||
+    isMobile;
+
+  // Only run the rAF loop when the section is visible — avoids burning
+  // CPU on every frame while the user is reading a different section.
+  useEffect(() => {
+    const node = sectionRef.current;
+    if (!node || typeof IntersectionObserver === "undefined") {
+      setInView(true);
+      return;
+    }
+    const observer = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      { rootMargin: "200px 0px" },
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
 
   // Duplicate items so the auto-scroll can loop seamlessly.
   const looped = [...items, ...items];
@@ -295,6 +319,7 @@ function Carousel({ items }: { items: Testimonial[] }) {
   return (
     <>
       <div
+        ref={sectionRef}
         className="relative mt-10 sm:mt-14"
         onMouseEnter={() => setHovering(true)}
         onMouseLeave={() => setHovering(false)}
@@ -482,12 +507,10 @@ function TestimonialCard({
 }
 
 // ─────────────────────────────────────────────────
-// Retro avatar — Pravatar photo with sepia filter,
-// graceful fallback to gradient circle with initials
+// Retro avatar — self-hosted SVG monogram with cinematic
+// gradient + retro filter. No external image dependencies.
 // ─────────────────────────────────────────────────
 function RetroAvatar({ img, name }: { img: number; name: string }) {
-  const [loaded, setLoaded] = useState(false);
-  const [errored, setErrored] = useState(false);
   const initials = name
     .split(" ")
     .map((w) => w[0])
@@ -495,44 +518,73 @@ function RetroAvatar({ img, name }: { img: number; name: string }) {
     .join("")
     .toUpperCase();
 
-  const src = `https://i.pravatar.cc/200?img=${img}`;
+  // Use the `img` seed to deterministically pick a gradient pair so each
+  // testimonial gets its own colorway (still all warm/ember, just varied).
+  const palettes: Array<[string, string, string]> = [
+    ["#5a2c0a", "#a8500c", "#ec8b2a"], // bronze → ember
+    ["#3a1c08", "#7a3a08", "#d76a14"], // deep ink → ember
+    ["#6a3410", "#b85e1e", "#fdc97a"], // warm copper → gold
+    ["#4a2510", "#9a4814", "#ec8b2a"], // mahogany → amber
+    ["#3a1a07", "#883e0c", "#f5ad4f"], // dark wood → light amber
+  ];
+  const palette = palettes[img % palettes.length];
 
   return (
     <div className="relative w-[88px] h-[88px] sm:w-[104px] sm:h-[104px] rounded-full overflow-hidden ring-2 ring-ember-300/40 shadow-[0_8px_28px_-8px_rgba(236,139,42,0.55)]">
-      {/* Fallback gradient + initials (always rendered behind) */}
-      <div
-        className={cn(
-          "absolute inset-0 grid place-items-center bg-gradient-to-br from-ember-200 via-ember-300 to-ember-500 text-ink-950 font-bold text-xl transition-opacity duration-500",
-          loaded && !errored ? "opacity-0" : "opacity-100",
-        )}
+      <svg
+        viewBox="0 0 100 100"
+        className="absolute inset-0 w-full h-full"
+        aria-label={name}
+        role="img"
       >
-        {initials}
-      </div>
-
-      {!errored && (
-        // Using a plain <img> so we don't have to add Pravatar to
-        // next.config.mjs remotePatterns. Small, lazy-loaded — fine.
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          src={src}
-          alt={name}
-          loading="lazy"
-          decoding="async"
-          referrerPolicy="no-referrer"
-          onLoad={() => setLoaded(true)}
-          onError={() => setErrored(true)}
-          className={cn(
-            "absolute inset-0 w-full h-full object-cover transition-opacity duration-700",
-            // Retro vintage filter — desaturated + warm sepia + soft contrast
-            "saturate-[0.55] sepia-[0.42] contrast-[1.08] brightness-[0.95]",
-            loaded ? "opacity-100" : "opacity-0",
-          )}
+        <defs>
+          <radialGradient
+            id={`avatar-bg-${img}`}
+            cx="0.35"
+            cy="0.35"
+            r="0.85"
+          >
+            <stop offset="0%" stopColor={palette[2]} stopOpacity="0.95" />
+            <stop offset="55%" stopColor={palette[1]} stopOpacity="0.95" />
+            <stop offset="100%" stopColor={palette[0]} stopOpacity="1" />
+          </radialGradient>
+        </defs>
+        <rect
+          width="100"
+          height="100"
+          fill={`url(#avatar-bg-${img})`}
         />
-      )}
+        {/* Soft inner texture */}
+        <circle
+          cx="30"
+          cy="28"
+          r="22"
+          fill="rgba(255, 244, 224, 0.15)"
+        />
+        <circle
+          cx="78"
+          cy="84"
+          r="28"
+          fill="rgba(7, 6, 8, 0.20)"
+        />
+        {/* Initials */}
+        <text
+          x="50"
+          y="58"
+          textAnchor="middle"
+          fontSize="38"
+          fontWeight="600"
+          fill="#fff4e0"
+          fontFamily="Inter, sans-serif"
+          letterSpacing="-1"
+        >
+          {initials}
+        </text>
+      </svg>
 
-      {/* Warm tint overlay — ties photos to the ember palette */}
+      {/* Warm tint overlay — unifies all avatars to the ember palette */}
       <div
-        className="absolute inset-0 bg-gradient-to-br from-ember-300/15 via-transparent to-ember-700/25 mix-blend-overlay pointer-events-none"
+        className="absolute inset-0 bg-gradient-to-br from-ember-300/10 via-transparent to-ember-700/20 mix-blend-overlay pointer-events-none"
         aria-hidden
       />
 
@@ -617,7 +669,7 @@ function ExpandedModal({
               type="button"
               aria-label="Cerrar"
               onClick={onClose}
-              className="absolute top-4 right-4 grid place-items-center w-9 h-9 rounded-full border border-white/[0.10] bg-white/[0.04] text-ember-50/70 hover:text-ember-50 hover:bg-white/[0.10] hover:border-white/[0.20] transition-colors"
+              className="absolute top-3 right-3 grid place-items-center w-11 h-11 rounded-full border border-white/[0.10] bg-white/[0.04] text-ember-50/70 hover:text-ember-50 hover:bg-white/[0.10] hover:border-white/[0.20] transition-colors"
             >
               <X className="w-4 h-4" />
             </button>

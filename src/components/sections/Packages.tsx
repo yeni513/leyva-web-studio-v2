@@ -30,7 +30,7 @@ const packages: Package[] = [
     tag: "Lanzamiento rápido",
     desc: "Para negocios que necesitan presencia online profesional y un canal directo de contacto.",
     features: [
-      "Sitio de una página premium",
+      "Sitio de una página hecho a la medida",
       "Diseño a la medida (no plantilla)",
       "WhatsApp y formulario de contacto",
       "Optimización móvil y SEO básico",
@@ -40,7 +40,7 @@ const packages: Package[] = [
     cta: "Empezar con Esencial",
     prefillBudget: "Menos de $1,500 USD",
     prefillMessage:
-      "Me interesa el paquete Esencial ($1,500 USD). Quiero un sitio premium de una página para mi negocio.",
+      "Me interesa el paquete Esencial ($1,500 USD). Quiero un sitio a la medida de una página para mi negocio.",
   },
   {
     name: "Crecimiento",
@@ -73,7 +73,7 @@ const packages: Package[] = [
       "Sistema de marca cinematográfico",
       "Casos de éxito y testimonios",
       "Integraciones (CRM, pagos, blog)",
-      "Soporte premium 60 días",
+      "Soporte prioritario 60 días",
       "Estrategia de conversión incluida",
     ],
     highlight: false,
@@ -194,8 +194,44 @@ export function Packages() {
           ))}
         </div>
 
+        {/* Guarantee strip — risk reversal */}
         <Reveal>
-          <p className="mt-10 text-center text-sm text-ember-50/55">
+          <div className="mt-10 max-w-4xl mx-auto rounded-2xl border border-ember-300/25 bg-gradient-to-r from-ember-300/[0.04] via-white/[0.02] to-ember-300/[0.04] p-5 sm:p-6">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
+              {[
+                {
+                  title: "Apruebas antes de programar",
+                  desc: "No tocamos código hasta que firmas el diseño visual.",
+                },
+                {
+                  title: "50 / 50 en pagos",
+                  desc: "La mitad al iniciar, la mitad al entregar. Sin sorpresas.",
+                },
+                {
+                  title: "Código y dominio a tu nombre",
+                  desc: "Tú eres dueño del sitio desde el día 1. Sin lock-in.",
+                },
+              ].map((g) => (
+                <div key={g.title} className="flex gap-3">
+                  <span className="grid place-items-center w-6 h-6 rounded-full bg-ember-300/15 text-ember-300 shrink-0 mt-0.5">
+                    <Check className="w-3.5 h-3.5" />
+                  </span>
+                  <div>
+                    <p className="text-sm font-semibold text-ember-50">
+                      {g.title}
+                    </p>
+                    <p className="mt-0.5 text-xs text-ember-50/65 leading-relaxed">
+                      {g.desc}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </Reveal>
+
+        <Reveal>
+          <p className="mt-8 text-center text-sm text-ember-50/55">
             ¿Necesitas algo distinto? Cotizamos proyectos a la medida —{" "}
             <a
               href="#contact"

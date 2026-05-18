@@ -90,7 +90,7 @@ const cases: CaseStudy[] = [
     industry: "Restaurante",
     name: "Casa Olivar",
     domain: "casaolivar.com",
-    result: "+38% reservas en 60 días",
+    result: "Reservas por WhatsApp",
     desc: "Menú digital cinematográfico, reservas por WhatsApp y SEO local para destacar arriba de la competencia.",
     brandIcon: UtensilsCrossed,
     heroAccent:
@@ -130,7 +130,7 @@ const cases: CaseStudy[] = [
         },
         {
           icon: MapPin,
-          title: "Ubicación premium",
+          title: "Ubicación destacada",
           desc: "Mapa interactivo y horarios siempre actualizados.",
         },
       ],
@@ -145,8 +145,8 @@ const cases: CaseStudy[] = [
       ],
       review: {
         quote:
-          "Llenamos viernes y sábados gracias al sitio. La gente reserva con días de anticipación y ya viene sabiendo qué quiere comer.",
-        author: "Manuel C., chef ejecutivo",
+          "Así es como suena un restaurante con un sitio que vende: las reservas se llenan solas, la cava se conoce sin que pregunten, y el equipo se concentra en cocinar — no en contestar WhatsApp.",
+        author: "Cómo opera tu negocio después de Leyva",
       },
       finalCta: "Quiero un sitio así para mi restaurante",
     },
@@ -155,7 +155,7 @@ const cases: CaseStudy[] = [
     industry: "Contratista",
     name: "Estructuras Vela",
     domain: "estructurasvela.com",
-    result: "12 cotizaciones / mes",
+    result: "Cotización directa al dueño",
     desc: "Portafolio de obras, testimonios de clientes y formulario de cotización directo al WhatsApp del dueño.",
     brandIcon: HardHat,
     heroAccent:
@@ -210,8 +210,8 @@ const cases: CaseStudy[] = [
       ],
       review: {
         quote:
-          "Pasé de 2 cotizaciones por mes a 12. El sitio filtra a los clientes serios — solo me contactan los que ya saben qué necesitan.",
-        author: "Roberto V., dueño",
+          "Así es como filtras clientes con un sitio que muestra tu nivel: llegan ya pre-calificados, viste tu trabajo, saben tus zonas y solo te queda confirmar el alcance del proyecto.",
+        author: "Cómo se siente vender obras con un sitio Leyva",
       },
       finalCta: "Quiero un sitio así para mi contratista",
     },
@@ -220,7 +220,7 @@ const cases: CaseStudy[] = [
     industry: "Inmobiliaria",
     name: "Norte Realty",
     domain: "norterealty.com",
-    result: "x3 leads calificados",
+    result: "Listados con filtros + WhatsApp",
     desc: "Listado de propiedades con filtros, fotos optimizadas y CTA a WhatsApp en cada ficha.",
     brandIcon: Home,
     heroAccent:
@@ -275,8 +275,8 @@ const cases: CaseStudy[] = [
       ],
       review: {
         quote:
-          "Los leads del sitio están más calificados. Ya vieron las fotos, leyeron la descripción y vienen con preguntas específicas. Mi cierre subió un 60%.",
-        author: "Andrea M., agente principal",
+          "Así operan las inmobiliarias con un sitio profesional: los prospectos llegan habiendo recorrido el listado, viendo el tour virtual, y solo te queda coordinar la visita por WhatsApp.",
+        author: "Cómo se cierran propiedades con un sitio Leyva",
       },
       finalCta: "Quiero un sitio así para mi inmobiliaria",
     },
@@ -285,7 +285,7 @@ const cases: CaseStudy[] = [
     industry: "Barbería",
     name: "Don Felipe Barber",
     domain: "donfelipebarber.com",
-    result: "Agenda llena 3 semanas",
+    result: "Agenda online + galería",
     desc: "Sitio dark elegante, galería de cortes y botón de cita por WhatsApp visible en todo momento.",
     brandIcon: Scissors,
     heroAccent:
@@ -310,7 +310,7 @@ const cases: CaseStudy[] = [
       features: [
         {
           icon: Scissors,
-          title: "Servicios premium",
+          title: "Servicios curados",
           desc: "Menú completo con precios claros, desde $25 USD.",
         },
         {
@@ -340,8 +340,8 @@ const cases: CaseStudy[] = [
       ],
       review: {
         quote:
-          "Mi agenda está llena tres semanas adelante. Antes pasaba el día contestando WhatsApp para confirmar citas — ahora la gente agenda sola.",
-        author: "Felipe R., barbero y dueño",
+          "Así se siente cuando una barbería tiene un sitio profesional: los clientes agendan solos, conocen tus servicios y precios antes de llegar, y tú te concentras en cortar.",
+        author: "Cómo opera una barbería con un sitio Leyva",
       },
       finalCta: "Quiero un sitio así para mi barbería",
     },
@@ -373,14 +373,14 @@ function PortfolioStatic() {
         <div className="container">
           <Reveal>
             <SectionHeading
-              eyebrow="Casos de muestra"
+              eyebrow="Conceptos por industria"
               title={
                 <>
-                  Ejemplos del nivel{" "}
+                  Diseños conceptuales del nivel{" "}
                   <span className="gradient-text">que entregamos.</span>
                 </>
               }
-              description="Conceptos basados en proyectos reales para negocios locales. Toca cualquier card para abrir el preview del sitio completo."
+              description="Diseños conceptuales que muestran exactamente cómo se vería tu negocio con un sitio Leyva. Toca cualquier card para abrir el preview completo."
             />
           </Reveal>
 
@@ -448,14 +448,14 @@ function PortfolioScroll() {
             className="origin-center will-change-transform"
           >
             <SectionHeading
-              eyebrow="Casos de muestra"
+              eyebrow="Conceptos por industria"
               title={
                 <>
-                  Ejemplos del nivel{" "}
+                  Diseños conceptuales del nivel{" "}
                   <span className="gradient-text">que entregamos.</span>
                 </>
               }
-              description="Conceptos basados en proyectos reales para negocios locales. Haz clic en cualquier card para abrir el preview del sitio completo."
+              description="Diseños conceptuales que muestran exactamente cómo se vería tu negocio con un sitio Leyva. Haz clic en cualquier card para abrir el preview completo."
             />
           </motion.div>
 
@@ -865,7 +865,7 @@ function BrowserChrome({
         type="button"
         onClick={onClose}
         aria-label="Cerrar preview"
-        className="grid place-items-center w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-white/[0.10] bg-white/[0.04] text-ember-50/75 hover:text-ember-50 hover:bg-white/[0.10] hover:border-white/[0.20] transition-colors shrink-0"
+        className="grid place-items-center w-11 h-11 rounded-full border border-white/[0.10] bg-white/[0.04] text-ember-50/75 hover:text-ember-50 hover:bg-white/[0.10] hover:border-white/[0.20] transition-colors shrink-0"
       >
         <X className="w-4 h-4" />
       </button>

@@ -263,7 +263,7 @@ function TransformationScroll() {
       ref={ref}
       aria-label="De básico a premium"
       className="relative"
-      style={{ height: "300vh" }}
+      style={{ height: "220vh" }}
     >
       <div className="sticky top-0 h-screen flex items-center overflow-hidden">
         {/* Ambient warm glow that intensifies with progress */}

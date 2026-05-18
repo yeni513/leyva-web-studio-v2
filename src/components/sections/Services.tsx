@@ -154,13 +154,34 @@ function ServicesOrbit() {
   const [paused, setPaused] = useState(false);
   const [selected, setSelected] = useState<Service | null>(null);
   const iconRefs = useRef<Record<string, HTMLButtonElement | null>>({});
+  const containerRef = useRef<HTMLDivElement>(null);
   const pausedRef = useRef(paused);
+  const inViewRef = useRef(false);
 
   // Keep ref in sync so the RAF closure reads the latest value without
   // having to re-create the loop on every pause change.
   useEffect(() => {
     pausedRef.current = paused;
   }, [paused]);
+
+  // IntersectionObserver: only run the orbital RAF when the section is
+  // visible. Avoids burning CPU on every frame while the user is in a
+  // distant section (footer, contact, etc).
+  useEffect(() => {
+    const node = containerRef.current;
+    if (!node || typeof IntersectionObserver === "undefined") {
+      inViewRef.current = true;
+      return;
+    }
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        inViewRef.current = entry.isIntersecting;
+      },
+      { rootMargin: "200px 0px" },
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
 
   // Single RAF loop drives all orbiting icons via direct DOM transform.
   // No re-renders during animation = silky smooth, no React work per frame.
@@ -172,19 +193,22 @@ function ServicesOrbit() {
     const tick = (now: number) => {
       const dt = (now - last) / 1000;
       last = now;
-      if (!pausedRef.current) {
+      // Only advance time when the section is in view AND not paused.
+      // The loop keeps polling (cheap) so it picks up visibility changes
+      // without a re-render.
+      if (inViewRef.current && !pausedRef.current) {
         t += dt;
-      }
-      for (const s of services) {
-        const node = iconRefs.current[s.id];
-        if (!node) continue;
-        const radius = s.orbit === "inner" ? INNER_RADIUS : OUTER_RADIUS;
-        const speed = s.orbit === "inner" ? INNER_SPEED : OUTER_SPEED;
-        const phase = (s.phaseDeg * Math.PI) / 180;
-        const angle = t * speed + phase;
-        const x = Math.cos(angle) * radius;
-        const y = Math.sin(angle) * radius;
-        node.style.transform = `translate3d(calc(${x}px - 50%), calc(${y}px - 50%), 0)`;
+        for (const s of services) {
+          const node = iconRefs.current[s.id];
+          if (!node) continue;
+          const radius = s.orbit === "inner" ? INNER_RADIUS : OUTER_RADIUS;
+          const speed = s.orbit === "inner" ? INNER_SPEED : OUTER_SPEED;
+          const phase = (s.phaseDeg * Math.PI) / 180;
+          const angle = t * speed + phase;
+          const x = Math.cos(angle) * radius;
+          const y = Math.sin(angle) * radius;
+          node.style.transform = `translate3d(calc(${x}px - 50%), calc(${y}px - 50%), 0)`;
+        }
       }
       raf = requestAnimationFrame(tick);
     };
@@ -195,7 +219,8 @@ function ServicesOrbit() {
   return (
     <div className="mt-16 sm:mt-20 flex justify-center">
       <div
-        className="relative w-[800px] h-[800px] max-w-[95vw] aspect-square"
+        ref={containerRef}
+        className="relative w-[800px] h-[800px] max-w-[95vw] aspect-square origin-center max-[900px]:scale-[0.85]"
         onMouseEnter={() => setPaused(true)}
         onMouseLeave={() => setPaused(false)}
       >
@@ -484,7 +509,7 @@ function DefaultView() {
         />
       </div>
       <p className="mt-4 font-display text-[18px] text-ember-50 font-medium">
-        Servicios premium
+        Servicios curados
       </p>
       <p className="mt-2 text-[12.5px] leading-relaxed text-ember-50/65">
         Haz clic en cualquier ícono para explorar lo que entregamos.
