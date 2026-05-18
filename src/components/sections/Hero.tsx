@@ -64,9 +64,11 @@ export function Hero() {
           </span>
         </div>
 
-        <h1 className="mt-7 sm:mt-9 max-w-5xl font-display font-semibold tracking-tight text-balance text-[clamp(2.4rem,7vw,5.5rem)] leading-[1.02]">
+        <h1 className="mt-7 sm:mt-9 max-w-5xl font-display font-semibold tracking-tight text-balance text-[clamp(2.4rem,7vw,5.5rem)] leading-[1.08]">
           <span className="block text-ember-50">Sitios web que hacen ver</span>
-          <span className="block gradient-text">premium a tu negocio.</span>
+          <span className="block gradient-text pb-[0.12em]">
+            premium a tu negocio.
+          </span>
         </h1>
 
         <p className="mt-6 sm:mt-7 max-w-2xl text-base sm:text-lg text-ember-50/75 leading-relaxed text-pretty">

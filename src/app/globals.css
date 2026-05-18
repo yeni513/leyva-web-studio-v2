@@ -107,6 +107,11 @@ body {
     -webkit-text-fill-color: transparent;
     color: transparent;
     animation: shine 8s linear infinite;
+    /* Stop descenders (g, p, y, j) from getting clipped by tight
+       background-clip boxes. inline-block + tiny bottom padding gives
+       the rendering box the breathing room WebKit/Chromium need. */
+    display: inline-block;
+    padding-bottom: 0.08em;
   }
   .ring-ember {
     box-shadow:
