@@ -1,10 +1,28 @@
+"use client";
+
 import { Check, ArrowUpRight, Sparkles } from "lucide-react";
 import { SectionHeading } from "@/components/section-heading";
 import { Reveal } from "@/components/ui/reveal";
-import { AnchorButton } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
+import { prefillQuote } from "@/lib/prefill-quote";
 import { cn } from "@/lib/utils";
 
-const packages = [
+interface Package {
+  name: string;
+  price: string;
+  priceSuffix: string;
+  tag: string;
+  desc: string;
+  features: string[];
+  highlight: boolean;
+  cta: string;
+  /** Budget bucket sent to the form when this package CTA is clicked. */
+  prefillBudget: string;
+  /** Message body that lands in the form's textarea. */
+  prefillMessage: string;
+}
+
+const packages: Package[] = [
   {
     name: "Esencial",
     price: "$1,500",
@@ -20,6 +38,9 @@ const packages = [
     ],
     highlight: false,
     cta: "Empezar con Esencial",
+    prefillBudget: "Menos de $1,500 USD",
+    prefillMessage:
+      "Me interesa el paquete Esencial ($1,500 USD). Quiero un sitio premium de una página para mi negocio.",
   },
   {
     name: "Crecimiento",
@@ -37,6 +58,9 @@ const packages = [
     ],
     highlight: true,
     cta: "Empezar con Crecimiento",
+    prefillBudget: "$1,500 – $3,500 USD",
+    prefillMessage:
+      "Me interesa el paquete Crecimiento ($3,500 USD). Quiero un sitio multipágina con catálogo/galería/reservas.",
   },
   {
     name: "Autoridad",
@@ -54,6 +78,9 @@ const packages = [
     ],
     highlight: false,
     cta: "Hablar de Autoridad",
+    prefillBudget: "$3,500 – $7,000 USD",
+    prefillMessage:
+      "Me interesa el paquete Autoridad (desde $6,500 USD). Quiero un sistema de marca completo con integraciones y estrategia de conversión.",
   },
 ];
 
@@ -144,15 +171,23 @@ export function Packages() {
                 </ul>
 
                 <div className="relative mt-8">
-                  <AnchorButton
-                    href="#contact"
+                  <Button
+                    type="button"
+                    onClick={() =>
+                      prefillQuote({
+                        type: "Sitio nuevo",
+                        budget: p.prefillBudget,
+                        message: p.prefillMessage,
+                        fromLabel: `Paquete ${p.name}`,
+                      })
+                    }
                     size="lg"
                     variant={p.highlight ? "primary" : "secondary"}
                     className="w-full"
                   >
                     {p.cta}
                     <ArrowUpRight className="w-4 h-4" />
-                  </AnchorButton>
+                  </Button>
                 </div>
               </div>
             </Reveal>

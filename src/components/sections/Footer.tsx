@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 import { BrandMark } from "@/components/brand";
 import { site, whatsappLink, mailtoLink } from "@/lib/site";
+import { prefillQuote, type QuotePrefill } from "@/lib/prefill-quote";
 import { cn } from "@/lib/utils";
 
 interface FooterItem {
@@ -35,6 +36,8 @@ interface FooterItem {
   bullets: string[];
   navigateTo: string;
   navigateLabel: string;
+  /** Context passed to the form when the modal's "Cotizar" button is clicked. */
+  prefill: QuotePrefill;
 }
 
 const estudioItems: FooterItem[] = [
@@ -55,6 +58,12 @@ const estudioItems: FooterItem[] = [
     ],
     navigateTo: "#servicios",
     navigateLabel: "Ver sistema orbital de servicios",
+    prefill: {
+      type: "Sitio nuevo",
+      message:
+        "Quiero información sobre los servicios premium: diseño cinematográfico, mobile-first, velocidad, SEO local, catálogos/reservas y soporte mensual.",
+      fromLabel: "Servicios (footer)",
+    },
   },
   {
     id: "proceso",
@@ -71,6 +80,13 @@ const estudioItems: FooterItem[] = [
     ],
     navigateTo: "#proceso",
     navigateLabel: "Ver proceso detallado",
+    prefill: {
+      type: "Sitio nuevo",
+      timeline: "En 30 días",
+      message:
+        "Me interesa empezar pronto. Por favor cuéntenme más sobre el proceso de 14 días.",
+      fromLabel: "Proceso (footer)",
+    },
   },
   {
     id: "paquetes",
@@ -87,6 +103,12 @@ const estudioItems: FooterItem[] = [
     ],
     navigateTo: "#paquetes",
     navigateLabel: "Comparar paquetes",
+    prefill: {
+      type: "Sitio nuevo",
+      message:
+        "Quiero información sobre los paquetes. Aún no estoy seguro cuál encaja mejor con mi negocio.",
+      fromLabel: "Paquetes (footer)",
+    },
   },
   {
     id: "trabajo",
@@ -103,6 +125,12 @@ const estudioItems: FooterItem[] = [
     ],
     navigateTo: "#trabajo",
     navigateLabel: "Ver portfolio completo",
+    prefill: {
+      type: "Sitio nuevo",
+      message:
+        "Vi el portfolio y me gustaría algo del mismo nivel. Cuéntenme cuál de los casos se parece más a lo que necesito.",
+      fromLabel: "Portfolio (footer)",
+    },
   },
 ];
 
@@ -123,6 +151,13 @@ const negociosItems: FooterItem[] = [
     ],
     navigateTo: "#trabajo",
     navigateLabel: "Ver el caso Casa Olivar",
+    prefill: {
+      type: "Sitio nuevo",
+      industry: "Restaurante",
+      message:
+        "Tengo un restaurante y quiero un sitio premium con menú digital, reservas por WhatsApp y galería de platos.",
+      fromLabel: "Restaurantes",
+    },
   },
   {
     id: "contratistas",
@@ -140,6 +175,13 @@ const negociosItems: FooterItem[] = [
     ],
     navigateTo: "#trabajo",
     navigateLabel: "Ver el caso Estructuras Vela",
+    prefill: {
+      type: "Sitio nuevo",
+      industry: "Contratista / Constructor",
+      message:
+        "Soy contratista y quiero un portafolio digital con galería de obras, testimonios y cotización por WhatsApp.",
+      fromLabel: "Contratistas",
+    },
   },
   {
     id: "inmobiliarias",
@@ -157,6 +199,13 @@ const negociosItems: FooterItem[] = [
     ],
     navigateTo: "#trabajo",
     navigateLabel: "Ver el caso Norte Realty",
+    prefill: {
+      type: "Sitio nuevo",
+      industry: "Inmobiliaria",
+      message:
+        "Manejo una inmobiliaria y quiero una plataforma con listados, filtros, tour virtual y CTA a WhatsApp por propiedad.",
+      fromLabel: "Inmobiliarias",
+    },
   },
   {
     id: "locales",
@@ -174,6 +223,13 @@ const negociosItems: FooterItem[] = [
     ],
     navigateTo: "#trabajo",
     navigateLabel: "Ver el caso Don Felipe Barber",
+    prefill: {
+      type: "Sitio nuevo",
+      industry: "Barbería / Estética",
+      message:
+        "Tengo un servicio local y quiero un sitio dark elegante con menú de servicios, agenda online y galería.",
+      fromLabel: "Servicios locales",
+    },
   },
 ];
 
@@ -395,6 +451,12 @@ function ExplainerModal({
     }, 380);
   };
 
+  const handleCotizar = () => {
+    if (!item) return;
+    onClose();
+    prefillQuote(item.prefill, { scrollDelay: 420 });
+  };
+
   return (
     <AnimatePresence>
       {item && (
@@ -471,7 +533,7 @@ function ExplainerModal({
                 </button>
                 <button
                   type="button"
-                  onClick={() => handleNavigate("#contact")}
+                  onClick={handleCotizar}
                   className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full border border-ember-300/30 bg-ember-300/[0.04] text-ember-50 text-sm hover:bg-ember-300/[0.12] hover:border-ember-300/50 transition-colors no-tap-highlight"
                 >
                   <MessageCircle className="w-4 h-4 text-ember-300" />

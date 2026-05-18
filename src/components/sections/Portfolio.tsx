@@ -35,6 +35,7 @@ import {
 import { SectionHeading } from "@/components/section-heading";
 import { Reveal } from "@/components/ui/reveal";
 import { useIsMobile } from "@/lib/use-is-mobile";
+import { prefillQuote } from "@/lib/prefill-quote";
 
 interface CaseTile {
   icon: LucideIcon;
@@ -773,14 +774,28 @@ function ExpandedSiteModal({
     };
   }, [isOpen, onClose]);
 
-  // Trigger contact navigation AFTER closing — modal exits cleanly first
+  // Map the case study to one of the form's industry options
+  const industryMap: Record<string, string> = {
+    Restaurante: "Restaurante",
+    Contratista: "Contratista / Constructor",
+    Inmobiliaria: "Inmobiliaria",
+    Barbería: "Barbería / Estética",
+  };
+
+  // Trigger contact navigation AFTER closing — modal exits cleanly first.
+  // Form auto-fills with the industry of the case the user just explored.
   const handleCtaToContact = () => {
     onClose();
-    setTimeout(() => {
-      document
-        .getElementById("contact")
-        ?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }, 400);
+    if (!data) return;
+    prefillQuote(
+      {
+        type: "Sitio nuevo",
+        industry: industryMap[data.industry] ?? "Otro",
+        message: `Vi el caso de ${data.name} y quiero algo similar para mi negocio. Resultado destacado: ${data.result}.`,
+        fromLabel: `${data.name} (${data.industry.toLowerCase()})`,
+      },
+      { scrollDelay: 450 },
+    );
   };
 
   return (

@@ -21,6 +21,7 @@ import {
 import { SectionHeading } from "@/components/section-heading";
 import { Reveal } from "@/components/ui/reveal";
 import { useIsMobile } from "@/lib/use-is-mobile";
+import { prefillQuote } from "@/lib/prefill-quote";
 import { cn } from "@/lib/utils";
 
 interface Service {
@@ -449,13 +450,20 @@ function SelectedView({ service }: { service: Service }) {
       <p className="mt-2.5 text-[12.5px] leading-relaxed text-ember-50/75 text-pretty">
         {service.detail}
       </p>
-      <a
-        href="#contact"
-        className="mt-5 inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-ember-300/35 bg-ember-300/[0.08] text-[11px] uppercase tracking-[0.18em] text-ember-300 hover:bg-ember-300/[0.16] hover:border-ember-300/55 transition-colors"
+      <button
+        type="button"
+        onClick={() =>
+          prefillQuote({
+            type: "Sitio nuevo",
+            message: `Me interesa el servicio: ${service.title}. ${service.detail}`,
+            fromLabel: `Servicio: ${service.title}`,
+          })
+        }
+        className="mt-5 inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-ember-300/35 bg-ember-300/[0.08] text-[11px] uppercase tracking-[0.18em] text-ember-300 hover:bg-ember-300/[0.16] hover:border-ember-300/55 transition-colors no-tap-highlight"
       >
         Cotizar este servicio
         <ArrowUpRight className="w-3.5 h-3.5" />
-      </a>
+      </button>
     </motion.div>
   );
 }
@@ -500,9 +508,16 @@ function ServicesGrid() {
           const Icon = s.icon;
           return (
             <Reveal key={s.id} delay={i * 0.05}>
-              <a
-                href="#contact"
-                className="group relative block h-full rounded-2xl border border-white/[0.07] bg-gradient-to-b from-white/[0.04] to-white/[0.01] p-6 sm:p-7 transition-all duration-500 hover:border-ember-300/30 hover:from-ember-300/[0.06] hover:to-white/[0.01] shadow-card"
+              <button
+                type="button"
+                onClick={() =>
+                  prefillQuote({
+                    type: "Sitio nuevo",
+                    message: `Me interesa el servicio: ${s.title}. ${s.detail}`,
+                    fromLabel: `Servicio: ${s.title}`,
+                  })
+                }
+                className="group relative block h-full w-full text-left rounded-2xl border border-white/[0.07] bg-gradient-to-b from-white/[0.04] to-white/[0.01] p-6 sm:p-7 transition-all duration-500 hover:border-ember-300/30 hover:from-ember-300/[0.06] hover:to-white/[0.01] shadow-card no-tap-highlight"
               >
                 <div className="relative flex items-start justify-between">
                   <span className="inline-grid place-items-center w-11 h-11 rounded-xl border border-ember-300/25 bg-ember-300/[0.06] text-ember-300">
@@ -516,7 +531,7 @@ function ServicesGrid() {
                 <p className="relative mt-2 text-[15px] leading-relaxed text-ember-50/70">
                   {s.desc}
                 </p>
-              </a>
+              </button>
             </Reveal>
           );
         })}

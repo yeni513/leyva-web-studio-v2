@@ -1,19 +1,45 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import {
-  Send,
-  MessageCircle,
-  Mail,
-  ShieldCheck,
   Clock,
   Lock,
+  Mail,
+  MessageCircle,
+  Send,
+  ShieldCheck,
+  Sparkles,
+  X,
 } from "lucide-react";
 import { SectionHeading } from "@/components/section-heading";
 import { Reveal } from "@/components/ui/reveal";
 import { Button } from "@/components/ui/button";
 import { site, whatsappLink, mailtoLink } from "@/lib/site";
+import { onPrefillQuote } from "@/lib/prefill-quote";
 import { cn } from "@/lib/utils";
+
+// ─── Options (kept in sync with prefill-quote keys) ─────────────────
+const projectTypes = [
+  "Sitio nuevo",
+  "Rediseño",
+  "Landing para campaña",
+  "Otro",
+];
+
+const industries = [
+  "Restaurante",
+  "Contratista / Constructor",
+  "Inmobiliaria",
+  "Barbería / Estética",
+  "Servicio de limpieza",
+  "Plomería / Electricidad",
+  "Clínica / Dentista",
+  "Gimnasio / Wellness",
+  "Auto / Mecánica",
+  "Tienda local",
+  "Otro",
+];
 
 const budgetOptions = [
   "Menos de $1,500 USD",
@@ -22,40 +48,88 @@ const budgetOptions = [
   "$7,000+ USD",
 ];
 
-const projectTypes = [
-  "Sitio nuevo",
-  "Rediseño",
-  "Landing para campaña",
-  "Otro",
+const timelineOptions = [
+  "Lo más pronto posible",
+  "En 30 días",
+  "En 60–90 días",
+  "Solo estoy explorando",
 ];
 
-export function Contact() {
-  const [form, setForm] = useState({
-    name: "",
-    business: "",
-    contact: "",
-    type: projectTypes[0],
-    budget: budgetOptions[1],
-    message: "",
-  });
+const contentOptions = [
+  "Sí, todo listo",
+  "Tengo parte",
+  "Aún no tengo nada",
+  "Quiero que ustedes ayuden",
+];
 
-  const update = <K extends keyof typeof form>(k: K, v: (typeof form)[K]) =>
+interface FormState {
+  name: string;
+  business: string;
+  contact: string;
+  type: string;
+  industry: string;
+  timeline: string;
+  budget: string;
+  hasContent: string;
+  message: string;
+}
+
+const initialForm: FormState = {
+  name: "",
+  business: "",
+  contact: "",
+  type: projectTypes[0],
+  industry: "",
+  timeline: "",
+  budget: budgetOptions[1],
+  hasContent: "",
+  message: "",
+};
+
+export function Contact() {
+  const [form, setForm] = useState<FormState>(initialForm);
+  const [prefilledFrom, setPrefilledFrom] = useState<string | null>(null);
+
+  const update = <K extends keyof FormState>(k: K, v: FormState[K]) =>
     setForm((s) => ({ ...s, [k]: v }));
+
+  // ── Listen for prefill events from any CTA across the site ─────────
+  useEffect(() => {
+    const unsubscribe = onPrefillQuote((data) => {
+      setForm((s) => ({
+        ...s,
+        ...(data.type && { type: data.type }),
+        ...(data.industry && { industry: data.industry }),
+        ...(data.timeline && { timeline: data.timeline }),
+        ...(data.budget && { budget: data.budget }),
+        ...(data.hasContent && { hasContent: data.hasContent }),
+        ...(data.message && { message: data.message }),
+      }));
+      if (data.fromLabel) {
+        setPrefilledFrom(data.fromLabel);
+      }
+    });
+    return unsubscribe;
+  }, []);
 
   const composedMessage = useMemo(() => {
     return [
       `Hola, soy ${form.name || "(tu nombre)"}.`,
       form.business && `Mi negocio: ${form.business}.`,
+      form.industry && `Industria: ${form.industry}.`,
       `Tipo de proyecto: ${form.type}.`,
+      form.timeline && `Tiempo: ${form.timeline}.`,
       `Presupuesto estimado: ${form.budget}.`,
+      form.hasContent && `Contenido listo: ${form.hasContent}.`,
       form.contact && `Contacto: ${form.contact}.`,
+      prefilledFrom && `Vengo desde: ${prefilledFrom}.`,
       "",
       form.message ||
         "Me gustaría cotizar un sitio web premium para mi negocio.",
     ]
       .filter(Boolean)
       .join("\n");
-  }, [form]);
+  }, [form, prefilledFrom]);
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -150,8 +224,38 @@ export function Contact() {
                 Solicitar cotización
               </p>
               <h3 className="mt-2 text-xl sm:text-2xl font-semibold text-ember-50">
-                Cuéntanos en 30 segundos
+                Cuéntanos en 60 segundos
               </h3>
+
+              {/* Prefilled-from indicator pill */}
+              <AnimatePresence>
+                {prefilledFrom && (
+                  <motion.div
+                    key={prefilledFrom}
+                    initial={{ opacity: 0, y: -8, scale: 0.96 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -8, scale: 0.96 }}
+                    transition={{ duration: 0.3 }}
+                    className="mt-4 inline-flex items-center gap-2 pl-3 pr-1.5 py-1 rounded-full bg-ember-300/[0.10] border border-ember-300/40 text-[11px]"
+                  >
+                    <Sparkles className="w-3 h-3 text-ember-300" />
+                    <span className="text-ember-50/85">
+                      Pre-llenado desde:{" "}
+                      <span className="font-semibold text-ember-300">
+                        {prefilledFrom}
+                      </span>
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => setPrefilledFrom(null)}
+                      aria-label="Quitar indicador"
+                      className="grid place-items-center w-5 h-5 rounded-full hover:bg-white/[0.10] text-ember-50/55 hover:text-ember-50 transition-colors no-tap-highlight"
+                    >
+                      <X className="w-3 h-3" />
+                    </button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
 
               <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <Field label="Nombre">
@@ -202,6 +306,49 @@ export function Contact() {
                     ))}
                   </select>
                 </Field>
+                <Field
+                  label="Industria"
+                  highlight={!!form.industry && form.industry !== ""}
+                >
+                  <select
+                    value={form.industry}
+                    onChange={(e) => update("industry", e.target.value)}
+                    className={cn(
+                      inputCls,
+                      !!form.industry && fieldHighlightCls,
+                    )}
+                  >
+                    <option value="">Selecciona tu industria</option>
+                    {industries.map((i) => (
+                      <option key={i} value={i}>
+                        {i}
+                      </option>
+                    ))}
+                  </select>
+                </Field>
+              </div>
+
+              <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <Field
+                  label="¿Cuándo lo necesitas?"
+                  highlight={!!form.timeline}
+                >
+                  <select
+                    value={form.timeline}
+                    onChange={(e) => update("timeline", e.target.value)}
+                    className={cn(
+                      inputCls,
+                      !!form.timeline && fieldHighlightCls,
+                    )}
+                  >
+                    <option value="">Selecciona el tiempo</option>
+                    {timelineOptions.map((t) => (
+                      <option key={t} value={t}>
+                        {t}
+                      </option>
+                    ))}
+                  </select>
+                </Field>
                 <Field label="Presupuesto estimado">
                   <select
                     value={form.budget}
@@ -215,6 +362,35 @@ export function Contact() {
                     ))}
                   </select>
                 </Field>
+              </div>
+
+              {/* Has content — chip selector */}
+              <div className="mt-4">
+                <span className="text-[11px] uppercase tracking-[0.18em] text-ember-50/60 block">
+                  ¿Tienes contenido listo? (textos, fotos)
+                </span>
+                <div className="mt-2.5 flex flex-wrap gap-2">
+                  {contentOptions.map((opt) => {
+                    const active = form.hasContent === opt;
+                    return (
+                      <button
+                        key={opt}
+                        type="button"
+                        onClick={() =>
+                          update("hasContent", active ? "" : opt)
+                        }
+                        className={cn(
+                          "px-3 py-1.5 rounded-full text-xs border transition-all duration-200 no-tap-highlight",
+                          active
+                            ? "border-ember-300/55 bg-ember-300/[0.14] text-ember-50 shadow-[0_0_14px_-4px_rgba(236,139,42,0.55)]"
+                            : "border-white/[0.08] bg-white/[0.02] text-ember-50/70 hover:border-ember-300/30 hover:bg-ember-300/[0.06] hover:text-ember-50",
+                        )}
+                      >
+                        {opt}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
 
               <div className="mt-4">
@@ -236,7 +412,7 @@ export function Contact() {
                 </Button>
                 <a
                   href={mailtoLink("Cotización sitio web", composedMessage)}
-                  className="inline-flex h-12 px-5 items-center justify-center rounded-full border border-ember-300/25 bg-ember-300/[0.04] text-ember-50 text-[15px] hover:bg-ember-300/[0.10] transition-colors"
+                  className="inline-flex h-12 px-5 items-center justify-center rounded-full border border-ember-300/25 bg-ember-300/[0.04] text-ember-50 text-[15px] hover:bg-ember-300/[0.10] transition-colors no-tap-highlight"
                 >
                   Enviar por correo
                 </a>
@@ -257,16 +433,27 @@ export function Contact() {
 const inputCls =
   "w-full h-11 px-3.5 rounded-xl bg-ink-950/60 border border-white/[0.08] text-ember-50 placeholder:text-ember-50/35 focus:border-ember-300/50 focus:bg-ink-950 focus:outline-none transition-colors text-[15px]";
 
+// Subtle ember tint applied to fields the prefill system has populated.
+const fieldHighlightCls =
+  "border-ember-300/40 bg-ember-300/[0.04] shadow-[0_0_18px_-6px_rgba(236,139,42,0.45)]";
+
 function Field({
   label,
   children,
+  highlight,
 }: {
   label: string;
   children: React.ReactNode;
+  highlight?: boolean;
 }) {
   return (
     <label className="block">
-      <span className="text-[11px] uppercase tracking-[0.18em] text-ember-50/60">
+      <span
+        className={cn(
+          "text-[11px] uppercase tracking-[0.18em] transition-colors duration-300",
+          highlight ? "text-ember-300" : "text-ember-50/60",
+        )}
+      >
         {label}
       </span>
       <div className="mt-2">{children}</div>
