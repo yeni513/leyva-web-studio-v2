@@ -37,7 +37,9 @@ export const metadata: Metadata = {
     siteName: `${site.brand} ${site.brandSub}`,
   },
   twitter: {
-    card: "summary_large_image",
+    // summary (without _large_image) until /public/og-image.png is provided.
+    // Switch back to "summary_large_image" once a 1200x630 PNG is added.
+    card: "summary",
     title: `${site.brand} ${site.brandSub}`,
     description: site.description,
   },
