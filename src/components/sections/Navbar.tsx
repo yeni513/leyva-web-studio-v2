@@ -25,10 +25,18 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Use overflow:hidden + touch-action:none on <body> only.
+  // Setting it on <html> would break position:sticky in Transformation.
   useEffect(() => {
-    document.documentElement.style.overflow = open ? "hidden" : "";
+    if (!open) return;
+    const body = document.body;
+    const prevOverflow = body.style.overflow;
+    const prevTouchAction = body.style.touchAction;
+    body.style.overflow = "hidden";
+    body.style.touchAction = "none";
     return () => {
-      document.documentElement.style.overflow = "";
+      body.style.overflow = prevOverflow;
+      body.style.touchAction = prevTouchAction;
     };
   }, [open]);
 

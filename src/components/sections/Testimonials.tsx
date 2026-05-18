@@ -26,6 +26,7 @@ import {
 import { SectionHeading } from "@/components/section-heading";
 import { Reveal } from "@/components/ui/reveal";
 import { useIsMobile } from "@/lib/use-is-mobile";
+import { useBodyScrollLock } from "@/lib/use-body-scroll-lock";
 import { cn } from "@/lib/utils";
 
 interface Testimonial {
@@ -609,31 +610,15 @@ function ExpandedModal({
 }) {
   const isOpen = testimonial !== null;
 
+  useBodyScrollLock(isOpen);
+
   useEffect(() => {
     if (!isOpen) return;
-    const y = window.scrollY;
-    document.body.style.position = "fixed";
-    document.body.style.top = `-${y}px`;
-    document.body.style.left = "0";
-    document.body.style.right = "0";
-    document.body.style.overflow = "hidden";
-    document.body.dataset.scrollY = y.toString();
-
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
     };
     window.addEventListener("keydown", onKey);
-
-    return () => {
-      const stored = parseInt(document.body.dataset.scrollY || "0", 10);
-      document.body.style.position = "";
-      document.body.style.top = "";
-      document.body.style.left = "";
-      document.body.style.right = "";
-      document.body.style.overflow = "";
-      window.scrollTo({ top: stored, behavior: "instant" as ScrollBehavior });
-      window.removeEventListener("keydown", onKey);
-    };
+    return () => window.removeEventListener("keydown", onKey);
   }, [isOpen, onClose]);
 
   return (
