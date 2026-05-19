@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 import { SectionHeading } from "@/components/section-heading";
 import { Reveal } from "@/components/ui/reveal";
-import { Button } from "@/components/ui/button";
+import { AnchorButton } from "@/components/ui/button";
 import { site, whatsappLink, mailtoLink } from "@/lib/site";
 import { onPrefillQuote } from "@/lib/prefill-quote";
 import { cn } from "@/lib/utils";
@@ -131,25 +131,36 @@ export function Contact() {
       .join("\n");
   }, [form, prefilledFrom]);
 
-  const onSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    // 1. Primary user-facing flow — opens WhatsApp immediately so the
-    //    user can finish the conversation in their normal app.
-    window.open(whatsappLink(composedMessage), "_blank", "noopener,noreferrer");
-
-    // 2. Backup lead capture — POSTs the form to /api/contact which
-    //    forwards the data to your email via Resend. Runs in parallel
-    //    and silently — even if WhatsApp fails or the user closes the
-    //    tab, you still receive the cotización.
+  // Backup lead capture — POSTs the form to /api/contact which forwards
+  // the data to email via Resend. Runs in parallel with the WhatsApp
+  // anchor navigation so leads aren't lost if the user closes WhatsApp.
+  const fireLeadCapture = () => {
     void fetch("/api/contact", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ ...form, prefilledFrom }),
-    }).catch(() => {
-      // Silent fail — WhatsApp is already open, the user experience
-      // is not blocked by a backend hiccup.
-    });
+    }).catch(() => {});
+  };
+
+  // Click handler on the WhatsApp anchor — validates required fields
+  // (anchors don't trigger HTML5 form validation) then fires the backup.
+  const onWhatsAppClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    const formEl = e.currentTarget.closest("form");
+    if (formEl && !formEl.checkValidity()) {
+      e.preventDefault();
+      formEl.reportValidity();
+      return;
+    }
+    fireLeadCapture();
+  };
+
+  // Fallback for Enter key inside the form — anchor handles clicks,
+  // but pressing Enter still submits via the form. Open WhatsApp and
+  // fire the backup the legacy way.
+  const onSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    window.location.href = whatsappLink(composedMessage);
+    fireLeadCapture();
   };
 
   return (
@@ -422,10 +433,17 @@ export function Contact() {
               </div>
 
               <div className="mt-6 flex flex-col sm:flex-row gap-3">
-                <Button type="submit" size="lg" className="w-full sm:flex-1">
+                <AnchorButton
+                  href={whatsappLink(composedMessage)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={onWhatsAppClick}
+                  size="lg"
+                  className="w-full sm:flex-1"
+                >
                   Enviar por WhatsApp
                   <Send className="w-4 h-4" />
-                </Button>
+                </AnchorButton>
                 <a
                   href={mailtoLink("Cotización sitio web", composedMessage)}
                   className="inline-flex h-12 px-5 items-center justify-center rounded-full border border-ember-300/25 bg-ember-300/[0.04] text-ember-50 text-[15px] hover:bg-ember-300/[0.10] transition-colors no-tap-highlight"

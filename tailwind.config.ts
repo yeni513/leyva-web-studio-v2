@@ -74,6 +74,18 @@ const config: Config = {
           "0%, 100%": { opacity: "0.6" },
           "50%": { opacity: "1" },
         },
+        "orbit-halo": {
+          "0%": { transform: "rotate(0deg)" },
+          "100%": { transform: "rotate(360deg)" },
+        },
+        "orbit-breathe": {
+          "0%, 100%": { opacity: "0.35", transform: "scale(0.9)" },
+          "50%": { opacity: "0.75", transform: "scale(1.08)" },
+        },
+        "orbit-shimmer": {
+          "0%": { transform: "translateX(-110%) skewX(-12deg)" },
+          "100%": { transform: "translateX(220%) skewX(-12deg)" },
+        },
       },
       animation: {
         "fade-up": "fade-up 0.7s ease-out forwards",
@@ -81,6 +93,9 @@ const config: Config = {
         marquee: "marquee 40s linear infinite",
         shine: "shine 6s linear infinite",
         "pulse-glow": "pulse-glow 4s ease-in-out infinite",
+        "orbit-halo": "orbit-halo 8s linear infinite",
+        "orbit-breathe": "orbit-breathe 3.6s ease-in-out infinite",
+        "orbit-shimmer": "orbit-shimmer 2.8s ease-out infinite",
       },
     },
   },

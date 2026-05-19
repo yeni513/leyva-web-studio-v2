@@ -97,7 +97,7 @@ const services: Service[] = [
   },
 ];
 
-const INNER_RADIUS = 220;
+const INNER_RADIUS = 248;
 const OUTER_RADIUS = 355;
 const INNER_SPEED = 0.16; // rad/s — slightly slower so the bigger orbit still feels graceful
 const OUTER_SPEED = -0.095;
@@ -339,6 +339,8 @@ function OrbitingIcon({
 }) {
   const Icon = service.icon;
   const isOuter = service.orbit === "outer";
+  // Stagger the breathing animation across icons so they don't pulse in unison
+  const breatheDelay = `${(service.phaseDeg / 60) % 3}s`;
   return (
     <button
       ref={refCallback}
@@ -350,33 +352,89 @@ function OrbitingIcon({
         transform: `translate3d(calc(${initialX}px - 50%), calc(${initialY}px - 50%), 0)`,
       }}
       className={cn(
-        "group/icon absolute top-1/2 left-1/2 grid place-items-center rounded-full border bg-gradient-to-b from-ink-900 to-ink-950 transition-[box-shadow,border-color,background-color,scale] duration-300 will-change-transform no-tap-highlight z-10",
+        "group/icon absolute top-1/2 left-1/2 grid place-items-center rounded-full will-change-transform no-tap-highlight z-10 transition-transform duration-300",
         isOuter ? "w-[88px] h-[88px]" : "w-[76px] h-[76px]",
         isActive
-          ? "border-ember-300/65 bg-ember-300/[0.10] shadow-[0_0_36px_-3px_rgba(236,139,42,0.70)] scale-110 z-20"
-          : "border-ember-300/25 hover:border-ember-300/55 hover:bg-ember-300/[0.07] hover:scale-110 hover:shadow-[0_0_28px_-5px_rgba(236,139,42,0.55)] hover:z-20",
+          ? "scale-[1.16] z-20"
+          : "hover:scale-[1.16] hover:z-20",
       )}
     >
-      {/* inner ring accent */}
+      {/* Layer 1: ambient breathing aura — soft radial glow, always pulsing */}
       <span
         className={cn(
-          "absolute inset-0.5 rounded-full pointer-events-none transition-opacity duration-300",
-          isActive ? "opacity-100" : "opacity-0 group-hover/icon:opacity-100",
+          "absolute -inset-3 rounded-full pointer-events-none animate-orbit-breathe",
+          isActive ? "opacity-100" : "opacity-80",
         )}
         style={{
           background:
-            "radial-gradient(circle at 30% 25%, rgba(236,139,42,0.20), transparent 60%)",
+            "radial-gradient(circle, rgba(236,139,42,0.55) 0%, rgba(236,139,42,0.18) 45%, transparent 70%)",
+          filter: "blur(8px)",
+          animationDelay: breatheDelay,
+        }}
+        aria-hidden
+      />
+
+      {/* Layer 2: rotating conic halo — a bright arc travels around the button edge */}
+      <span
+        className="absolute -inset-1 rounded-full pointer-events-none animate-orbit-halo opacity-90"
+        style={{
+          background:
+            "conic-gradient(from 0deg, transparent 0deg, transparent 230deg, rgba(255,210,140,0.95) 310deg, rgba(236,139,42,0.6) 340deg, transparent 360deg)",
+        }}
+        aria-hidden
+      />
+
+      {/* Layer 3: the solid button face — sits ON TOP of layers 1+2, masking
+          their center and leaving only the edge halo + outer aura visible. */}
+      <span
+        className={cn(
+          "absolute inset-0 rounded-full border bg-gradient-to-b from-ink-900 to-ink-950 transition-[border-color,background-color,box-shadow] duration-300",
+          isActive
+            ? "border-ember-300/70 bg-ember-300/[0.12] shadow-[0_0_44px_-2px_rgba(236,139,42,0.85)]"
+            : "border-ember-300/30 group-hover/icon:border-ember-300/65 group-hover/icon:bg-ember-300/[0.08] group-hover/icon:shadow-[0_0_36px_-3px_rgba(236,139,42,0.70)]",
+        )}
+        aria-hidden
+      />
+
+      {/* Layer 4: shimmer sweep — only visible on hover/active, gives a "light pass" feel */}
+      <span
+        className={cn(
+          "absolute inset-0 rounded-full overflow-hidden pointer-events-none transition-opacity duration-300",
+          isActive
+            ? "opacity-100"
+            : "opacity-0 group-hover/icon:opacity-100",
+        )}
+        aria-hidden
+      >
+        <span
+          className="absolute inset-y-0 -inset-x-4 animate-orbit-shimmer"
+          style={{
+            background:
+              "linear-gradient(110deg, transparent 30%, rgba(255,244,224,0.42) 50%, transparent 70%)",
+          }}
+        />
+      </span>
+
+      {/* Layer 5: inner highlight (top-left light source) */}
+      <span
+        className={cn(
+          "absolute inset-0.5 rounded-full pointer-events-none transition-opacity duration-300",
+          isActive ? "opacity-100" : "opacity-50 group-hover/icon:opacity-100",
+        )}
+        style={{
+          background:
+            "radial-gradient(circle at 30% 25%, rgba(255,210,140,0.30), transparent 60%)",
         }}
         aria-hidden
       />
 
       <Icon
         className={cn(
-          "relative transition-colors duration-300",
+          "relative transition-colors duration-300 drop-shadow-[0_0_8px_rgba(236,139,42,0.6)]",
           isOuter ? "w-8 h-8" : "w-7 h-7",
           isActive
             ? "text-ember-100"
-            : "text-ember-300 group-hover/icon:text-ember-200",
+            : "text-ember-200 group-hover/icon:text-ember-100",
         )}
       />
 
@@ -386,7 +444,7 @@ function OrbitingIcon({
           "absolute top-full mt-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap text-[11px] uppercase tracking-[0.20em] pointer-events-none transition-all duration-300",
           isActive
             ? "opacity-100 text-ember-300 -translate-y-0"
-            : "opacity-0 group-hover/icon:opacity-100 text-ember-50/85 -translate-y-1 group-hover/icon:translate-y-0",
+            : "opacity-0 group-hover/icon:opacity-100 text-ember-50/90 -translate-y-1 group-hover/icon:translate-y-0",
         )}
       >
         {service.title}
@@ -406,7 +464,7 @@ function CenterHub({
   onClear: () => void;
 }) {
   return (
-    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[320px] h-[320px] z-30 pointer-events-none">
+    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[270px] h-[270px] z-30 pointer-events-none">
       {/* Outer warm glow */}
       <div
         className="absolute inset-0 rounded-full bg-ember-400/15 blur-2xl"
