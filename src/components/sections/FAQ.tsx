@@ -60,21 +60,21 @@ const faqs: FAQItem[] = [
     cat: "price",
     icon: RefreshCw,
     q: "¿Por qué hay mensualidad?",
-    a: "Porque un sitio serio necesita más que solo lanzarse: actualizaciones, monitoreo, pequeños cambios, chequeos de performance y soporte cuando algo sale mal. La mensualidad cubre todo eso — tu web no se queda abandonada el día después del lanzamiento.",
+    a: "Porque un sitio serio necesita más que solo lanzarse. El plan mensual es de cuidado y crecimiento: actualizaciones, monitoreo, pequeños cambios, chequeos de performance, mejoras continuas y soporte cuando algo necesita atención. Tu web no se queda abandonada el día después del lanzamiento — se mantiene viva, rápida y lista para convertir.",
   },
   {
     id: "cancelar",
     cat: "price",
     icon: Globe,
     q: "¿Puedo cancelar el plan mensual?",
-    a: "Sí, según el plan acordado. No hay contratos eternos ni penalidades grandes por salir. El objetivo es mantener tu sitio sano y creciendo, no atraparte. Si decidís pausar el plan, te explicamos qué cambia (hosting, soporte, etc.).",
+    a: "Sí, según el plan acordado. No hay contratos eternos ni penalidades grandes por salir. El objetivo es mantener tu sitio sano y creciendo, no atraparte. Si decides pausar el plan, te explicamos qué cambia (hosting, soporte, etc.).",
   },
   {
     id: "dominio",
     cat: "price",
     icon: KeyRound,
     q: "¿El dominio es mío?",
-    a: "Sí. El dominio se registra a tu nombre y queda bajo tu propiedad desde el día 1. Leyva Web Studio te ayuda a configurarlo y conectarlo, pero el dueño legal siempre eres tú. Si decidís irte mañana, el dominio se va contigo.",
+    a: "Sí. El dominio se registra a tu nombre y queda bajo tu propiedad desde el día 1. Leyva Web Studio te ayuda a configurarlo y conectarlo, pero el dueño legal siempre eres tú. Si decides irte mañana, el dominio se va contigo.",
   },
   {
     id: "despues-publicar",
@@ -95,7 +95,7 @@ const faqs: FAQItem[] = [
     cat: "support",
     icon: Pencil,
     q: "¿Yo puedo editar el sitio después?",
-    a: "Para cambios mayores (nuevas secciones, restyling) el plan mensual los cubre. Para cambios menores frecuentes te enseñamos a hacerlos vos mismo si preferís. La filosofía: vos te concentrás en tu negocio, nosotros en mantener el sitio.",
+    a: "Para cambios mayores (nuevas secciones, restyling) el plan mensual los cubre. Para cambios menores frecuentes te enseñamos a hacerlos tú mismo si prefieres. La filosofía: tú te concentras en tu negocio, nosotros en mantener el sitio.",
   },
   {
     id: "hosting",
@@ -130,7 +130,7 @@ const faqs: FAQItem[] = [
     cat: "support",
     icon: RefreshCw,
     q: "¿Puedo cambiar de paquete después de empezar?",
-    a: "Sí. Podés subir de plan (de Starter a Growth Pro, por ejemplo) y solo pagás la diferencia del setup más la nueva mensualidad. Bajar de plan es posible después del primer ciclo mensual — lo conversamos y ajustamos.",
+    a: "Sí. Puedes subir de plan (de Starter a Growth Pro, por ejemplo) y solo pagas la diferencia del setup más la nueva mensualidad. Bajar de plan es posible después del primer ciclo mensual — lo conversamos y ajustamos.",
   },
 ];
 

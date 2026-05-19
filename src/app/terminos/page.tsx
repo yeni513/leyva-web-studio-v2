@@ -62,8 +62,8 @@ export default function TermsPage() {
                 El plan se puede pausar o cancelar según el plan acordado. Al
                 cancelar, dejamos de prestar los servicios mensuales (hosting
                 gestionado, mantenimiento, mejoras). El sitio y el código
-                siguen siendo tuyos — vos podés llevártelos a otro proveedor o
-                gestionar el hosting vos mismo.
+                siguen siendo tuyos — puedes llevártelos a otro proveedor o
+                gestionar el hosting tú mismo.
               </p>
             </Section>
 
@@ -87,7 +87,7 @@ export default function TermsPage() {
 
             <Section title="Dominio y hosting">
               <p>
-                El dominio se registra o transfiere a tu nombre — vos sos el
+                El dominio se registra o transfiere a tu nombre — tú eres el
                 dueño legal desde el día 1. Leyva Web Studio puede gestionar
                 la configuración técnica (DNS, conexión, certificados) como
                 parte del plan mensual.
@@ -95,8 +95,8 @@ export default function TermsPage() {
               <p className="mt-3">
                 El hosting está incluido en el plan mensual. Publicamos en
                 Cloudflare (infraestructura premium con cobertura global). Si
-                en algún momento querés migrar a otro proveedor, el código es
-                tuyo y podés llevártelo — te ayudamos con la migración.
+                en algún momento quieres migrar a otro proveedor, el código es
+                tuyo y puedes llevártelo — te ayudamos con la migración.
               </p>
             </Section>
 
@@ -104,7 +104,7 @@ export default function TermsPage() {
               <p>
                 Si durante el proyecto decides ampliar el alcance (por
                 ejemplo, subir de Starter Local a Growth Pro), solo pagas la
-                diferencia del setup más la nueva mensualidad. Si querés
+                diferencia del setup más la nueva mensualidad. Si quieres
                 reducir, lo conversamos — pero ya tenemos trabajo invertido,
                 así que normalmente no se acepta reducir después de iniciado.
               </p>
@@ -121,7 +121,7 @@ export default function TermsPage() {
 
             <Section title="Cancelación del proyecto">
               <p>
-                Si decidís no continuar el proyecto antes de la entrega, el
+                Si decides no continuar el proyecto antes de la entrega, el
                 50% inicial cubre el trabajo de diseño y discovery realizado.
                 Te entregamos los assets producidos hasta ese punto. La
                 cancelación del plan mensual posterior al lanzamiento se rige

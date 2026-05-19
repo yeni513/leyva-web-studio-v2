@@ -18,7 +18,7 @@ const faqs = [
   },
   {
     q: "¿Por qué hay mensualidad?",
-    a: "Porque un sitio serio necesita actualizaciones, monitoreo, pequeños cambios, chequeos de performance y soporte después del lanzamiento. El plan mensual cubre todo eso para que tu web no se quede abandonada.",
+    a: "Porque un sitio serio necesita más que solo lanzarse. El plan mensual es de cuidado y crecimiento: actualizaciones, monitoreo, pequeños cambios, chequeos de performance, mejoras continuas y soporte después del lanzamiento. Tu web no se queda abandonada.",
   },
   {
     q: "¿Puedo cancelar el plan mensual?",

@@ -354,7 +354,7 @@ export function Footer() {
               Términos
             </a>
             <span className="w-1 h-1 rounded-full bg-ember-50/20" />
-            <span>Hecho con Next.js y café fuerte</span>
+            <span>Diseñado y desarrollado por Leyva Web Studio.</span>
           </div>
         </div>
       </div>

@@ -2,14 +2,10 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
-  animate,
   AnimatePresence,
   cubicBezier,
   motion,
-  useInView,
-  useMotionValue,
   useReducedMotion,
-  useTransform,
 } from "framer-motion";
 import {
   ArrowLeft,
@@ -49,12 +45,12 @@ const guarantees: Guarantee[] = [
   {
     id: "refund",
     icon: ShieldCheck,
-    title: "Reembolso 100%",
+    title: "Reembolso del anticipo",
     category: "Tu inversión protegida",
     promise:
-      "Si no te encanta el diseño antes del día 7, devolvemos el 100% sin preguntas ni letra chica.",
+      "Si no te encanta el diseño antes de comenzar desarrollo, devolvemos el anticipo según los términos del contrato.",
     detail:
-      "Te enseñamos el diseño completo antes de tocar una línea de código. Si en los primeros 7 días sentís que no es lo que querías, te devolvemos cada dólar del anticipo. Sin formularios, sin discusiones, sin negociar.",
+      "Te mostramos el diseño completo antes de tocar una línea de código. Si en ese período (típicamente los primeros 7 días) sientes que no es lo que querías, te devolvemos el anticipo según lo acordado por escrito. Sin formularios, sin discusiones.",
     palette: 0,
   },
   {
@@ -63,20 +59,20 @@ const guarantees: Guarantee[] = [
     title: "Tú dueño del código",
     category: "Sin candados",
     promise:
-      "Te entregamos el repositorio completo a tu nombre. Si nos despides mañana, te llevas todo.",
+      "Al completar el proyecto, el código del sitio queda bajo tu propiedad según los términos del contrato.",
     detail:
-      "El código va a tu cuenta de GitHub desde el primer commit. Nada queda atado a nosotros: ni el dominio, ni el hosting, ni las cuentas. Si quieres irte, no negociamos rescates ni amenazamos con bajar el sitio.",
+      "Te damos acceso al repositorio (GitHub) a tu nombre cuando el proyecto se entrega. Nada queda atado a nosotros: ni el dominio, ni el hosting, ni las cuentas. Si decides irte, no negociamos rescates ni amenazamos con bajar el sitio.",
     palette: 1,
   },
   {
     id: "fixed-price",
     icon: CreditCard,
-    title: "Precio fijo cerrado",
+    title: "Precio fijo del alcance",
     category: "Sin sorpresas",
     promise:
-      "Cotización fija desde la primera llamada. Si nos toma más tiempo del estimado, pierdes tú nada.",
+      "Cotización fija para el alcance aprobado al firmar. Si nos toma más tiempo del estimado, tú no pagas extra.",
     detail:
-      "No cobramos por hora ni hacemos ajustes a mitad de proyecto. El precio que vez en la propuesta es el que firmas — y el que pagas. Si subestimamos el trabajo, es problema nuestro, no tuyo.",
+      "El precio que ves en la propuesta es el que firmas y el que pagas, siempre que el alcance no cambie. Si nosotros subestimamos el trabajo, es problema nuestro. Si tú decides ampliar el alcance, lo cotizamos aparte y tú decides si sigues.",
     palette: 2,
   },
   {
@@ -85,9 +81,9 @@ const guarantees: Guarantee[] = [
     title: "Entrega en 14 días",
     category: "Tiempo garantizado",
     promise:
-      "Si nos atrasamos, descontamos 10% del total por cada día de retraso. Anclado en el contrato.",
+      "Si por causas nuestras nos atrasamos, descontamos 10% del total por cada día de retraso. Sujeto al alcance aprobado y a recibir tus materiales a tiempo.",
     detail:
-      "El cronograma de 14 días no es una sugerencia: es un compromiso por escrito. Si por causa nuestra no entregamos en fecha, automáticamente descontamos 10% del total por día. Sin necesidad de que lo reclames.",
+      "El cronograma de 14 días aplica al alcance aprobado al firmar y asume que recibimos tus materiales (textos, fotos, accesos) en los plazos acordados. Si por causa nuestra no entregamos en fecha, descontamos 10% del total por día automáticamente. Si hay cambios de alcance o demoras del cliente, ajustamos la fecha conjuntamente.",
     palette: 3,
   },
   {
@@ -96,20 +92,20 @@ const guarantees: Guarantee[] = [
     title: "Respuesta en 4 horas",
     category: "Comunicación real",
     promise:
-      "De lunes a viernes contestamos en menos de 4 horas. Si tardamos, te llamamos a explicar por qué.",
+      "De lunes a viernes en horario laboral contestamos en menos de 4 horas hábiles. Si tardamos, te avisamos por qué.",
     detail:
-      "Cada mensaje tuyo se contesta el mismo día. Nada de \"te respondo cuando pueda\" ni desaparecer una semana. Si en algún momento se nos pasan las 4 horas, te llamamos por teléfono para explicar la razón.",
+      "Cada mensaje tuyo se contesta el mismo día hábil. Nada de \"te respondo cuando pueda\" ni desaparecer una semana. Si en algún momento se nos pasan las 4 horas hábiles, te avisamos por mensaje o por teléfono para explicar la razón.",
     palette: 4,
   },
   {
     id: "revisions",
     icon: RefreshCw,
-    title: "2 rondas de revisión",
+    title: "Rondas de revisión incluidas",
     category: "Tu opinión cuenta",
     promise:
-      "Dos rondas completas de cambios incluidas sin costo adicional. Sin letra chica ni ítems escondidos.",
+      "Rondas de revisión incluidas según paquete (1 en Starter, 2 en Growth Pro, 3 en Authority). Sin letra chica.",
     detail:
-      "Después de entregar la propuesta visual, tenés dos rondas completas para pedir cambios — cualquier cambio: tipografía, colores, estructura, copy, secciones. Sin contar palabras ni cobrar extras por \"cambio de scope\".",
+      "Después de entregar la propuesta visual, tienes las rondas que tu paquete incluye para pedir cambios — tipografía, colores, estructura, copy, secciones. Si necesitas más rondas que las incluidas, las cotizamos aparte de forma transparente.",
     palette: 0,
   },
   {
@@ -118,9 +114,9 @@ const guarantees: Guarantee[] = [
     title: "Sin contratos eternos",
     category: "Sin amarres",
     promise:
-      "Soporte mes a mes. Cancelás cuando quieras — no quedás amarrado a un año ni a multas por salida.",
+      "Plan mensual con cancelación simple según el plan acordado. Sin multas de salida ni \"plazo mínimo\" oculto.",
     detail:
-      "Después del lanzamiento, el soporte mensual es opcional y se cancela en un email. Cero penalidades, cero \"plazo mínimo de permanencia\". Si en algún momento sentís que ya no lo necesitas, lo apagás y listo.",
+      "Después del lanzamiento, el plan mensual de cuidado y crecimiento se puede cancelar por email según los términos acordados al iniciar. Cero penalidades sorpresa. Si en algún momento decides pausarlo, te explicamos qué deja de cubrirse (hosting gestionado, soporte, mejoras) y procedemos sin discusión.",
     palette: 1,
   },
   {
@@ -129,44 +125,39 @@ const guarantees: Guarantee[] = [
     title: "Pago 50/50",
     category: "Pago justo",
     promise:
-      "Anticipo del 50% al firmar, 50% solo al entregar el sitio funcionando. No pagás todo a ciegas.",
+      "Anticipo del 50% al firmar, 50% al entregar el sitio en producción. No pagas todo a ciegas.",
     detail:
-      "Nunca pagas el total por adelantado. El primer 50% cubre el inicio del proyecto (diseño + desarrollo); el segundo 50% se cobra solo cuando vés el sitio funcionando en tu dominio. Si nunca llegamos a la entrega, no hay segundo pago.",
+      "Nunca pagas el total por adelantado. El primer 50% cubre el inicio del proyecto (diseño + desarrollo); el segundo 50% se cobra al entregar el sitio funcionando en tu dominio. Si por algún motivo no llegamos a la entrega, el segundo pago no se cobra.",
     palette: 2,
   },
 ];
 
 interface Stat {
   icon: LucideIcon;
-  to: number;
-  format: (v: number) => string;
+  display: string;
   label: string;
 }
 
 const stats: Stat[] = [
   {
     icon: Zap,
-    to: 14,
-    format: (v) => `${Math.round(v)}d`,
+    display: "14 días",
     label: "Tiempo de entrega",
   },
   {
     icon: ShieldCheck,
-    to: 100,
-    format: (v) => `${Math.round(v)}%`,
+    display: "100%",
     label: "Código a tu nombre",
   },
   {
     icon: RefreshCw,
-    to: 2,
-    format: (v) => `${Math.round(v)}×`,
-    label: "Rondas de revisión",
+    display: "2 rondas",
+    label: "Revisiones incluidas (Growth Pro)",
   },
   {
     icon: Heart,
-    to: 60,
-    format: (v) => `${Math.round(v)}d`,
-    label: "Soporte post-lanzamiento",
+    display: "4 horas",
+    label: "Respuesta lun–vie",
   },
 ];
 
@@ -254,7 +245,12 @@ function Carousel({ items }: { items: Guarantee[] }) {
     return () => observer.disconnect();
   }, []);
 
-  const looped = [...items, ...items];
+  // Only duplicate for seamless autoscroll on desktop. On mobile and
+  // reduced-motion, the autoscroll is disabled — so showing the same
+  // commitments twice would be visibly duplicated. Keep a single set
+  // there.
+  const useDuplicates = !reduced && !isMobile;
+  const looped = useDuplicates ? [...items, ...items] : items;
 
   const checkScroll = useCallback(() => {
     const node = scrollRef.current;
@@ -353,14 +349,18 @@ function Carousel({ items }: { items: Guarantee[] }) {
           aria-label="Carrusel de compromisos firmados"
           className="flex gap-4 sm:gap-5 overflow-x-auto overscroll-x-contain py-6 sm:py-8 px-5 sm:px-10 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
         >
-          {looped.map((g, i) => (
-            <GuaranteeCard
-              key={`${g.id}-${i}`}
-              guarantee={g}
-              index={i}
-              onOpen={() => setExpanded(g)}
-            />
-          ))}
+          {looped.map((g, i) => {
+            const isDuplicate = useDuplicates && i >= items.length;
+            return (
+              <GuaranteeCard
+                key={`${g.id}-${i}`}
+                guarantee={g}
+                index={i}
+                onOpen={() => setExpanded(g)}
+                ariaHidden={isDuplicate}
+              />
+            );
+          })}
         </div>
 
         <div
@@ -431,10 +431,14 @@ function GuaranteeCard({
   guarantee,
   index,
   onOpen,
+  ariaHidden = false,
 }: {
   guarantee: Guarantee;
   index: number;
   onOpen: () => void;
+  /** True when this card is a duplicate rendered solely for the
+   *  seamless-loop autoscroll. Hidden from AT + crawlers + keyboard. */
+  ariaHidden?: boolean;
 }) {
   const reduced = useReducedMotion();
   const baseRotate = index % 2 === 0 ? -0.6 : 0.6;
@@ -443,7 +447,9 @@ function GuaranteeCard({
   return (
     <motion.button
       type="button"
-      onClick={onOpen}
+      onClick={ariaHidden ? undefined : onOpen}
+      tabIndex={ariaHidden ? -1 : 0}
+      aria-hidden={ariaHidden || undefined}
       initial={{ rotate: baseRotate }}
       whileHover={
         reduced
@@ -687,37 +693,16 @@ function ExpandedModal({
 }
 
 // ─────────────────────────────────────────────────
-// Stat card with animated counter
+// Stat card — static value, animated reveal bar
 // ─────────────────────────────────────────────────
 function StatCard({ stat, index }: { stat: Stat; index: number }) {
   const Icon = stat.icon;
-  const isMobile = useIsMobile();
   const reduced = useReducedMotion();
-  const safe = isMobile || !!reduced;
-
-  const motionVal = useMotionValue(0);
-  const display = useTransform(motionVal, stat.format);
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-80px" });
-
-  useEffect(() => {
-    if (safe) {
-      motionVal.set(stat.to);
-      return;
-    }
-    if (!inView) return;
-    const controls = animate(motionVal, stat.to, {
-      duration: 2.2,
-      ease: EASE_PREMIUM,
-    });
-    return () => controls.stop();
-  }, [inView, safe, motionVal, stat.to]);
+  const isMobile = useIsMobile();
+  const safe = !!reduced || isMobile;
 
   return (
-    <div
-      ref={ref}
-      className="group relative rounded-2xl border border-white/[0.07] bg-gradient-to-b from-white/[0.04] to-white/[0.01] p-5 sm:p-6 overflow-hidden transition-all duration-500 hover:border-ember-300/35 hover:-translate-y-1 hover:shadow-glow-sm"
-    >
+    <div className="group relative rounded-2xl border border-white/[0.07] bg-gradient-to-b from-white/[0.04] to-white/[0.01] p-5 sm:p-6 overflow-hidden transition-all duration-500 hover:border-ember-300/35 hover:-translate-y-1 hover:shadow-glow-sm">
       <div
         className="absolute -top-12 -right-12 w-36 h-36 rounded-full bg-ember-400/[0.10] blur-2xl pointer-events-none transition-opacity duration-500 opacity-70 group-hover:opacity-100"
         aria-hidden
@@ -732,12 +717,12 @@ function StatCard({ stat, index }: { stat: Stat; index: number }) {
         </p>
       </div>
 
-      <motion.p
+      <p
         className="relative mt-5 font-display text-[2.5rem] sm:text-[3.2rem] font-bold tracking-tight gradient-text leading-none tabular-nums"
-        aria-label={stat.format(stat.to) + " " + stat.label}
+        aria-label={stat.display + " " + stat.label}
       >
-        {display}
-      </motion.p>
+        {stat.display}
+      </p>
 
       <div
         className="relative mt-5 h-px overflow-hidden rounded-full bg-white/[0.06]"

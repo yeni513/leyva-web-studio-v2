@@ -1,12 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import {
-  animate,
-  cubicBezier,
   motion,
-  useInView,
   useMotionValue,
   useReducedMotion,
   useSpring,
@@ -26,7 +23,6 @@ import { useIsMobile } from "@/lib/use-is-mobile";
 import { cn } from "@/lib/utils";
 
 const HAS_FOUNDER_PHOTO = true;
-const EASE_PREMIUM = cubicBezier(0.22, 1, 0.36, 1);
 
 export function About() {
   const cardRef = useRef<HTMLDivElement>(null);
@@ -303,36 +299,9 @@ function StatCard({
   suffix: string;
   label: string;
 }) {
-  const isMobile = useIsMobile();
-  const reduced = useReducedMotion();
-  const safe = isMobile || !!reduced;
-
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-50px" });
-  const motionVal = useMotionValue(0);
-  const display = useTransform(
-    motionVal,
-    (v) => `${Math.round(v)}${suffix}`,
-  );
-
-  useEffect(() => {
-    if (safe) {
-      motionVal.set(to);
-      return;
-    }
-    if (!inView) return;
-    const controls = animate(motionVal, to, {
-      duration: 1.8,
-      ease: EASE_PREMIUM,
-    });
-    return () => controls.stop();
-  }, [inView, safe, motionVal, to]);
-
+  const display = `${to}${suffix}`;
   return (
-    <div
-      ref={ref}
-      className="group relative rounded-xl border border-white/[0.07] bg-gradient-to-b from-white/[0.035] to-white/[0.01] p-3 sm:p-3.5 overflow-hidden transition-colors duration-300 hover:border-ember-300/30"
-    >
+    <div className="group relative rounded-xl border border-white/[0.07] bg-gradient-to-b from-white/[0.035] to-white/[0.01] p-3 sm:p-3.5 overflow-hidden transition-colors duration-300 hover:border-ember-300/30">
       <div
         className="absolute -top-8 -right-8 w-20 h-20 rounded-full bg-ember-400/[0.10] blur-xl pointer-events-none transition-opacity duration-300 opacity-70 group-hover:opacity-100"
         aria-hidden
@@ -343,12 +312,12 @@ function StatCard({
           {label}
         </span>
       </div>
-      <motion.p
+      <p
         className="relative mt-2 font-display text-2xl sm:text-[1.7rem] font-bold tracking-tight gradient-text leading-none tabular-nums"
-        aria-label={`${to}${suffix} ${label}`}
+        aria-label={`${display} ${label}`}
       >
         {display}
-      </motion.p>
+      </p>
     </div>
   );
 }

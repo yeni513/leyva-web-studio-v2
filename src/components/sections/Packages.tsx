@@ -226,7 +226,7 @@ export function Packages() {
               </span>{" "}
               El dominio queda registrado a tu nombre y, según los términos del
               proyecto, los archivos finales del sitio quedan bajo tu
-              propiedad. Nosotros gestionamos la parte técnica para que vos te
+              propiedad. Nosotros gestionamos la parte técnica para que tú te
               dediques a tu negocio — sin lock-in, sin licencias raras.
             </p>
           </div>
