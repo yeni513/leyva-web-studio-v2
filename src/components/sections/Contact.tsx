@@ -133,7 +133,23 @@ export function Contact() {
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    // 1. Primary user-facing flow — opens WhatsApp immediately so the
+    //    user can finish the conversation in their normal app.
     window.open(whatsappLink(composedMessage), "_blank", "noopener,noreferrer");
+
+    // 2. Backup lead capture — POSTs the form to /api/contact which
+    //    forwards the data to your email via Resend. Runs in parallel
+    //    and silently — even if WhatsApp fails or the user closes the
+    //    tab, you still receive the cotización.
+    void fetch("/api/contact", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ...form, prefilledFrom }),
+    }).catch(() => {
+      // Silent fail — WhatsApp is already open, the user experience
+      // is not blocked by a backend hiccup.
+    });
   };
 
   return (
