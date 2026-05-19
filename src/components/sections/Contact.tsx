@@ -432,29 +432,24 @@ export function Contact() {
                 </Field>
               </div>
 
-              <div className="mt-6 flex flex-col sm:flex-row gap-3">
+              <div className="mt-6">
                 <AnchorButton
                   href={whatsappLink(composedMessage)}
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={onWhatsAppClick}
                   size="lg"
-                  className="w-full sm:flex-1"
+                  className="w-full"
                 >
                   Enviar por WhatsApp
                   <Send className="w-4 h-4" />
                 </AnchorButton>
-                <a
-                  href={mailtoLink("Cotización sitio web", composedMessage)}
-                  className="inline-flex h-12 px-5 items-center justify-center rounded-full border border-ember-300/25 bg-ember-300/[0.04] text-ember-50 text-[15px] hover:bg-ember-300/[0.10] transition-colors no-tap-highlight"
-                >
-                  Enviar por correo
-                </a>
               </div>
 
-              <p className="mt-4 text-[11px] text-ember-50/45 leading-relaxed">
-                Al enviar, abrimos WhatsApp o tu app de correo con la
-                información lista. No guardamos nada en un servidor.
+              <p className="mt-4 text-[11px] text-ember-50/55 leading-relaxed">
+                Al enviar, abrimos WhatsApp con tu información lista para que
+                solo presiones enviar. También nos llega copia por email para
+                no perder tu cotización.
               </p>
             </form>
           </Reveal>

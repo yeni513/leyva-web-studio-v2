@@ -35,20 +35,23 @@ export const metadata: Metadata = {
     title: `${site.brand} ${site.brandSub} — Sitios web a la medida`,
     description: site.description,
     siteName: `${site.brand} ${site.brandSub}`,
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: `${site.brand} ${site.brandSub} — Sitios web premium para negocios locales`,
+      },
+    ],
   },
   twitter: {
-    // summary (without _large_image) until /public/og-image.png is provided.
-    // Switch back to "summary_large_image" once a 1200x630 PNG is added.
-    card: "summary",
+    card: "summary_large_image",
     title: `${site.brand} ${site.brandSub}`,
     description: site.description,
+    images: ["/og-image.png"],
   },
   alternates: {
     canonical: "/",
-    languages: {
-      "es-US": "/",
-      "es-MX": "/",
-    },
   },
   robots: {
     index: true,

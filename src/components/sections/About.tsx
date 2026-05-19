@@ -137,9 +137,8 @@ export function About() {
                   </h3>
 
                   <p className="mt-4 text-[15px] sm:text-base text-ember-50/80 leading-relaxed">
-                    Llevo años construyendo sitios para negocios locales en EE.
-                    UU. y LATAM. La razón de Leyva es simple: vi demasiados
-                    dueños de negocio pagando{" "}
+                    Leyva Web Studio nace de una observación simple: vi
+                    demasiados dueños de negocio pagando{" "}
                     <Highlight muted>$200/mes</Highlight> a plantillas
                     genéricas que no convierten, o{" "}
                     <Highlight muted>$15K USD</Highlight> a agencias que
@@ -148,31 +147,31 @@ export function About() {
                   </p>
                   <p className="mt-3 text-[15px] sm:text-base text-ember-50/80 leading-relaxed">
                     Yo trabajo distinto: te entrego un sitio hecho a la medida
-                    en <Highlight>7–14 días</Highlight>, con{" "}
-                    <Highlight>código tuyo desde el día 1</Highlight>, y
-                    soporte directo conmigo cuando lo necesites — no con un
-                    ticket perdido en un help desk.
+                    en <Highlight>14 días</Highlight>, con{" "}
+                    <Highlight>plan mensual de cuidado</Highlight> y soporte
+                    directo conmigo cuando lo necesites — no con un ticket
+                    perdido en un help desk.
                   </p>
 
                   {/* Animated stats row */}
                   <div className="mt-6 grid grid-cols-3 gap-2.5 sm:gap-3">
                     <StatCard
-                      icon={Calendar}
-                      to={12}
-                      suffix="+"
-                      label="años codeando"
+                      icon={Zap}
+                      to={14}
+                      suffix="d"
+                      label="entrega máxima"
                     />
                     <StatCard
                       icon={Clock}
                       to={4}
                       suffix="h"
-                      label="respuesta promedio"
+                      label="respuesta lun-vie"
                     />
                     <StatCard
-                      icon={Zap}
-                      to={14}
-                      suffix="d"
-                      label="entrega máxima"
+                      icon={Calendar}
+                      to={2}
+                      suffix="×"
+                      label="rondas de revisión"
                     />
                   </div>
 
@@ -285,7 +284,7 @@ function AvailabilityPill() {
         <span className="absolute inset-0 rounded-full bg-emerald-400 animate-ping opacity-60" />
         <span className="relative w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_10px_-1px_rgba(74,222,128,0.85)]" />
       </span>
-      <span className="text-emerald-200">Disponible ahora</span>
+      <span className="text-emerald-200">Acepta nuevos proyectos</span>
     </div>
   );
 }

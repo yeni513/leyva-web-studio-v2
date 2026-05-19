@@ -90,9 +90,9 @@ const cases: CaseStudy[] = [
   {
     industry: "Restaurante",
     name: "Casa Olivar",
-    domain: "casaolivar.com",
-    result: "Reservas por WhatsApp",
-    desc: "Menú digital cinematográfico, reservas por WhatsApp y SEO local para destacar arriba de la competencia.",
+    domain: "concepto.restaurante",
+    result: "Reservas por WhatsApp + menú digital",
+    desc: "Concepto de menú digital cinematográfico, reservas por WhatsApp y SEO local para un restaurante de barrio.",
     brandIcon: UtensilsCrossed,
     heroAccent:
       "from-ember-300/45 via-ember-500/22 to-ember-700/10",
@@ -103,13 +103,13 @@ const cases: CaseStudy[] = [
       line1: "Cocina mediterránea",
       line2: "con alma de barrio.",
     },
-    subhead: "Reservas el mismo día · Roma Norte, CDMX",
+    subhead: "Concepto · Restaurante mediterráneo",
     tiles: [
-      { icon: Wine, title: "Cava", sub: "50+ etiquetas" },
-      { icon: Calendar, title: "Hoy", sub: "Disponible" },
-      { icon: MapPin, title: "Roma Nte", sub: "CDMX" },
+      { icon: Wine, title: "Cava", sub: "Catálogo" },
+      { icon: Calendar, title: "Reservas", sub: "WhatsApp" },
+      { icon: MapPin, title: "Demo", sub: "Concepto" },
     ],
-    trust: "★ 5.0 · 200+ reseñas",
+    trust: "Demo · Concepto",
     modal: {
       longDesc:
         "Diseñamos una experiencia digital que captura la atmósfera del restaurante. Cada elemento — el menú, las reservas, la galería de platos — está pensado para que el visitante reserve antes de cerrar la pestaña. Cero fricción entre el hambre y la mesa.",
@@ -155,9 +155,9 @@ const cases: CaseStudy[] = [
   {
     industry: "Contratista",
     name: "Estructuras Vela",
-    domain: "estructurasvela.com",
-    result: "Cotización directa al dueño",
-    desc: "Portafolio de obras, testimonios de clientes y formulario de cotización directo al WhatsApp del dueño.",
+    domain: "concepto.contratista",
+    result: "Cotización directa al WhatsApp del dueño",
+    desc: "Concepto de portafolio de obras, áreas de servicio y formulario de cotización directo al WhatsApp del dueño.",
     brandIcon: HardHat,
     heroAccent:
       "from-ember-200/35 via-ember-400/20 to-ember-600/8",
@@ -168,13 +168,13 @@ const cases: CaseStudy[] = [
       line1: "Construimos lo",
       line2: "que imaginas.",
     },
-    subhead: "+120 obras entregadas · 15 años en el oficio",
+    subhead: "Concepto · Constructora regional",
     tiles: [
-      { icon: Hammer, title: "Obras", sub: "+120 hechas" },
-      { icon: ShieldCheck, title: "Garantía", sub: "1 año" },
-      { icon: MapPin, title: "Ohio", sub: "Midwest" },
+      { icon: Hammer, title: "Obras", sub: "Portafolio" },
+      { icon: ShieldCheck, title: "Garantía", sub: "Por escrito" },
+      { icon: MapPin, title: "Demo", sub: "Concepto" },
     ],
-    trust: "★ 4.9 · 84 reseñas",
+    trust: "Demo · Concepto",
     modal: {
       longDesc:
         "Tu portafolio digital construido para generar cotizaciones serias. Mostramos tu trabajo, tu equipo y tu zona de cobertura. Hacemos que contactarte sea fácil — el cliente toca un botón y aterriza directo en tu WhatsApp con la información ya en el mensaje.",
@@ -220,9 +220,9 @@ const cases: CaseStudy[] = [
   {
     industry: "Inmobiliaria",
     name: "Norte Realty",
-    domain: "norterealty.com",
-    result: "Listados con filtros + WhatsApp",
-    desc: "Listado de propiedades con filtros, fotos optimizadas y CTA a WhatsApp en cada ficha.",
+    domain: "concepto.inmobiliaria",
+    result: "Listados con filtros + WhatsApp por ficha",
+    desc: "Concepto de plataforma de listados con filtros, fotos optimizadas y CTA a WhatsApp en cada ficha de propiedad.",
     brandIcon: Home,
     heroAccent:
       "from-ember-300/40 via-ember-500/18 to-ember-700/8",
@@ -233,21 +233,21 @@ const cases: CaseStudy[] = [
       line1: "Tu próxima casa",
       line2: "te está esperando.",
     },
-    subhead: "200+ propiedades · Cleveland & Columbus, OH",
+    subhead: "Concepto · Plataforma inmobiliaria",
     tiles: [
-      { icon: DollarSign, title: "$285K", sub: "3 rec · 2 ba" },
-      { icon: DollarSign, title: "$420K", sub: "4 rec · 3 ba" },
-      { icon: DollarSign, title: "$550K", sub: "5 rec · piscina" },
+      { icon: DollarSign, title: "Catálogo", sub: "Con filtros" },
+      { icon: ImageIcon, title: "Fichas", sub: "Detalladas" },
+      { icon: MapPin, title: "Demo", sub: "Concepto" },
     ],
-    trust: "★ 4.8 · 156 reseñas",
+    trust: "Demo · Concepto",
     modal: {
       longDesc:
         "Plataforma de listados profesional con filtros, fichas detalladas, fotos optimizadas y CTAs directos a WhatsApp por propiedad. Los prospectos llegan precalificados — ya vieron las fotos, leyeron la descripción y vienen con preguntas específicas.",
       features: [
         {
           icon: DollarSign,
-          title: "200+ propiedades",
-          desc: "Listas para tour con fichas profesionales completas.",
+          title: "Catálogo con filtros",
+          desc: "Búsqueda por precio, recámaras y zona con fichas profesionales completas.",
         },
         {
           icon: ImageIcon,
@@ -262,7 +262,7 @@ const cases: CaseStudy[] = [
         {
           icon: MapPin,
           title: "Vecindarios curados",
-          desc: "Cleveland, Columbus y zonas de mayor demanda.",
+          desc: "Las zonas de tu cobertura organizadas para que el prospecto encuentre rápido.",
         },
       ],
       galleryTitle: "Propiedades destacadas",
@@ -285,9 +285,9 @@ const cases: CaseStudy[] = [
   {
     industry: "Barbería",
     name: "Don Felipe Barber",
-    domain: "donfelipebarber.com",
-    result: "Agenda online + galería",
-    desc: "Sitio dark elegante, galería de cortes y botón de cita por WhatsApp visible en todo momento.",
+    domain: "concepto.barberia",
+    result: "Agenda online + galería de cortes",
+    desc: "Concepto de sitio dark elegante con menú de servicios, galería de cortes y botón de cita por WhatsApp visible siempre.",
     brandIcon: Scissors,
     heroAccent:
       "from-ember-200/28 via-ember-400/16 to-ember-800/8",
@@ -298,13 +298,13 @@ const cases: CaseStudy[] = [
       line1: "Estilo clásico,",
       line2: "corte moderno.",
     },
-    subhead: "Cortes desde $35 · Houston, TX",
+    subhead: "Concepto · Barbería premium",
     tiles: [
-      { icon: Scissors, title: "Corte", sub: "Desde $35" },
-      { icon: ImageIcon, title: "Galería", sub: "100+ cortes" },
-      { icon: Calendar, title: "Hoy", sub: "5 horarios" },
+      { icon: Scissors, title: "Servicios", sub: "Con precios" },
+      { icon: ImageIcon, title: "Galería", sub: "Antes/después" },
+      { icon: Calendar, title: "Agenda", sub: "WhatsApp" },
     ],
-    trust: "★ 5.0 · 312 reseñas",
+    trust: "Demo · Concepto",
     modal: {
       longDesc:
         "Sitio dark elegante con menú de servicios y precios, equipo de barberos, galería actualizada y agenda online vía WhatsApp. La gente reserva sola, tú te concentras en cortar.",
@@ -321,8 +321,8 @@ const cases: CaseStudy[] = [
         },
         {
           icon: ImageIcon,
-          title: "100+ cortes",
-          desc: "Galería que se actualiza con cada cliente nuevo.",
+          title: "Galería de cortes",
+          desc: "Antes y después, organizada por estilo. Se actualiza con cada cliente nuevo.",
         },
         {
           icon: MapPin,
@@ -705,8 +705,11 @@ function CaseCard({
       {/* Meta below mockup */}
       <div className="relative mt-5 flex items-start justify-between gap-4">
         <div>
-          <p className="text-[11px] uppercase tracking-[0.18em] text-ember-300/85">
+          <p className="text-[11px] uppercase tracking-[0.18em] text-ember-300/85 flex items-center gap-2">
             {data.industry}
+            <span className="inline-flex items-center px-1.5 py-0.5 rounded-full bg-ember-300/10 border border-ember-300/30 text-[9px] tracking-[0.18em] text-ember-300/85">
+              Demo
+            </span>
           </p>
           <h3 className="mt-1 text-xl font-semibold text-ember-50">
             {data.name}
@@ -1128,7 +1131,7 @@ function SiteFinalCta({
         </h3>
         <p className="mt-3 text-sm sm:text-base text-ember-50/70 max-w-lg mx-auto">
           Hablamos 30 minutos sobre tu negocio y te entregamos un sitio así
-          en 7-14 días.
+          en 14 días.
         </p>
         <div className="mt-7 flex flex-col sm:flex-row items-center justify-center gap-3">
           <button
