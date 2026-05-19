@@ -93,14 +93,15 @@ const estudioItems: FooterItem[] = [
     id: "paquetes",
     icon: CreditCard,
     label: "Paquetes",
-    modalTitle: "Precio claro, sin sorpresas",
+    modalTitle: "Pago inicial + plan mensual",
     modalDesc:
-      "Tres paquetes para distintos momentos de tu negocio. Si necesitas algo a la medida también lo cotizamos.",
+      "Pago inicial para construir el sitio + plan mensual de cuidado y crecimiento. Sin contratos eternos, sin costos escondidos.",
     bullets: [
-      "Esencial — $1,500 USD · Sitio de una página hecho a la medida",
-      "Crecimiento — $3,500 USD · Multipágina + reservas (más popular)",
-      "Autoridad — Desde $6,500 USD · Sistema de marca completo",
-      "Pagos en USD · 50% de anticipo, 50% al entregar",
+      "Starter Local — $900 + $99/mes · Landing premium para negocios locales",
+      "Growth Pro — $1,800 + $149/mes · Multipágina enfocada en conversión (recomendado)",
+      "Authority Premium — $3,500 + $299/mes · Marca premium con estrategia",
+      "Plan mensual mantiene tu sitio rápido, seguro y actualizado",
+      "Dominio y código siempre a nombre del cliente",
     ],
     navigateTo: "#paquetes",
     navigateLabel: "Comparar paquetes",
@@ -261,7 +262,7 @@ export function Footer() {
             </div>
             <div className="flex flex-col sm:flex-row gap-3">
               <a
-                href="#contact"
+                href="/#contact"
                 className="inline-flex items-center justify-center gap-2 h-12 px-6 rounded-full bg-gradient-to-b from-ember-200 via-ember-300 to-ember-400 text-ink-950 font-medium hover:shadow-glow transition-all"
               >
                 Obtén mi sitio web
@@ -446,15 +447,27 @@ function ExplainerModal({
     onClose();
     setTimeout(() => {
       const id = href.replace("#", "");
-      document
-        .getElementById(id)
-        ?.scrollIntoView({ behavior: "smooth", block: "start" });
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+      } else {
+        // We're on a legal page (no section IDs) — bounce back to home
+        window.location.assign("/" + href);
+      }
     }, 380);
   };
 
   const handleCotizar = () => {
     if (!item) return;
     onClose();
+    // If the contact section isn't on this page (legal routes), navigate
+    // home with hash. Prefill data is dropped intentionally — the user
+    // clicked a chip from the footer of a legal page, not from a
+    // service/industry card mid-flow.
+    if (!document.getElementById("contact")) {
+      setTimeout(() => window.location.assign("/#contact"), 380);
+      return;
+    }
     prefillQuote(item.prefill, { scrollDelay: 420 });
   };
 

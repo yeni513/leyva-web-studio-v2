@@ -7,7 +7,7 @@ import { Process } from "@/components/sections/Process";
 import { About } from "@/components/sections/About";
 import { Packages } from "@/components/sections/Packages";
 import { Portfolio } from "@/components/sections/Portfolio";
-import { Testimonials } from "@/components/sections/Testimonials";
+import { Guarantees } from "@/components/sections/Guarantees";
 import { FAQ } from "@/components/sections/FAQ";
 import { Contact } from "@/components/sections/Contact";
 import { Footer } from "@/components/sections/Footer";
@@ -25,7 +25,7 @@ export default function HomePage() {
         <About />
         <Packages />
         <Portfolio />
-        <Testimonials />
+        <Guarantees />
         <FAQ />
         <Contact />
       </main>

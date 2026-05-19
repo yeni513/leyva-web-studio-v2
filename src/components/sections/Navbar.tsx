@@ -7,11 +7,11 @@ import { AnchorButton } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const links = [
-  { href: "#servicios", label: "Servicios" },
-  { href: "#proceso", label: "Proceso" },
-  { href: "#paquetes", label: "Paquetes" },
-  { href: "#trabajo", label: "Trabajo" },
-  { href: "#faq", label: "FAQ" },
+  { href: "/#servicios", label: "Servicios" },
+  { href: "/#proceso", label: "Proceso" },
+  { href: "/#paquetes", label: "Paquetes" },
+  { href: "/#trabajo", label: "Trabajo" },
+  { href: "/#faq", label: "FAQ" },
 ];
 
 export function Navbar() {
@@ -63,7 +63,7 @@ export function Navbar() {
           aria-label="Navegación principal"
         >
           <a
-            href="#top"
+            href="/"
             className="no-tap-highlight shrink-0"
             aria-label="Leyva Web Studio — Ir al inicio"
           >
@@ -85,7 +85,7 @@ export function Navbar() {
 
           <div className="hidden md:flex items-center gap-2">
             <AnchorButton
-              href="#contact"
+              href="/#contact"
               size="sm"
               variant="primary"
               className="h-10 px-4 text-sm"
@@ -142,7 +142,7 @@ export function Navbar() {
             ))}
             <li className="pt-2">
               <AnchorButton
-                href="#contact"
+                href="/#contact"
                 onClick={() => setOpen(false)}
                 size="lg"
                 className="w-full"

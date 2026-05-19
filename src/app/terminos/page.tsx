@@ -36,11 +36,34 @@ export default function TermsPage() {
           <div className="mt-10 space-y-8 text-ember-50/80 leading-relaxed">
             <Section title="Pagos">
               <p>
-                Trabajamos con un esquema 50% / 50%: la mitad del paquete al
-                iniciar (apartar fecha de inicio) y la mitad al entregar el
-                sitio en producción. Todos los precios están en USD. Aceptamos
-                transferencia bancaria, Zelle, Wise, y tarjeta vía link de
-                pago.
+                Nuestros proyectos tienen dos componentes:{" "}
+                <strong>pago inicial</strong> (construcción del sitio) y{" "}
+                <strong>plan mensual</strong> (cuidado y crecimiento después
+                del lanzamiento).
+              </p>
+              <p className="mt-3">
+                El pago inicial se cobra 50% al iniciar (para apartar la fecha
+                de inicio) y 50% al entregar el sitio en producción. El plan
+                mensual se factura mensualmente a partir del lanzamiento. Todos
+                los precios están en USD. Aceptamos transferencia bancaria,
+                Zelle, Wise y tarjeta vía link de pago.
+              </p>
+            </Section>
+
+            <Section title="Plan mensual de cuidado y crecimiento">
+              <p>
+                Todos los paquetes incluyen un plan mensual activo que cubre
+                hosting, mantenimiento técnico, monitoreo, actualizaciones de
+                contenido, mejoras periódicas y soporte. La cobertura
+                específica varía según el paquete contratado (Starter Local,
+                Growth Pro o Authority Premium).
+              </p>
+              <p className="mt-3">
+                El plan se puede pausar o cancelar según el plan acordado. Al
+                cancelar, dejamos de prestar los servicios mensuales (hosting
+                gestionado, mantenimiento, mejoras). El sitio y el código
+                siguen siendo tuyos — vos podés llevártelos a otro proveedor o
+                gestionar el hosting vos mismo.
               </p>
             </Section>
 
@@ -53,48 +76,56 @@ export default function TermsPage() {
               </p>
             </Section>
 
-            <Section title="Propiedad del código">
+            <Section title="Propiedad del código y assets">
               <p>
                 El código, diseños y assets que producimos para tu proyecto
-                son <strong>tuyos desde el día 1</strong>. Te entregamos
-                acceso al repositorio de GitHub y al deploy de Vercel a tu
-                nombre. Sin lock-in, sin licencias raras.
+                quedan bajo tu propiedad según los términos del contrato. Te
+                entregamos acceso al repositorio (GitHub) a tu nombre cuando el
+                proyecto se completa. Sin lock-in, sin licencias raras.
               </p>
             </Section>
 
             <Section title="Dominio y hosting">
               <p>
-                El dominio se compra o transfiere a tu nombre. Tú eres el
-                dueño. Por defecto, el sitio se publica en Vercel (que ofrece
-                un free tier generoso para sitios de este tamaño); si
-                prefieres otro hosting podemos ayudarte a migrar.
+                El dominio se registra o transfiere a tu nombre — vos sos el
+                dueño legal desde el día 1. Leyva Web Studio puede gestionar
+                la configuración técnica (DNS, conexión, certificados) como
+                parte del plan mensual.
+              </p>
+              <p className="mt-3">
+                El hosting está incluido en el plan mensual. Publicamos en
+                Cloudflare (infraestructura premium con cobertura global). Si
+                en algún momento querés migrar a otro proveedor, el código es
+                tuyo y podés llevártelo — te ayudamos con la migración.
               </p>
             </Section>
 
             <Section title="Cambios al alcance">
               <p>
                 Si durante el proyecto decides ampliar el alcance (por
-                ejemplo, subir de Esencial a Crecimiento), solo pagas la
-                diferencia. Si quieres reducir, lo conversamos — pero ya
-                tenemos trabajo invertido, así que normalmente no se acepta
-                reducir después de iniciado.
+                ejemplo, subir de Starter Local a Growth Pro), solo pagas la
+                diferencia del setup más la nueva mensualidad. Si querés
+                reducir, lo conversamos — pero ya tenemos trabajo invertido,
+                así que normalmente no se acepta reducir después de iniciado.
               </p>
             </Section>
 
             <Section title="Soporte post-lanzamiento">
               <p>
-                Cada paquete incluye un período de soporte post-lanzamiento
-                (30 a 60 días según paquete) para correcciones de bugs y
-                pequeños ajustes. Después de ese período ofrecemos planes
-                mensuales de mantenimiento, opcionales.
+                Después del lanzamiento, el plan mensual cubre el soporte
+                continuo: correcciones, ajustes, actualizaciones de contenido,
+                monitoreo y mejoras. La cobertura específica varía según el
+                paquete (más detalle en la sección de Plan mensual).
               </p>
             </Section>
 
-            <Section title="Cancelación">
+            <Section title="Cancelación del proyecto">
               <p>
-                Si por cualquier razón decides no continuar el proyecto, el
+                Si decidís no continuar el proyecto antes de la entrega, el
                 50% inicial cubre el trabajo de diseño y discovery realizado.
-                Te entregamos los assets producidos hasta ese punto.
+                Te entregamos los assets producidos hasta ese punto. La
+                cancelación del plan mensual posterior al lanzamiento se rige
+                por los términos acordados al momento de la contratación.
               </p>
             </Section>
 

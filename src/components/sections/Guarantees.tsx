@@ -14,11 +14,16 @@ import {
 import {
   ArrowLeft,
   ArrowRight,
+  BadgeCheck,
+  CreditCard,
   Heart,
-  Quote,
+  KeyRound,
+  MessageCircle,
   RefreshCw,
   ShieldCheck,
-  Star,
+  Sparkles,
+  Timer,
+  Unlock,
   X,
   Zap,
   type LucideIcon,
@@ -29,84 +34,105 @@ import { useIsMobile } from "@/lib/use-is-mobile";
 import { useBodyScrollLock } from "@/lib/use-body-scroll-lock";
 import { cn } from "@/lib/utils";
 
-interface Testimonial {
-  quote: string;
-  name: string;
-  role: string;
-  /** Pravatar image number (1–70) — deterministic face per testimonial. */
-  img: number;
+interface Guarantee {
+  id: string;
+  icon: LucideIcon;
+  title: string;
+  category: string;
+  promise: string;
+  detail: string;
+  /** Palette seed (0-4) — deterministic warm gradient per seal. */
+  palette: number;
 }
 
-const testimonials: Testimonial[] = [
+const guarantees: Guarantee[] = [
   {
-    quote:
-      "El sitio se ve como el de una marca grande. Empezamos a recibir cotizaciones serias en la primera semana.",
-    name: "Mariana R.",
-    role: "Dueña de restaurante, Columbus OH",
-    img: 47,
+    id: "refund",
+    icon: ShieldCheck,
+    title: "Reembolso 100%",
+    category: "Tu inversión protegida",
+    promise:
+      "Si no te encanta el diseño antes del día 7, devolvemos el 100% sin preguntas ni letra chica.",
+    detail:
+      "Te enseñamos el diseño completo antes de tocar una línea de código. Si en los primeros 7 días sentís que no es lo que querías, te devolvemos cada dólar del anticipo. Sin formularios, sin discusiones, sin negociar.",
+    palette: 0,
   },
   {
-    quote:
-      "Por fin un desarrollador que entiende mi negocio y no me llena de palabras técnicas. Quedó impecable en celular.",
-    name: "Luis G.",
-    role: "Contratista, Houston TX",
-    img: 11,
+    id: "ownership",
+    icon: KeyRound,
+    title: "Tú dueño del código",
+    category: "Sin candados",
+    promise:
+      "Te entregamos el repositorio completo a tu nombre. Si nos despides mañana, te llevas todo.",
+    detail:
+      "El código va a tu cuenta de GitHub desde el primer commit. Nada queda atado a nosotros: ni el dominio, ni el hosting, ni las cuentas. Si quieres irte, no negociamos rescates ni amenazamos con bajar el sitio.",
+    palette: 1,
   },
   {
-    quote:
-      "Mi competencia se ve básica al lado de mi nuevo sitio. El proceso fue rápido y profesional de principio a fin.",
-    name: "Andrea M.",
-    role: "Inmobiliaria, Cleveland OH",
-    img: 32,
+    id: "fixed-price",
+    icon: CreditCard,
+    title: "Precio fijo cerrado",
+    category: "Sin sorpresas",
+    promise:
+      "Cotización fija desde la primera llamada. Si nos toma más tiempo del estimado, pierdes tú nada.",
+    detail:
+      "No cobramos por hora ni hacemos ajustes a mitad de proyecto. El precio que vez en la propuesta es el que firmas — y el que pagas. Si subestimamos el trabajo, es problema nuestro, no tuyo.",
+    palette: 2,
   },
   {
-    quote:
-      "Las clientes me dicen que mi sitio se ve más caro que mis precios. Justo el efecto que quería.",
-    name: "Camila R.",
-    role: "Salón de uñas, Columbus OH",
-    img: 16,
+    id: "delivery",
+    icon: Zap,
+    title: "Entrega en 14 días",
+    category: "Tiempo garantizado",
+    promise:
+      "Si nos atrasamos, descontamos 10% del total por cada día de retraso. Anclado en el contrato.",
+    detail:
+      "El cronograma de 14 días no es una sugerencia: es un compromiso por escrito. Si por causa nuestra no entregamos en fecha, automáticamente descontamos 10% del total por día. Sin necesidad de que lo reclames.",
+    palette: 3,
   },
   {
-    quote:
-      "El sitio paga por sí solo en dos meses. Cero arrepentimientos.",
-    name: "Manuel T.",
-    role: "Auto repair, Chicago IL",
-    img: 60,
+    id: "response",
+    icon: Timer,
+    title: "Respuesta en 4 horas",
+    category: "Comunicación real",
+    promise:
+      "De lunes a viernes contestamos en menos de 4 horas. Si tardamos, te llamamos a explicar por qué.",
+    detail:
+      "Cada mensaje tuyo se contesta el mismo día. Nada de \"te respondo cuando pueda\" ni desaparecer una semana. Si en algún momento se nos pasan las 4 horas, te llamamos por teléfono para explicar la razón.",
+    palette: 4,
   },
   {
-    quote:
-      "Mis citas se llenaron tres semanas adelante. El WhatsApp suena todo el día.",
-    name: "Carlos D.",
-    role: "Barbería, Cincinnati OH",
-    img: 65,
+    id: "revisions",
+    icon: RefreshCw,
+    title: "2 rondas de revisión",
+    category: "Tu opinión cuenta",
+    promise:
+      "Dos rondas completas de cambios incluidas sin costo adicional. Sin letra chica ni ítems escondidos.",
+    detail:
+      "Después de entregar la propuesta visual, tenés dos rondas completas para pedir cambios — cualquier cambio: tipografía, colores, estructura, copy, secciones. Sin contar palabras ni cobrar extras por \"cambio de scope\".",
+    palette: 0,
   },
   {
-    quote:
-      "Pasé de 2 a 12 cotizaciones por semana. Vale cada dólar invertido.",
-    name: "Sofía P.",
-    role: "Limpieza comercial, Dallas TX",
-    img: 23,
+    id: "no-lock-in",
+    icon: Unlock,
+    title: "Sin contratos eternos",
+    category: "Sin amarres",
+    promise:
+      "Soporte mes a mes. Cancelás cuando quieras — no quedás amarrado a un año ni a multas por salida.",
+    detail:
+      "Después del lanzamiento, el soporte mensual es opcional y se cancela en un email. Cero penalidades, cero \"plazo mínimo de permanencia\". Si en algún momento sentís que ya no lo necesitas, lo apagás y listo.",
+    palette: 1,
   },
   {
-    quote:
-      "Antes ni aparecía en Google. Ahora me llaman de toda la ciudad y precalifico a mis clientes.",
-    name: "Roberto J.",
-    role: "Plomería, Toledo OH",
-    img: 52,
-  },
-  {
-    quote:
-      "Mi portfolio por fin refleja la calidad de mi trabajo. Subí mis precios un 40% y siguen contratando.",
-    name: "Valeria C.",
-    role: "Fotógrafa de bodas, Miami FL",
-    img: 5,
-  },
-  {
-    quote:
-      "Subí precios 25% y siguen contratándome más. El sitio vendió por mí.",
-    name: "Diego H.",
-    role: "Concrete contractor, Cleveland OH",
-    img: 68,
+    id: "payment",
+    icon: BadgeCheck,
+    title: "Pago 50/50",
+    category: "Pago justo",
+    promise:
+      "Anticipo del 50% al firmar, 50% solo al entregar el sitio funcionando. No pagás todo a ciegas.",
+    detail:
+      "Nunca pagas el total por adelantado. El primer 50% cubre el inicio del proyecto (diseño + desarrollo); el segundo 50% se cobra solo cuando vés el sitio funcionando en tu dominio. Si nunca llegamos a la entrega, no hay segundo pago.",
+    palette: 2,
   },
 ];
 
@@ -148,10 +174,10 @@ const EASE_PREMIUM = cubicBezier(0.22, 1, 0.36, 1);
 const AUTO_SPEED_PX_PER_SEC = 32;
 const PAUSE_AFTER_INTERACTION_MS = 4000;
 
-export function Testimonials() {
+export function Guarantees() {
   return (
     <section
-      aria-label="Testimonios de clientes"
+      aria-label="Garantías firmadas"
       className="relative py-16 sm:py-24 overflow-hidden"
     >
       <div
@@ -162,19 +188,19 @@ export function Testimonials() {
       <div className="container relative">
         <Reveal>
           <SectionHeading
-            eyebrow="Voces del negocio local"
+            eyebrow="Compromisos firmados"
             title={
               <>
-                Lo que escucharás cuando tu sitio{" "}
-                <span className="gradient-text">empiece a vender.</span>
+                Cada palabra que te decimos,{" "}
+                <span className="gradient-text">la firmamos en contrato.</span>
               </>
             }
-            description="Ejemplos del tipo de feedback que recibirás de tus clientes y operadores cuando tu negocio tenga un sitio que realmente funciona. Pasa el mouse para pausar."
+            description="Estamos arrancando, así que en lugar de testimonios prestados te ofrecemos algo mejor: compromisos por escrito. Si no cumplimos uno solo, nos cuesta a nosotros — no a ti."
           />
         </Reveal>
       </div>
 
-      <Carousel items={testimonials} />
+      <Carousel items={guarantees} />
 
       <div className="container relative mt-20 sm:mt-24">
         <Reveal>
@@ -192,23 +218,20 @@ export function Testimonials() {
 // ─────────────────────────────────────────────────
 // Carousel — auto-scroll + hover pause + arrow nav
 // ─────────────────────────────────────────────────
-function Carousel({ items }: { items: Testimonial[] }) {
+function Carousel({ items }: { items: Guarantee[] }) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
   const [canLeft, setCanLeft] = useState(false);
   const [canRight, setCanRight] = useState(true);
   const [hovering, setHovering] = useState(false);
   const [interacted, setInteracted] = useState(false);
-  const [expanded, setExpanded] = useState<Testimonial | null>(null);
+  const [expanded, setExpanded] = useState<Guarantee | null>(null);
   const [inView, setInView] = useState(false);
   const reduced = useReducedMotion();
   const isMobile = useIsMobile();
 
   const interactionTimerRef = useRef<number | null>(null);
 
-  // Auto-scroll is paused while hovering, while a modal is expanded,
-  // while the user is in the middle of an arrow interaction, when the
-  // section is not in the viewport, or for reduced-motion / mobile users.
   const autoPaused =
     hovering ||
     expanded !== null ||
@@ -217,8 +240,6 @@ function Carousel({ items }: { items: Testimonial[] }) {
     !!reduced ||
     isMobile;
 
-  // Only run the rAF loop when the section is visible — avoids burning
-  // CPU on every frame while the user is reading a different section.
   useEffect(() => {
     const node = sectionRef.current;
     if (!node || typeof IntersectionObserver === "undefined") {
@@ -233,7 +254,6 @@ function Carousel({ items }: { items: Testimonial[] }) {
     return () => observer.disconnect();
   }, []);
 
-  // Duplicate items so the auto-scroll can loop seamlessly.
   const looped = [...items, ...items];
 
   const checkScroll = useCallback(() => {
@@ -255,7 +275,6 @@ function Carousel({ items }: { items: Testimonial[] }) {
     };
   }, [checkScroll]);
 
-  // ── Continuous auto-scroll ──────────────────────
   useEffect(() => {
     if (autoPaused) return;
     let raf = 0;
@@ -268,9 +287,6 @@ function Carousel({ items }: { items: Testimonial[] }) {
       const node = scrollRef.current;
       if (node) {
         const half = node.scrollWidth / 2;
-        // Seamless loop: when we cross the halfway point (which holds the
-        // duplicated set), jump back by half. The visible content is
-        // identical at both positions so the user perceives no jump.
         if (half > 0 && node.scrollLeft >= half) {
           node.scrollLeft = node.scrollLeft - half;
         }
@@ -284,7 +300,6 @@ function Carousel({ items }: { items: Testimonial[] }) {
 
   const scrollBy = (delta: number) => {
     scrollRef.current?.scrollBy({ left: delta, behavior: "smooth" });
-    // Pause auto-scroll briefly so the user can settle their gaze
     setInteracted(true);
     if (interactionTimerRef.current) {
       window.clearTimeout(interactionTimerRef.current);
@@ -295,7 +310,6 @@ function Carousel({ items }: { items: Testimonial[] }) {
     );
   };
 
-  // Pause auto-scroll when user touches/wheels the carousel directly
   useEffect(() => {
     const node = scrollRef.current;
     if (!node) return;
@@ -325,7 +339,6 @@ function Carousel({ items }: { items: Testimonial[] }) {
         onMouseEnter={() => setHovering(true)}
         onMouseLeave={() => setHovering(false)}
       >
-        {/* Edge fade masks */}
         <div
           className="pointer-events-none absolute left-0 top-0 bottom-0 w-16 sm:w-32 z-10 bg-gradient-to-r from-ink-950 via-ink-950/80 to-transparent"
           aria-hidden
@@ -337,20 +350,19 @@ function Carousel({ items }: { items: Testimonial[] }) {
 
         <div
           ref={scrollRef}
-          aria-label="Carrusel de testimonios"
+          aria-label="Carrusel de compromisos firmados"
           className="flex gap-4 sm:gap-5 overflow-x-auto overscroll-x-contain py-6 sm:py-8 px-5 sm:px-10 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
         >
-          {looped.map((t, i) => (
-            <TestimonialCard
-              key={`${t.name}-${i}`}
-              testimonial={t}
+          {looped.map((g, i) => (
+            <GuaranteeCard
+              key={`${g.id}-${i}`}
+              guarantee={g}
               index={i}
-              onOpen={() => setExpanded(t)}
+              onOpen={() => setExpanded(g)}
             />
           ))}
         </div>
 
-        {/* Auto-scroll status pill (subtle indicator) */}
         <div
           className="container flex items-center justify-between gap-3 mt-2 sm:mt-4"
           aria-hidden
@@ -376,7 +388,7 @@ function Carousel({ items }: { items: Testimonial[] }) {
           <div className="flex gap-2 ml-auto">
             <button
               type="button"
-              aria-label="Testimonio anterior"
+              aria-label="Compromiso anterior"
               onClick={() => scrollBy(-380)}
               disabled={!canLeft}
               className={cn(
@@ -389,7 +401,7 @@ function Carousel({ items }: { items: Testimonial[] }) {
             </button>
             <button
               type="button"
-              aria-label="Siguiente testimonio"
+              aria-label="Siguiente compromiso"
               onClick={() => scrollBy(380)}
               disabled={!canRight}
               className={cn(
@@ -404,9 +416,8 @@ function Carousel({ items }: { items: Testimonial[] }) {
         </div>
       </div>
 
-      {/* Expanded modal — rendered once at carousel level */}
       <ExpandedModal
-        testimonial={expanded}
+        guarantee={expanded}
         onClose={() => setExpanded(null)}
       />
     </>
@@ -414,19 +425,18 @@ function Carousel({ items }: { items: Testimonial[] }) {
 }
 
 // ─────────────────────────────────────────────────
-// Card with retro photo + tilt-on-hover
+// Card — "signed contract clause" aesthetic
 // ─────────────────────────────────────────────────
-function TestimonialCard({
-  testimonial,
+function GuaranteeCard({
+  guarantee,
   index,
   onOpen,
 }: {
-  testimonial: Testimonial;
+  guarantee: Guarantee;
   index: number;
   onOpen: () => void;
 }) {
   const reduced = useReducedMotion();
-  // Alternating subtle base rotation creates a "stacked photos" feel
   const baseRotate = index % 2 === 0 ? -0.6 : 0.6;
   const hoverRotate = index % 2 === 0 ? 2 : -2;
 
@@ -451,7 +461,6 @@ function TestimonialCard({
       style={{ perspective: 1000, transformStyle: "preserve-3d" }}
       className="group/card shrink-0 w-[280px] sm:w-[340px] h-[460px] sm:h-[500px] text-left rounded-3xl border border-white/[0.08] bg-gradient-to-b from-white/[0.04] to-white/[0.01] p-6 sm:p-7 relative overflow-hidden transition-[border-color,box-shadow] duration-500 hover:border-ember-300/45 hover:shadow-[0_30px_70px_-20px_rgba(236,139,42,0.50)] no-tap-highlight"
     >
-      {/* Hover glow */}
       <div
         className="absolute inset-0 rounded-3xl opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 pointer-events-none"
         style={{
@@ -461,45 +470,43 @@ function TestimonialCard({
         aria-hidden
       />
 
-      {/* Top corners: stars + quote */}
+      {/* Top row: "Firmado" pill + verification badge */}
       <div className="relative flex items-center justify-between">
-        <div className="flex items-center gap-0.5">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <Star
-              key={i}
-              className="w-3.5 h-3.5 fill-ember-300 text-ember-300"
-            />
-          ))}
-        </div>
-        <Quote
-          className="w-6 h-6 text-ember-300/60 transition-transform duration-500 group-hover/card:scale-110 group-hover/card:rotate-6"
+        <span className="inline-flex items-center gap-1.5 pl-1.5 pr-2.5 py-1 rounded-full border border-ember-300/35 bg-ember-300/[0.08] text-[10px] font-medium uppercase tracking-[0.18em] text-ember-300">
+          <span className="grid place-items-center w-3.5 h-3.5 rounded-full bg-ember-300/20">
+            <BadgeCheck className="w-2.5 h-2.5" />
+          </span>
+          Firmado
+        </span>
+        <Sparkles
+          className="w-5 h-5 text-ember-300/60 transition-transform duration-500 group-hover/card:scale-110 group-hover/card:rotate-12"
           aria-hidden
         />
       </div>
 
-      {/* Retro avatar centered */}
+      {/* Center seal */}
       <div className="relative mt-6 sm:mt-7 flex justify-center">
-        <RetroAvatar img={testimonial.img} name={testimonial.name} />
+        <GuaranteeSeal icon={guarantee.icon} palette={guarantee.palette} />
       </div>
 
-      {/* Quote */}
+      {/* Promise */}
       <blockquote className="relative mt-5 font-display text-[14px] sm:text-[15.5px] leading-snug text-ember-50/95 text-balance line-clamp-[5] text-center">
-        “{testimonial.quote}”
+        “{guarantee.promise}”
       </blockquote>
 
-      {/* Footer: name + role */}
+      {/* Footer */}
       <div className="absolute bottom-6 sm:bottom-7 inset-x-6 sm:inset-x-7 text-center">
         <p className="font-display font-medium text-base sm:text-lg text-ember-50 tracking-tight">
-          {testimonial.name}
+          {guarantee.title}
         </p>
         <p className="text-[11px] sm:text-xs text-ember-50/55 mt-0.5">
-          {testimonial.role}
+          {guarantee.category}
         </p>
         <div
           className="mx-auto mt-3 inline-flex items-center gap-1 text-[9px] uppercase tracking-[0.20em] text-ember-300/60 group-hover/card:text-ember-300 transition-colors duration-300"
           aria-hidden
         >
-          <span>Leer testimonio</span>
+          <span>Leer compromiso</span>
           <span>+</span>
         </div>
       </div>
@@ -508,88 +515,60 @@ function TestimonialCard({
 }
 
 // ─────────────────────────────────────────────────
-// Retro avatar — self-hosted SVG monogram with cinematic
-// gradient + retro filter. No external image dependencies.
+// Seal — wax-stamp aesthetic with the lucide icon embossed
 // ─────────────────────────────────────────────────
-function RetroAvatar({ img, name }: { img: number; name: string }) {
-  const initials = name
-    .split(" ")
-    .map((w) => w[0])
-    .slice(0, 2)
-    .join("")
-    .toUpperCase();
-
-  // Use the `img` seed to deterministically pick a gradient pair so each
-  // testimonial gets its own colorway (still all warm/ember, just varied).
+function GuaranteeSeal({
+  icon: Icon,
+  palette,
+}: {
+  icon: LucideIcon;
+  palette: number;
+}) {
   const palettes: Array<[string, string, string]> = [
-    ["#5a2c0a", "#a8500c", "#ec8b2a"], // bronze → ember
-    ["#3a1c08", "#7a3a08", "#d76a14"], // deep ink → ember
-    ["#6a3410", "#b85e1e", "#fdc97a"], // warm copper → gold
-    ["#4a2510", "#9a4814", "#ec8b2a"], // mahogany → amber
-    ["#3a1a07", "#883e0c", "#f5ad4f"], // dark wood → light amber
+    ["#5a2c0a", "#a8500c", "#ec8b2a"],
+    ["#3a1c08", "#7a3a08", "#d76a14"],
+    ["#6a3410", "#b85e1e", "#fdc97a"],
+    ["#4a2510", "#9a4814", "#ec8b2a"],
+    ["#3a1a07", "#883e0c", "#f5ad4f"],
   ];
-  const palette = palettes[img % palettes.length];
+  const colors = palettes[palette % palettes.length];
 
   return (
     <div className="relative w-[88px] h-[88px] sm:w-[104px] sm:h-[104px] rounded-full overflow-hidden ring-2 ring-ember-300/40 shadow-[0_8px_28px_-8px_rgba(236,139,42,0.55)]">
       <svg
         viewBox="0 0 100 100"
         className="absolute inset-0 w-full h-full"
-        aria-label={name}
-        role="img"
+        aria-hidden
       >
         <defs>
           <radialGradient
-            id={`avatar-bg-${img}`}
+            id={`seal-${palette}`}
             cx="0.35"
             cy="0.35"
             r="0.85"
           >
-            <stop offset="0%" stopColor={palette[2]} stopOpacity="0.95" />
-            <stop offset="55%" stopColor={palette[1]} stopOpacity="0.95" />
-            <stop offset="100%" stopColor={palette[0]} stopOpacity="1" />
+            <stop offset="0%" stopColor={colors[2]} stopOpacity="0.95" />
+            <stop offset="55%" stopColor={colors[1]} stopOpacity="0.95" />
+            <stop offset="100%" stopColor={colors[0]} stopOpacity="1" />
           </radialGradient>
         </defs>
-        <rect
-          width="100"
-          height="100"
-          fill={`url(#avatar-bg-${img})`}
-        />
-        {/* Soft inner texture */}
-        <circle
-          cx="30"
-          cy="28"
-          r="22"
-          fill="rgba(255, 244, 224, 0.15)"
-        />
-        <circle
-          cx="78"
-          cy="84"
-          r="28"
-          fill="rgba(7, 6, 8, 0.20)"
-        />
-        {/* Initials */}
-        <text
-          x="50"
-          y="58"
-          textAnchor="middle"
-          fontSize="38"
-          fontWeight="600"
-          fill="#fff4e0"
-          fontFamily="Inter, sans-serif"
-          letterSpacing="-1"
-        >
-          {initials}
-        </text>
+        <rect width="100" height="100" fill={`url(#seal-${palette})`} />
+        <circle cx="30" cy="28" r="22" fill="rgba(255, 244, 224, 0.15)" />
+        <circle cx="78" cy="84" r="28" fill="rgba(7, 6, 8, 0.20)" />
       </svg>
 
-      {/* Warm tint overlay — unifies all avatars to the ember palette */}
+      <div className="absolute inset-0 grid place-items-center">
+        <Icon
+          className="w-9 h-9 sm:w-11 sm:h-11 text-ember-50 drop-shadow-[0_2px_6px_rgba(0,0,0,0.45)]"
+          strokeWidth={1.75}
+        />
+      </div>
+
       <div
         className="absolute inset-0 bg-gradient-to-br from-ember-300/10 via-transparent to-ember-700/20 mix-blend-overlay pointer-events-none"
         aria-hidden
       />
 
-      {/* Subtle inner glow ring */}
       <div
         className="absolute inset-0 rounded-full ring-1 ring-inset ring-white/10 pointer-events-none"
         aria-hidden
@@ -599,16 +578,16 @@ function RetroAvatar({ img, name }: { img: number; name: string }) {
 }
 
 // ─────────────────────────────────────────────────
-// Expanded modal — full quote, photo, escape/click-out close
+// Expanded modal — full guarantee detail
 // ─────────────────────────────────────────────────
 function ExpandedModal({
-  testimonial,
+  guarantee,
   onClose,
 }: {
-  testimonial: Testimonial | null;
+  guarantee: Guarantee | null;
   onClose: () => void;
 }) {
-  const isOpen = testimonial !== null;
+  const isOpen = guarantee !== null;
 
   useBodyScrollLock(isOpen);
 
@@ -623,7 +602,7 @@ function ExpandedModal({
 
   return (
     <AnimatePresence>
-      {testimonial && (
+      {guarantee && (
         <motion.div
           key="overlay"
           initial={{ opacity: 0 }}
@@ -641,7 +620,7 @@ function ExpandedModal({
             onClick={(e) => e.stopPropagation()}
             role="dialog"
             aria-modal="true"
-            aria-label={`Testimonio de ${testimonial.name}`}
+            aria-label={`Compromiso: ${guarantee.title}`}
             className="relative w-full max-w-3xl rounded-3xl border border-ember-300/30 bg-gradient-to-b from-ink-900 to-ink-950 p-7 sm:p-12 shadow-[0_30px_90px_-10px_rgba(0,0,0,0.7)]"
           >
             <div className="absolute -top-px inset-x-14 h-px bg-gradient-to-r from-transparent via-ember-300/50 to-transparent" />
@@ -659,37 +638,46 @@ function ExpandedModal({
               <X className="w-4 h-4" />
             </button>
 
-            <div className="relative flex items-center gap-1">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <Star
-                  key={i}
-                  className="w-4 h-4 fill-ember-300 text-ember-300"
-                />
-              ))}
+            <div className="relative inline-flex items-center gap-2 pl-2 pr-3 py-1.5 rounded-full border border-ember-300/40 bg-ember-300/[0.10] text-[11px] font-medium uppercase tracking-[0.20em] text-ember-300">
+              <BadgeCheck className="w-3.5 h-3.5" />
+              Compromiso firmado en contrato
             </div>
 
-            <div className="relative mt-6 flex flex-col sm:flex-row sm:items-start gap-5 sm:gap-7">
+            <div className="relative mt-7 flex flex-col sm:flex-row sm:items-start gap-5 sm:gap-7">
               <div className="shrink-0">
-                <RetroAvatar img={testimonial.img} name={testimonial.name} />
+                <GuaranteeSeal
+                  icon={guarantee.icon}
+                  palette={guarantee.palette}
+                />
               </div>
               <div className="flex-1 min-w-0">
-                <Quote
-                  className="w-7 h-7 text-ember-300/60"
-                  aria-hidden
-                />
-                <blockquote className="mt-3 font-display font-medium text-[1.35rem] sm:text-[1.75rem] leading-[1.25] text-ember-50/95 tracking-tight text-balance">
-                  “{testimonial.quote}”
+                <h3 className="font-display text-[1.6rem] sm:text-[2rem] font-semibold text-ember-50 tracking-tight text-balance leading-tight">
+                  {guarantee.title}
+                </h3>
+                <p className="mt-1.5 text-[12px] sm:text-[13px] uppercase tracking-[0.22em] text-ember-300/85">
+                  {guarantee.category}
+                </p>
+                <blockquote className="mt-5 font-display text-[1.15rem] sm:text-[1.35rem] leading-[1.4] text-ember-50/95 tracking-tight text-balance border-l-2 border-ember-300/55 pl-4">
+                  “{guarantee.promise}”
                 </blockquote>
+                <p className="mt-5 text-[14px] sm:text-[15px] leading-relaxed text-ember-50/75">
+                  {guarantee.detail}
+                </p>
               </div>
             </div>
 
-            <div className="relative mt-8 sm:mt-10 pt-6 border-t border-white/[0.06]">
-              <p className="font-display text-lg text-ember-50">
-                {testimonial.name}
+            <div className="relative mt-8 sm:mt-10 pt-6 border-t border-white/[0.06] flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <p className="text-[12px] text-ember-50/55">
+                Este punto se incluye, palabra por palabra, en el contrato que firmas al iniciar tu proyecto.
               </p>
-              <p className="text-sm text-ember-50/60 mt-0.5">
-                {testimonial.role}
-              </p>
+              <a
+                href="#contact"
+                onClick={onClose}
+                className="inline-flex items-center justify-center gap-2 h-11 px-5 rounded-full bg-gradient-to-b from-ember-200 via-ember-300 to-ember-400 text-ink-950 font-medium text-sm shadow-glow-sm hover:shadow-glow transition-all whitespace-nowrap"
+              >
+                <MessageCircle className="w-4 h-4" />
+                Cotizar mi sitio
+              </a>
             </div>
           </motion.div>
         </motion.div>
@@ -699,7 +687,7 @@ function ExpandedModal({
 }
 
 // ─────────────────────────────────────────────────
-// Stat card with animated counter (unchanged)
+// Stat card with animated counter
 // ─────────────────────────────────────────────────
 function StatCard({ stat, index }: { stat: Stat; index: number }) {
   const Icon = stat.icon;
@@ -774,3 +762,4 @@ function StatCard({ stat, index }: { stat: Stat; index: number }) {
     </div>
   );
 }
+

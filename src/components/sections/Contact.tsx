@@ -42,10 +42,10 @@ const industries = [
 ];
 
 const budgetOptions = [
-  "Menos de $1,500 USD",
-  "$1,500 – $3,500 USD",
-  "$3,500 – $7,000 USD",
-  "$7,000+ USD",
+  "Starter Local — $900 + $99/mes",
+  "Growth Pro — $1,800 + $149/mes",
+  "Authority Premium — $3,500 + $299/mes",
+  "A la medida",
 ];
 
 const timelineOptions = [
