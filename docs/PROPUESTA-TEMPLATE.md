@@ -17,7 +17,7 @@ _[2-3 oraciones de lo que el cliente te contó en la llamada de 15 min. Específ
 
 ## 2. Lo que te proponemos
 
-**Paquete recomendado:** _[Starter Local / Growth Pro / Authority Premium]_
+**Paquete recomendado:** _[Starter Local / Growth Pro / Authority Premium — elegí uno según el caso del cliente. Borrá las otras dos opciones en la sección 3 de Inversión cuando finalices.]_
 
 ### Qué incluye tu sitio
 
@@ -42,19 +42,40 @@ _[2-3 oraciones de lo que el cliente te contó en la llamada de 15 min. Específ
 
 ## 3. Inversión
 
-| Concepto | Precio normal | **Tu precio (Cliente Fundador)** |
-|---|---|---|
-| Pago inicial — construcción del sitio | $900 USD | **$500 USD** |
-| Plan mensual primeros 6 meses | $99 USD/mes | **$49 USD/mes** |
-| Plan mensual a partir del mes 7 | $99 USD/mes | $99 USD/mes |
+_Elegí el paquete que vamos a usar — borrá los otros dos del documento antes de enviarlo._
+
+### Opción A — Starter Local
+
+| Concepto | Precio USD |
+|---|---|
+| Pago inicial — construcción del sitio | **$900** |
+| Plan mensual de cuidado y crecimiento | **$99 / mes** |
+
+### Opción B — Growth Pro _(recomendado)_
+
+| Concepto | Precio USD |
+|---|---|
+| Pago inicial — construcción del sitio | **$1,800** |
+| Plan mensual de cuidado y crecimiento | **$149 / mes** |
+
+### Opción C — Authority Premium
+
+| Concepto | Precio USD |
+|---|---|
+| Pago inicial — construcción del sitio | **$3,500** |
+| Plan mensual de cuidado y crecimiento | **$299 / mes** |
+
+---
 
 **Forma de pago inicial:**
-- 50% al firmar el contrato — $250 USD ahora para apartar la fecha de inicio.
-- 50% al entregar el sitio en producción — $250 USD al lanzar.
+- 50% al firmar el contrato → para apartar la fecha de inicio.
+- 50% al entregar el sitio en producción → al lanzar.
 
-**Lo que pides a cambio del precio fundador:**
-- Testimonio breve (texto + foto) cuando el sitio esté en producción.
-- Permiso para usar el nombre y screenshots del sitio en mi portfolio.
+**Plan mensual:**
+- Se factura a partir del primer día posterior al lanzamiento.
+- Cancelación simple con 30 días de aviso, según contrato.
+
+**Medios de pago aceptados:** Zelle, transferencia bancaria, Wise o tarjeta de crédito (link de pago). Todos los pagos en USD.
 
 ---
 
@@ -65,7 +86,7 @@ _[2-3 oraciones de lo que el cliente te contó en la llamada de 15 min. Específ
 - **Días 6-12:** desarrollo. Lo revisas en vivo en un link de preview.
 - **Días 13-14:** lanzamiento. Conectamos tu dominio, activamos analytics, handoff.
 
-**Entrega total:** 14 días calendario desde la firma del contrato.
+**Entrega total:** 14 días calendario desde la firma para Starter Local y Growth Pro. Authority Premium puede requerir 3-6 semanas según alcance — lo definimos antes de firmar.
 
 ---
 
@@ -84,4 +105,4 @@ Leyva Web Studio · Cleveland, OH
 
 ---
 
-*Propuesta válida por 14 días desde la fecha indicada arriba. Después de ese plazo, la oferta de Cliente Fundador puede haberse cerrado.*
+*Propuesta válida por 14 días desde la fecha indicada arriba. Después de ese plazo, los precios y cronograma están sujetos a re-cotización según disponibilidad.*

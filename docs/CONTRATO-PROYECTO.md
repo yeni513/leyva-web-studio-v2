@@ -55,16 +55,27 @@ El alcance del proyecto se define exclusivamente por los siguientes elementos:
 
 ## 4. Precio y Forma de Pago
 
+**Paquetes estándar:**
+
+| Paquete | Pago inicial | Plan mensual |
+|---|---|---|
+| Starter Local | $900 USD | $99 USD/mes |
+| Growth Pro | $1,800 USD | $149 USD/mes |
+| Authority Premium | $3,500 USD | $299 USD/mes |
+
+**Aplicable a este contrato:**
+
 | Concepto | Monto USD |
 |---|---|
-| Pago inicial (única vez) | $_[xxx]_ |
-| Plan mensual de cuidado y crecimiento | $_[xx]_/mes |
+| Paquete contratado | _[Starter Local / Growth Pro / Authority Premium]_ |
+| Pago inicial (única vez) | $_[xxx]_ USD |
+| Plan mensual de cuidado y crecimiento | $_[xx]_ USD / mes |
 
 **Cronograma de pago inicial:**
 - 50% al firmar este contrato — apartar fecha de inicio.
 - 50% al entregar el sitio en producción.
 
-**Plan mensual:** se factura a partir del primer día posterior al lanzamiento del sitio.
+**Plan mensual:** se factura a partir del primer día posterior al lanzamiento del sitio. Cancelación simple con 30 días de aviso por email a hola@leyvawebstudio.com.
 
 **Medios de pago aceptados:** transferencia bancaria, Zelle, Wise, tarjeta de crédito (link de pago). Todos los pagos en dólares estadounidenses (USD).
 
