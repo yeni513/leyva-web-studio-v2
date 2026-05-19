@@ -2,12 +2,14 @@
 
 > ⚠️ **DISCLAIMER IMPORTANTE — LEER ANTES DE USAR**
 >
-> Este documento es una **plantilla base** preparada para Leyva Web Studio LLC.
+> Este documento es una **plantilla base** preparada para Leyva Web Studio.
 > No es asesoría legal. Antes de firmar con un cliente real:
 >
 > 1. **Hacé que un abogado en Ohio (o en la jurisdicción correspondiente) lo revise.** Costo típico: $200–$500 para una revisión inicial.
 > 2. **Adaptá los datos específicos** del proyecto (alcance, fechas, precios) caso por caso.
-> 3. **Asegurate de que Leyva Web Studio esté registrado como LLC u otra entidad** antes de firmar contratos comerciales.
+> 3. **Elegí la forma de operación correcta** según tu situación:
+>    - **Sole proprietor** (persona física, sin LLC): firmás como "Alexander Rodriguez d/b/a Leyva Web Studio". Es válido en Ohio.
+>    - **LLC**: firmás como "Leyva Web Studio LLC" representado por su miembro fundador.
 >
 > El autor de esta plantilla no es abogado. Usar a tu propio riesgo.
 
@@ -16,7 +18,7 @@
 ## 1. Partes
 
 **El Estudio:**
-- Razón social: Leyva Web Studio LLC _(o entidad equivalente)_
+- Razón social: _[Alexander Rodriguez d/b/a Leyva Web Studio]_ _(opción sole prop)_ **o** _[Leyva Web Studio LLC]_ _(opción LLC — cuando se registre)_
 - Dirección: Cleveland, Ohio, EE. UU.
 - Representante: Alexander Rodriguez
 - Email: hola@leyvawebstudio.com
@@ -206,11 +208,11 @@ Este contrato se rige por las leyes del Estado de **Ohio, EE. UU.** Cualquier di
 
 ## 15. Firmas
 
-**El Estudio — Leyva Web Studio LLC**
+**El Estudio — _[Alexander Rodriguez d/b/a Leyva Web Studio | Leyva Web Studio LLC]_**
 
 Firma: ___________________________
 Nombre: Alexander Rodriguez
-Cargo: Fundador
+Cargo: _[Fundador / Propietario]_
 Fecha: ___ / ___ / 20___
 
 **El Cliente — _[Nombre del negocio]_**

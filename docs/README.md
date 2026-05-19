@@ -23,19 +23,51 @@ Documentos para operar el estudio: vender, contratar, agendar.
 
 ## Antes de firmar el primer contrato real
 
-⚠️ **Estas dos cosas son obligatorias antes de empezar a vender:**
+### Opción A — Operar como sole proprietor (lo que vas a hacer ahora)
 
-1. **Registrar Leyva Web Studio LLC** en Ohio.
-   - Costo: ~$99 USD una vez + ~$99/año de renovación.
-   - Donde: https://www.ohiosos.gov/businesses/
-   - Por qué: sin LLC, los contratos te exponen personalmente. Si algo sale mal con un cliente, pueden ir contra tus bienes personales (auto, ahorros).
+Es 100% legal en Ohio operar como persona física vendiendo servicios bajo el nombre "Leyva Web Studio". No necesitas LLC para arrancar.
 
-2. **Revisión legal del contrato** por un abogado de Ohio.
-   - Costo: ~$200-500 USD una sola vez.
+**Lo que sí conviene hacer:**
+
+1. **Registrar el nombre comercial (DBA / Fictitious Name) en Ohio** — ~$39 USD, una sola vez.
+   - Donde: https://www.ohiosos.gov/businesses/ → "Register a Trade Name or Fictitious Name"
+   - Por qué: te permite cobrar y emitir facturas a nombre de "Leyva Web Studio" en lugar de "Alexander Rodriguez". Más profesional. Sin LLC, sin renovaciones anuales.
+
+2. **Abrir cuenta bancaria de negocio** (puede ser una cuenta separada a tu nombre personal, no necesita ser business account formal).
+   - Mantén ingresos del estudio separados de tus finanzas personales — es vital para impuestos al final del año.
+
+3. **Para taxes:** los ingresos del estudio van en tu **Schedule C** del 1040 personal cada abril. Si superás los $400 anuales, también pagás Self-Employment tax (~15.3%). Usá un servicio como FreeTaxUSA o un contador (~$200/año) cuando llegue el momento.
+
+**El riesgo que asumes operando como sole prop:**
+- Si un cliente te demanda (incumplimiento, daños), pueden ir contra tus bienes personales (auto, ahorros, casa si tienes). La LLC es lo que separa eso.
+- Para mitigar mientras tanto: **firma contratos con la cláusula 11 de limitación de responsabilidad** (que ya está en `CONTRATO-PROYECTO.md`) — limita tu exposición al monto pagado en los últimos 12 meses.
+- Y elegí clientes con buen feeling — los conflictos serios pasan con gente que ya parecía conflictiva desde el inicio.
+
+### Opción B — Registrar Leyva Web Studio LLC (cuando estés listo)
+
+Cuando tengas 3-5 clientes activos y la operación esté generando $5,000+/mes, te conviene cambiar a LLC:
+
+- Costo: ~$99 USD una vez + ~$99/año de renovación.
+- Donde: https://www.ohiosos.gov/businesses/
+- Beneficio: separa legalmente tu patrimonio personal de los del estudio. Si un cliente te demanda, solo pueden ir contra los activos del LLC (que probablemente sea poco al principio).
+- También te abre la opción de elegir S-Corp tax treatment más adelante, lo que puede ahorrarte miles en self-employment tax.
+
+**Hoy no es urgente.** Lo evaluamos cuando llegues a 3+ clientes activos.
+
+### Lo que sí conviene hacer YA (sin LLC)
+
+⚠️ **Antes de firmar el primer contrato:**
+
+1. **Revisión del contrato base** por un abogado de Ohio (~$200-500, una sola vez).
    - Donde: cualquier abogado de small business en Cleveland. Buscar "small business attorney Ohio" en Google.
-   - Por qué: la plantilla `CONTRATO-PROYECTO.md` es un punto de partida, no asesoría legal. Un abogado te lo deja blindado y aprende para futuros casos.
+   - Por qué: la plantilla `CONTRATO-PROYECTO.md` es un punto de partida, no asesoría legal. Una hora con un abogado te lo deja blindado y te educa para futuros casos. **No saltes este paso aunque seas sole prop** — la responsabilidad limitada del contrato es tu única protección sin LLC.
 
-Si hacés outreach sin estos dos pasos, **no firmes contratos formales todavía** — limitate a llamadas exploratorias y "ya te confirmo cuando esté listo el contrato".
+2. **Setup de pago** (Zelle, Wise, o Stripe).
+   - Tener listos los métodos de cobro antes del primer "sí" del cliente.
+
+3. **DBA en Ohio** (~$39, ver arriba) si quieres facturar como "Leyva Web Studio" en lugar de tu nombre personal.
+
+**Si decides arrancar antes de la revisión legal:** limita los primeros contratos a **Starter Local** (alcance pequeño, $900) para reducir exposición — y firmá con clientes referidos por familia/amigos donde el riesgo de conflicto es menor.
 
 ## Stack del sitio en producción
 
