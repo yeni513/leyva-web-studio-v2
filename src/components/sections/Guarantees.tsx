@@ -45,12 +45,12 @@ const guarantees: Guarantee[] = [
   {
     id: "refund",
     icon: ShieldCheck,
-    title: "Reembolso del anticipo",
+    title: "Cancelación pre-desarrollo",
     category: "Tu inversión protegida",
     promise:
-      "Si no te encanta el diseño antes de comenzar desarrollo, devolvemos el anticipo según los términos del contrato.",
+      "Si después de la primera propuesta visual y las revisiones incluidas no encontramos una dirección aprobada, puedes cancelar antes de iniciar desarrollo según los términos del contrato.",
     detail:
-      "Te mostramos el diseño completo antes de tocar una línea de código. Si en ese período (típicamente los primeros 7 días) sientes que no es lo que querías, te devolvemos el anticipo según lo acordado por escrito. Sin formularios, sin discusiones.",
+      "Trabajamos primero el diseño visual y aplicamos las rondas de revisión incluidas en tu paquete. Si al cierre de esas revisiones no llegamos a una dirección que apruebes, tienes la opción de cancelar antes de que comencemos desarrollo. El reembolso o ajuste del anticipo se rige por los términos del contrato firmado al inicio del proyecto.",
     palette: 0,
   },
   {
@@ -81,9 +81,9 @@ const guarantees: Guarantee[] = [
     title: "Entrega en 14 días",
     category: "Tiempo garantizado",
     promise:
-      "Si el retraso es por causa nuestra, aplicamos un crédito o descuento según lo acordado por escrito. Sujeto al alcance aprobado y a la entrega oportuna de tus materiales.",
+      "Si por causas nuestras nos atrasamos, aplicamos un crédito o descuento acordado por escrito según el alcance aprobado.",
     detail:
-      "El cronograma de 14 días aplica al alcance aprobado al firmar y asume que recibimos tus materiales (textos, fotos, accesos) dentro de los plazos acordados. Si el retraso es por causa nuestra, aplicamos un crédito o descuento según lo establecido en el contrato. Si hay cambios de alcance o demoras del cliente, ajustamos la fecha de común acuerdo.",
+      "El cronograma de 14 días aplica al alcance aprobado al firmar y asume que recibimos tus materiales (textos, fotos, accesos) dentro de los plazos acordados. Si por causas nuestras nos atrasamos, aplicamos un crédito o descuento acordado por escrito según el alcance aprobado. Si hay cambios de alcance o demoras del cliente, ajustamos la fecha de común acuerdo.",
     palette: 3,
   },
   {
