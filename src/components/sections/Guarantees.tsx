@@ -245,12 +245,11 @@ function Carousel({ items }: { items: Guarantee[] }) {
     return () => observer.disconnect();
   }, []);
 
-  // Only duplicate for seamless autoscroll on desktop. On mobile and
-  // reduced-motion, the autoscroll is disabled — so showing the same
-  // commitments twice would be visibly duplicated. Keep a single set
-  // there.
+  // Only render the duplicate set on desktop, where the rAF autoscroll
+  // runs and needs a seamless half-point jump-back. On mobile and
+  // reduced-motion the autoscroll is off — a second identical set would
+  // just be visible repeated content with no animation reason.
   const useDuplicates = !reduced && !isMobile;
-  const looped = useDuplicates ? [...items, ...items] : items;
 
   const checkScroll = useCallback(() => {
     const node = scrollRef.current;
@@ -349,18 +348,42 @@ function Carousel({ items }: { items: Guarantee[] }) {
           aria-label="Carrusel de compromisos firmados"
           className="flex gap-4 sm:gap-5 overflow-x-auto overscroll-x-contain py-6 sm:py-8 px-5 sm:px-10 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
         >
-          {looped.map((g, i) => {
-            const isDuplicate = useDuplicates && i >= items.length;
-            return (
-              <GuaranteeCard
-                key={`${g.id}-${i}`}
-                guarantee={g}
-                index={i}
-                onOpen={() => setExpanded(g)}
-                ariaHidden={isDuplicate}
-              />
-            );
-          })}
+          {/* Original set — the accessible, interactive list of commitments.
+              Screen readers, keyboard nav, and crawlers see only this group. */}
+          {items.map((g, i) => (
+            <GuaranteeCard
+              key={`a-${g.id}`}
+              guarantee={g}
+              index={i}
+              onOpen={() => setExpanded(g)}
+            />
+          ))}
+
+          {/* Duplicate set — rendered only on desktop so the rAF autoscroll
+              can loop seamlessly back to position 0 when it crosses the
+              halfway point. The wrapper marks the whole set as aria-hidden
+              + inert; `display: contents` lets the cards still participate
+              in the parent flex layout while the wrapper itself is invisible
+              to layout. Cards inside also carry their own ariaHidden as
+              defense in depth. */}
+          {useDuplicates && (
+            <div
+              className="contents"
+              aria-hidden="true"
+              inert
+              role="presentation"
+            >
+              {items.map((g, i) => (
+                <GuaranteeCard
+                  key={`b-${g.id}`}
+                  guarantee={g}
+                  index={items.length + i}
+                  onOpen={() => setExpanded(g)}
+                  ariaHidden
+                />
+              ))}
+            </div>
+          )}
         </div>
 
         <div
