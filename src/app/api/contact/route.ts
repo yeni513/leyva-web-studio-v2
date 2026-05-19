@@ -83,6 +83,10 @@ export async function POST(request: Request): Promise<Response> {
       },
       body: JSON.stringify({
         from: "Leyva Cotizaciones <cotizaciones@leyvawebstudio.com>",
+        // TODO: cuando Cloudflare Email Routing esté activo y
+        // hola@leyvawebstudio.com tenga forwarding al Yahoo real, podemos
+        // cambiar a hola@leyvawebstudio.com aquí. Hoy va al Yahoo directo
+        // porque es la bandeja efectivamente monitoreada.
         to: ["alexspark513@yahoo.com"],
         subject,
         text,

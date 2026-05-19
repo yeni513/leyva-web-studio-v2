@@ -286,7 +286,7 @@ function AvailabilityPill() {
 }
 
 // ─────────────────────────────────────────────────
-// Animated stat card with count-up
+// Stat card — static value, no count-up (kept to avoid 0-flash)
 // ─────────────────────────────────────────────────
 function StatCard({
   icon: Icon,

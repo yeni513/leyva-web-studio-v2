@@ -102,7 +102,7 @@ const faqs: FAQItem[] = [
     cat: "price",
     icon: Globe,
     q: "¿Incluye hosting?",
-    a: "Sí — el hosting y el deploy están incluidos en el plan mensual de cualquier paquete. Publicamos en infraestructura premium (Cloudflare) con cobertura global. Tu dominio sí lo registrás a tu nombre y queda bajo tu propiedad.",
+    a: "Sí — el hosting y el deploy están incluidos en el plan mensual de cualquier paquete. Publicamos en infraestructura premium (Cloudflare) con cobertura global. Tu dominio sí lo registras a tu nombre y queda bajo tu propiedad.",
   },
   {
     id: "ubicacion",
