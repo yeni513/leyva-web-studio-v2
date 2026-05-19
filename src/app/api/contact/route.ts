@@ -82,15 +82,21 @@ export async function POST(request: Request): Promise<Response> {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
+        // While Resend is in testing mode (no verified domain), the API
+        // only accepts the from "onboarding@resend.dev" and the "to"
+        // MUST be the email registered on the Resend account. Once a
+        // domain is verified at resend.com/domains:
+        //   1. Change from to e.g. "Leyva <cotizaciones@leyvawebstudio.com>"
+        //   2. Change to to ["alexspark513@yahoo.com"] (or any address)
         from: "Leyva Cotizaciones <onboarding@resend.dev>",
-        to: ["alexspark513@yahoo.com"],
+        to: ["alexrodriguez513@gmail.com"],
         subject,
         text,
         html,
-        // Replies bounce back to the prospect's email if it looks like an email
+        // Replies bounce back to the prospect's email if it looks like one
         reply_to: looksLikeEmail(body.contact)
           ? [body.contact]
-          : ["alexspark513@yahoo.com"],
+          : ["alexrodriguez513@gmail.com"],
       }),
     });
 
