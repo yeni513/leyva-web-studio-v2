@@ -7,11 +7,9 @@ export const site = {
   contact: {
     whatsapp: "12166225575",
     whatsappDisplay: "+1 (216) 622-5575",
-    // TODO: configurar Cloudflare Email Routing para hola@leyvawebstudio.com
-    // → alexspark513@yahoo.com. Hasta que esté activo, los mailto: que el
-    // usuario abra desde el sitio terminarán en una bandeja inexistente.
-    // El form principal sigue funcionando — el backend /api/contact envía
-    // a la bandeja real vía Resend independientemente de este valor.
+    // hola@leyvawebstudio.com está enrutado vía Cloudflare Email Routing
+    // a la bandeja personal. También hay un catch-all *@leyvawebstudio.com
+    // → bandeja personal por si alguien escribe a cualquier alias.
     email: "hola@leyvawebstudio.com",
     location: "Cleveland, Ohio · trabajamos en todo EE. UU. y LATAM",
   },
