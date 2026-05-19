@@ -1,11 +1,11 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { ArrowUpRight, MessageCircle, Sparkles, Star } from "lucide-react";
+import { ArrowUpRight, Calendar, MessageCircle, Sparkles, Star } from "lucide-react";
 import { AnchorButton } from "@/components/ui/button";
 import { StaticHeroBackground } from "@/components/visuals/StaticHeroBackground";
 import { useIsMobile } from "@/lib/use-is-mobile";
-import { whatsappLink } from "@/lib/site";
+import { site, whatsappLink } from "@/lib/site";
 
 const ShaderBackground = dynamic(
   () =>
@@ -88,19 +88,33 @@ export function Hero() {
             Obtén mi sitio web
             <ArrowUpRight className="w-5 h-5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </AnchorButton>
-          <AnchorButton
-            href={whatsappLink(
-              "Hola Leyva, vi tu sitio y quiero cotizar uno para mi negocio.",
-            )}
-            target="_blank"
-            rel="noopener noreferrer"
-            size="xl"
-            variant="secondary"
-            className="w-full sm:w-auto"
-          >
-            <MessageCircle className="w-5 h-5" />
-            Hablar por WhatsApp
-          </AnchorButton>
+          {site.contact.bookingUrl ? (
+            <AnchorButton
+              href={site.contact.bookingUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              size="xl"
+              variant="secondary"
+              className="w-full sm:w-auto"
+            >
+              <Calendar className="w-5 h-5" />
+              Agendar 15 min
+            </AnchorButton>
+          ) : (
+            <AnchorButton
+              href={whatsappLink(
+                "Hola Leyva, vi tu sitio y quiero cotizar uno para mi negocio.",
+              )}
+              target="_blank"
+              rel="noopener noreferrer"
+              size="xl"
+              variant="secondary"
+              className="w-full sm:w-auto"
+            >
+              <MessageCircle className="w-5 h-5" />
+              Hablar por WhatsApp
+            </AnchorButton>
+          )}
         </div>
 
         {/* Reassurance line — immediate trust signal under CTAs */}

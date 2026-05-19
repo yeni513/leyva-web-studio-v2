@@ -12,6 +12,11 @@ export const site = {
     // → bandeja personal por si alguien escribe a cualquier alias.
     email: "hola@leyvawebstudio.com",
     location: "Cleveland, Ohio · trabajamos en todo EE. UU. y LATAM",
+    // Cal.com booking link. Cuando esté seteado, el sitio muestra un CTA
+    // "Agendar 15 min" en Hero + FAQ. Si queda vacío, el CTA se oculta y
+    // los usuarios siguen yendo por WhatsApp como hasta ahora.
+    // Setup: docs/SETUP-CALCOM.md
+    bookingUrl: "",
   },
 };
 
