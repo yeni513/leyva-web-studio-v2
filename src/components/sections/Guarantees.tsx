@@ -70,9 +70,9 @@ const guarantees: Guarantee[] = [
     title: "Precio fijo del alcance",
     category: "Sin sorpresas",
     promise:
-      "Cotización fija para el alcance aprobado al firmar. Si nos toma más tiempo del estimado, tú no pagas extra.",
+      "Cotización fija para el alcance aprobado al firmar. Si el trabajo toma más tiempo del estimado dentro del alcance, no se aplica un costo adicional al cliente.",
     detail:
-      "El precio que ves en la propuesta es el que firmas y el que pagas, siempre que el alcance no cambie. Si nosotros subestimamos el trabajo, es problema nuestro. Si tú decides ampliar el alcance, lo cotizamos aparte y tú decides si sigues.",
+      "El precio que ves en la propuesta es el que firmas y el que pagas, siempre que el alcance no cambie. Si nuestra estimación resulta corta, asumimos la diferencia internamente. Si decides ampliar el alcance, te enviamos una cotización aparte y tú decides si avanzas.",
     palette: 2,
   },
   {
@@ -81,9 +81,9 @@ const guarantees: Guarantee[] = [
     title: "Entrega en 14 días",
     category: "Tiempo garantizado",
     promise:
-      "Si por causas nuestras nos atrasamos, descontamos 10% del total por cada día de retraso. Sujeto al alcance aprobado y a recibir tus materiales a tiempo.",
+      "Si el retraso es por causa nuestra, aplicamos un crédito o descuento según lo acordado por escrito. Sujeto al alcance aprobado y a la entrega oportuna de tus materiales.",
     detail:
-      "El cronograma de 14 días aplica al alcance aprobado al firmar y asume que recibimos tus materiales (textos, fotos, accesos) en los plazos acordados. Si por causa nuestra no entregamos en fecha, descontamos 10% del total por día automáticamente. Si hay cambios de alcance o demoras del cliente, ajustamos la fecha conjuntamente.",
+      "El cronograma de 14 días aplica al alcance aprobado al firmar y asume que recibimos tus materiales (textos, fotos, accesos) dentro de los plazos acordados. Si el retraso es por causa nuestra, aplicamos un crédito o descuento según lo establecido en el contrato. Si hay cambios de alcance o demoras del cliente, ajustamos la fecha de común acuerdo.",
     palette: 3,
   },
   {
@@ -450,6 +450,7 @@ function GuaranteeCard({
       onClick={ariaHidden ? undefined : onOpen}
       tabIndex={ariaHidden ? -1 : 0}
       aria-hidden={ariaHidden || undefined}
+      inert={ariaHidden || undefined}
       initial={{ rotate: baseRotate }}
       whileHover={
         reduced
