@@ -150,7 +150,7 @@ const trustBullets = [
 
 export function Packages() {
   return (
-    <section id="paquetes" className="relative py-16 sm:py-24">
+    <section id="paquetes" className="relative py-10 sm:py-16">
       <div className="container">
         <Reveal>
           <SectionHeading

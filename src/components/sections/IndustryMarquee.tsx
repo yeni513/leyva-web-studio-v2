@@ -42,7 +42,7 @@ export function IndustryMarquee() {
   return (
     <section
       aria-label="Industrias que servimos"
-      className="relative py-14 sm:py-16 border-y border-white/[0.06] bg-ink-950/40"
+      className="relative py-8 sm:py-12 border-y border-white/[0.06] bg-ink-950/40"
     >
       <div className="container">
         <p className="text-center text-xs uppercase tracking-[0.22em] text-ember-50/55">

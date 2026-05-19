@@ -169,7 +169,7 @@ export function Guarantees() {
   return (
     <section
       aria-label="Garantías firmadas"
-      className="relative py-16 sm:py-24 overflow-hidden"
+      className="relative py-10 sm:py-16 overflow-hidden"
     >
       <div
         className="absolute inset-x-0 top-32 h-[480px] bg-[radial-gradient(50%_60%_at_50%_50%,rgba(236,139,42,0.10),transparent_60%)] pointer-events-none"

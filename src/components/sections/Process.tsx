@@ -57,7 +57,7 @@ export function Process() {
   const safe = isMobile || !!reduced;
 
   return (
-    <section id="proceso" className="relative py-16 sm:py-24 bg-ink-950/40">
+    <section id="proceso" className="relative py-10 sm:py-16 bg-ink-950/40">
       <div className="container">
         <Reveal>
           <SectionHeading

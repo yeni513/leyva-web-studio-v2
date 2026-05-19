@@ -164,7 +164,7 @@ export function Contact() {
   };
 
   return (
-    <section id="contact" className="relative py-16 sm:py-24">
+    <section id="contact" className="relative py-10 sm:py-16">
       <div className="container">
         <div className="grid grid-cols-1 lg:grid-cols-[1.05fr_1fr] gap-10 lg:gap-14 items-start">
           {/* Left: heading + reasons */}

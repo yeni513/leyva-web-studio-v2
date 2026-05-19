@@ -54,7 +54,7 @@ export function About() {
     <section
       id="about"
       aria-label="Quién está detrás de Leyva"
-      className="relative py-16 sm:py-24 overflow-hidden"
+      className="relative py-10 sm:py-16 overflow-hidden"
     >
       {/* Ambient warm glow */}
       <div
