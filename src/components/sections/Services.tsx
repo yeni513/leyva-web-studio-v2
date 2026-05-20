@@ -161,19 +161,23 @@ function ServicesOrbit() {
     // Wrapper has aspect-square AND a responsive max-width that matches
     // the scaled orbital's visual size at each breakpoint. The orbital
     // itself stays at the full 800x800 logical size (the icon radii are
-    // absolute pixels) and is absolutely-positioned + transform-scaled
-    // inside the wrapper. Result: the layout reserves only the actual
-    // visible orbital area — no empty space above or below on mobile.
+    // absolute pixels) and sits at the wrapper's center via the
+    // translate(-50%,-50%) + scale() trick. `inset-0 m-auto` does NOT
+    // center elements that are larger than their containing block, so
+    // we anchor explicitly at top:50% left:50%.
     <div
-      className="mt-8 sm:mt-20 mx-auto relative aspect-square w-[95vw]
+      className="mt-6 sm:mt-20 mb-2 sm:mb-0 mx-auto relative aspect-square w-[95vw]
                  max-w-[800px]
                  max-[900px]:max-w-[680px]
                  max-[640px]:max-w-[496px]
-                 max-[440px]:max-w-[384px]"
+                 max-[440px]:max-w-[360px]"
     >
       <div
-        className="group/orbital absolute inset-0 m-auto w-[800px] h-[800px] origin-center
-                   max-[900px]:scale-[0.85] max-[640px]:scale-[0.62] max-[440px]:scale-[0.48]"
+        className="group/orbital absolute top-1/2 left-1/2 w-[800px] h-[800px] origin-center
+                   [transform:translate(-50%,-50%)]
+                   max-[900px]:[transform:scale(0.85)_translate(-50%,-50%)]
+                   max-[640px]:[transform:scale(0.62)_translate(-50%,-50%)]
+                   max-[440px]:[transform:scale(0.45)_translate(-50%,-50%)]"
       >
         {/* Orbit paths */}
         <OrbitRing radius={INNER_RADIUS} delay={0} />
