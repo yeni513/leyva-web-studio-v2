@@ -189,7 +189,12 @@ function ServicesOrbit() {
     let last = performance.now();
 
     const tick = (now: number) => {
-      const dt = (now - last) / 1000;
+      // Cap dt at ~33ms (one frame at 30fps). iOS Safari pauses
+      // requestAnimationFrame during touch-scroll, so without a cap dt
+      // can balloon to 200-1000ms and the orbital "jumps" forward
+      // visibly to catch up. With the cap the worst-case is one frame
+      // of catch-up — imperceptible.
+      const dt = Math.min((now - last) / 1000, 1 / 30);
       last = now;
       // Only advance time when the section is in view AND not paused.
       // The loop keeps polling (cheap) so it picks up visibility changes

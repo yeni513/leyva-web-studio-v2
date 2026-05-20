@@ -271,7 +271,12 @@ function Carousel({ items }: { items: Guarantee[] }) {
     let last = performance.now();
 
     const tick = (now: number) => {
-      const dt = (now - last) / 1000;
+      // Cap dt so iOS Safari's rAF throttling during touch-scroll
+      // doesn't make the carousel "jump" forward to catch up when
+      // scroll ends. At 32px/s the visible discontinuity from a 500ms
+      // pause would be 16px — small but noticeable. Capping at 33ms
+      // (one 30fps frame) eliminates it.
+      const dt = Math.min((now - last) / 1000, 1 / 30);
       last = now;
 
       const node = scrollRef.current;
