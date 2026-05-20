@@ -1,3 +1,4 @@
+import { ScrollManager } from "@/components/scroll-manager";
 import { Navbar } from "@/components/sections/Navbar";
 import { Hero } from "@/components/sections/Hero";
 import { IndustryMarquee } from "@/components/sections/IndustryMarquee";
@@ -15,6 +16,7 @@ import { Footer } from "@/components/sections/Footer";
 export default function HomePage() {
   return (
     <>
+      <ScrollManager />
       <Navbar />
       <main className="relative">
         <Hero />

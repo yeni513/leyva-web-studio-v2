@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import {
   AnimatePresence,
   cubicBezier,
@@ -172,58 +172,91 @@ function ServicesOrbit() {
           onClear={() => setSelected(null)}
         />
 
-        {/* Orbiting service icons. Each icon sits inside a 2-layer
-            rotator: the outer rotator spins around the container center
-            and carries the icon along an orbit circle; the inner
-            counter-rotator cancels that rotation so the icon stays
-            visually upright (HardHat, Search, etc. would otherwise read
-            upside-down half the time). Both rotations are pure CSS
-            animations — they run on the compositor thread, so iOS
-            Safari can't desync them during touch-scroll. Hover anywhere
-            on the orbital container pauses all rotations. */}
+        {/* Orbiting service icons. Each icon sits inside a five-layer
+            structure so static `transform` (translate to radius) and
+            animated `transform` (rotation) never collide on the same
+            element. Both rotations are pure CSS animations on the
+            compositor thread — iOS Safari can't desync them during
+            touch-scroll. Hover on the orbital container pauses all
+            rotations via group state. */}
         {services.map((s) => {
           const radius = s.orbit === "inner" ? INNER_RADIUS : OUTER_RADIUS;
           const period = s.orbit === "inner" ? innerPeriod : outerPeriod;
           const isOuter = s.orbit === "outer";
           // Negative delay so each icon starts at its own phase angle
-          // along the cycle. phaseDeg is in degrees of the revolution.
+          // along the cycle.
           const phaseDelay = -(s.phaseDeg / 360) * period;
-          // Initial transform: pre-rotate the rotator to phaseDeg so the
-          // SSR snapshot already shows the icons spread around the orbit.
-          // The animation picks up from there with the matching delay.
-          const initialRotate = `rotate(${s.phaseDeg}deg)`;
-          const initialCounterRotate = `rotate(${-s.phaseDeg}deg)`;
+          // Longhand animation properties — using the `animation`
+          // shorthand silently resets `animation-delay` and
+          // `animation-direction` longhands. With longhand we control
+          // every axis explicitly.
+          const rotatorStyle: CSSProperties = {
+            position: "absolute",
+            width: 0,
+            height: 0,
+            transformOrigin: "0 0",
+            animationName: "orbit-halo",
+            animationDuration: `${period}s`,
+            animationDelay: `${phaseDelay}s`,
+            animationDirection: isOuter ? "reverse" : "normal",
+            animationIterationCount: "infinite",
+            animationTimingFunction: "linear",
+            animationFillMode: "both",
+          };
+          const counterRotatorStyle: CSSProperties = {
+            transformOrigin: "0 0",
+            animationName: "orbit-halo",
+            animationDuration: `${period}s`,
+            animationDelay: `${phaseDelay}s`,
+            animationDirection: isOuter ? "normal" : "reverse",
+            animationIterationCount: "infinite",
+            animationTimingFunction: "linear",
+            animationFillMode: "both",
+          };
 
           return (
+            // Layer 1 — wrapper anchored at container center
             <div
               key={s.id}
-              className="absolute top-1/2 left-1/2 group-hover/orbital:[animation-play-state:paused]"
-              style={{
-                width: 0,
-                height: 0,
-                transform: initialRotate,
-                animation: `orbit-halo ${period}s linear infinite`,
-                animationDelay: `${phaseDelay}s`,
-                animationDirection: isOuter ? "reverse" : "normal",
-              }}
+              className="absolute top-1/2 left-1/2"
+              style={{ width: 0, height: 0 }}
             >
+              {/* Layer 2 — rotator: animates rotation around (0,0).
+                  Pause on container hover. */}
               <div
-                className="absolute group-hover/orbital:[animation-play-state:paused]"
-                style={{
-                  transform: `translate(${radius}px, 0) ${initialCounterRotate}`,
-                  animation: `orbit-halo ${period}s linear infinite`,
-                  animationDelay: `${phaseDelay}s`,
-                  animationDirection: isOuter ? "normal" : "reverse",
-                }}
+                className="group-hover/orbital:[animation-play-state:paused]"
+                style={rotatorStyle}
               >
-                <div style={{ transform: "translate(-50%, -50%)" }}>
-                  <OrbitingIcon
-                    service={s}
-                    isActive={selected?.id === s.id}
-                    onSelect={() =>
-                      setSelected((prev) => (prev?.id === s.id ? null : s))
-                    }
-                  />
+                {/* Layer 3 — translator: static translate(radius, 0).
+                    Lives in the rotator's rotated coordinate space, so
+                    it traces a circle as the rotator spins. */}
+                <div
+                  style={{
+                    position: "absolute",
+                    transform: `translate(${radius}px, 0)`,
+                  }}
+                >
+                  {/* Layer 4 — counter-rotator: cancels Layer 2's
+                      rotation so the icon stays visually upright. */}
+                  <div
+                    className="group-hover/orbital:[animation-play-state:paused]"
+                    style={counterRotatorStyle}
+                  >
+                    {/* Layer 5 — centering: shifts the icon by -50%,
+                        -50% of its own size so its visual center sits
+                        on the (radius, 0) point. */}
+                    <div style={{ transform: "translate(-50%, -50%)" }}>
+                      <OrbitingIcon
+                        service={s}
+                        isActive={selected?.id === s.id}
+                        onSelect={() =>
+                          setSelected((prev) =>
+                            prev?.id === s.id ? null : s,
+                          )
+                        }
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
