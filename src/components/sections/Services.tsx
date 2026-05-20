@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   AnimatePresence,
   cubicBezier,
@@ -149,83 +149,18 @@ export function Services() {
 // DESKTOP — orbital UI with center hub
 // ─────────────────────────────────────────────────
 function ServicesOrbit() {
-  const [paused, setPaused] = useState(false);
   const [selected, setSelected] = useState<Service | null>(null);
-  const iconRefs = useRef<Record<string, HTMLButtonElement | null>>({});
-  const containerRef = useRef<HTMLDivElement>(null);
-  const pausedRef = useRef(paused);
-  const inViewRef = useRef(false);
 
-  // Keep ref in sync so the RAF closure reads the latest value without
-  // having to re-create the loop on every pause change.
-  useEffect(() => {
-    pausedRef.current = paused;
-  }, [paused]);
-
-  // IntersectionObserver: only run the orbital RAF when the section is
-  // visible. Avoids burning CPU on every frame while the user is in a
-  // distant section (footer, contact, etc).
-  useEffect(() => {
-    const node = containerRef.current;
-    if (!node || typeof IntersectionObserver === "undefined") {
-      inViewRef.current = true;
-      return;
-    }
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        inViewRef.current = entry.isIntersecting;
-      },
-      { rootMargin: "200px 0px" },
-    );
-    observer.observe(node);
-    return () => observer.disconnect();
-  }, []);
-
-  // Single RAF loop drives all orbiting icons via direct DOM transform.
-  // No re-renders during animation = silky smooth, no React work per frame.
-  useEffect(() => {
-    let raf = 0;
-    let t = 0;
-    let last = performance.now();
-
-    const tick = (now: number) => {
-      // Cap dt at ~33ms (one frame at 30fps). iOS Safari pauses
-      // requestAnimationFrame during touch-scroll, so without a cap dt
-      // can balloon to 200-1000ms and the orbital "jumps" forward
-      // visibly to catch up. With the cap the worst-case is one frame
-      // of catch-up — imperceptible.
-      const dt = Math.min((now - last) / 1000, 1 / 30);
-      last = now;
-      // Only advance time when the section is in view AND not paused.
-      // The loop keeps polling (cheap) so it picks up visibility changes
-      // without a re-render.
-      if (inViewRef.current && !pausedRef.current) {
-        t += dt;
-        for (const s of services) {
-          const node = iconRefs.current[s.id];
-          if (!node) continue;
-          const radius = s.orbit === "inner" ? INNER_RADIUS : OUTER_RADIUS;
-          const speed = s.orbit === "inner" ? INNER_SPEED : OUTER_SPEED;
-          const phase = (s.phaseDeg * Math.PI) / 180;
-          const angle = t * speed + phase;
-          const x = Math.cos(angle) * radius;
-          const y = Math.sin(angle) * radius;
-          node.style.transform = `translate3d(calc(${x}px - 50%), calc(${y}px - 50%), 0)`;
-        }
-      }
-      raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+  // Period of one full revolution per orbit. We reuse the existing
+  // `orbit-halo` keyframe (rotate 0deg -> 360deg) defined in
+  // tailwind.config.ts. Speed values come from INNER_SPEED / OUTER_SPEED.
+  const innerPeriod = (2 * Math.PI) / INNER_SPEED; // ~39.27s
+  const outerPeriod = (2 * Math.PI) / Math.abs(OUTER_SPEED); // ~66.14s
 
   return (
     <div className="mt-16 sm:mt-20 flex justify-center">
       <div
-        ref={containerRef}
-        className="relative w-[800px] h-[800px] max-w-[95vw] aspect-square origin-center max-[900px]:scale-[0.85] max-[640px]:scale-[0.62] max-[440px]:scale-[0.48]"
-        onMouseEnter={() => setPaused(true)}
-        onMouseLeave={() => setPaused(false)}
+        className="group/orbital relative w-[800px] h-[800px] max-w-[95vw] aspect-square origin-center max-[900px]:scale-[0.85] max-[640px]:scale-[0.62] max-[440px]:scale-[0.48]"
       >
         {/* Orbit paths */}
         <OrbitRing radius={INNER_RADIUS} delay={0} />
@@ -237,26 +172,61 @@ function ServicesOrbit() {
           onClear={() => setSelected(null)}
         />
 
-        {/* Orbiting service icons */}
+        {/* Orbiting service icons. Each icon sits inside a 2-layer
+            rotator: the outer rotator spins around the container center
+            and carries the icon along an orbit circle; the inner
+            counter-rotator cancels that rotation so the icon stays
+            visually upright (HardHat, Search, etc. would otherwise read
+            upside-down half the time). Both rotations are pure CSS
+            animations — they run on the compositor thread, so iOS
+            Safari can't desync them during touch-scroll. Hover anywhere
+            on the orbital container pauses all rotations. */}
         {services.map((s) => {
           const radius = s.orbit === "inner" ? INNER_RADIUS : OUTER_RADIUS;
-          const phase = (s.phaseDeg * Math.PI) / 180;
-          const initialX = Math.cos(phase) * radius;
-          const initialY = Math.sin(phase) * radius;
+          const period = s.orbit === "inner" ? innerPeriod : outerPeriod;
+          const isOuter = s.orbit === "outer";
+          // Negative delay so each icon starts at its own phase angle
+          // along the cycle. phaseDeg is in degrees of the revolution.
+          const phaseDelay = -(s.phaseDeg / 360) * period;
+          // Initial transform: pre-rotate the rotator to phaseDeg so the
+          // SSR snapshot already shows the icons spread around the orbit.
+          // The animation picks up from there with the matching delay.
+          const initialRotate = `rotate(${s.phaseDeg}deg)`;
+          const initialCounterRotate = `rotate(${-s.phaseDeg}deg)`;
+
           return (
-            <OrbitingIcon
+            <div
               key={s.id}
-              service={s}
-              isActive={selected?.id === s.id}
-              onSelect={() =>
-                setSelected((prev) => (prev?.id === s.id ? null : s))
-              }
-              refCallback={(el) => {
-                iconRefs.current[s.id] = el;
+              className="absolute top-1/2 left-1/2 group-hover/orbital:[animation-play-state:paused]"
+              style={{
+                width: 0,
+                height: 0,
+                transform: initialRotate,
+                animation: `orbit-halo ${period}s linear infinite`,
+                animationDelay: `${phaseDelay}s`,
+                animationDirection: isOuter ? "reverse" : "normal",
               }}
-              initialX={initialX}
-              initialY={initialY}
-            />
+            >
+              <div
+                className="absolute group-hover/orbital:[animation-play-state:paused]"
+                style={{
+                  transform: `translate(${radius}px, 0) ${initialCounterRotate}`,
+                  animation: `orbit-halo ${period}s linear infinite`,
+                  animationDelay: `${phaseDelay}s`,
+                  animationDirection: isOuter ? "normal" : "reverse",
+                }}
+              >
+                <div style={{ transform: "translate(-50%, -50%)" }}>
+                  <OrbitingIcon
+                    service={s}
+                    isActive={selected?.id === s.id}
+                    onSelect={() =>
+                      setSelected((prev) => (prev?.id === s.id ? null : s))
+                    }
+                  />
+                </div>
+              </div>
+            </div>
           );
         })}
       </div>
@@ -329,16 +299,10 @@ function OrbitingIcon({
   service,
   isActive,
   onSelect,
-  refCallback,
-  initialX,
-  initialY,
 }: {
   service: Service;
   isActive: boolean;
   onSelect: () => void;
-  refCallback: (el: HTMLButtonElement | null) => void;
-  initialX: number;
-  initialY: number;
 }) {
   const Icon = service.icon;
   const isOuter = service.orbit === "outer";
@@ -346,16 +310,12 @@ function OrbitingIcon({
   const breatheDelay = `${(service.phaseDeg / 60) % 3}s`;
   return (
     <button
-      ref={refCallback}
       type="button"
       onClick={onSelect}
       aria-label={service.title}
       aria-pressed={isActive}
-      style={{
-        transform: `translate3d(calc(${initialX}px - 50%), calc(${initialY}px - 50%), 0)`,
-      }}
       className={cn(
-        "group/icon absolute top-1/2 left-1/2 grid place-items-center rounded-full will-change-transform no-tap-highlight z-10 transition-transform duration-300",
+        "group/icon relative grid place-items-center rounded-full will-change-transform no-tap-highlight z-10 transition-transform duration-300",
         isOuter ? "w-[88px] h-[88px]" : "w-[76px] h-[76px]",
         isActive
           ? "scale-[1.16] z-20"

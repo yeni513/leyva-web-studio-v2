@@ -1,14 +1,12 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   AnimatePresence,
   cubicBezier,
   motion,
 } from "framer-motion";
 import {
-  ArrowLeft,
-  ArrowRight,
   BadgeCheck,
   CreditCard,
   Heart,
@@ -160,8 +158,6 @@ const stats: Stat[] = [
 ];
 
 const EASE_PREMIUM = cubicBezier(0.22, 1, 0.36, 1);
-const AUTO_SPEED_PX_PER_SEC = 32;
-const PAUSE_AFTER_INTERACTION_MS = 4000;
 
 export function Guarantees() {
   return (
@@ -208,132 +204,19 @@ export function Guarantees() {
 // Carousel — auto-scroll + hover pause + arrow nav
 // ─────────────────────────────────────────────────
 function Carousel({ items }: { items: Guarantee[] }) {
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const [canLeft, setCanLeft] = useState(false);
-  const [canRight, setCanRight] = useState(true);
-  const [hovering, setHovering] = useState(false);
-  const [interacted, setInteracted] = useState(false);
   const [expanded, setExpanded] = useState<Guarantee | null>(null);
-  const [inView, setInView] = useState(false);
-  const interactionTimerRef = useRef<number | null>(null);
 
-  // Autoscroll pauses only on direct interaction signals: hover, modal
-  // open, recent manual scroll/tap (touchstart triggers `interacted`
-  // for 4s), or when the section is offscreen. No motion-preference or
-  // device-class gate.
-  const autoPaused =
-    hovering ||
-    expanded !== null ||
-    interacted ||
-    !inView;
-
-  useEffect(() => {
-    const node = sectionRef.current;
-    if (!node || typeof IntersectionObserver === "undefined") {
-      setInView(true);
-      return;
-    }
-    const observer = new IntersectionObserver(
-      ([entry]) => setInView(entry.isIntersecting),
-      { rootMargin: "200px 0px" },
-    );
-    observer.observe(node);
-    return () => observer.disconnect();
-  }, []);
-
-  // Duplicate set always rendered — the seamless rAF loop needs cards
-  // past the half-point to jump back to without a visible discontinuity.
-  const useDuplicates = true;
-
-  const checkScroll = useCallback(() => {
-    const node = scrollRef.current;
-    if (!node) return;
-    setCanLeft(node.scrollLeft > 4);
-    setCanRight(node.scrollLeft < node.scrollWidth - node.clientWidth - 4);
-  }, []);
-
-  useEffect(() => {
-    const node = scrollRef.current;
-    if (!node) return;
-    checkScroll();
-    node.addEventListener("scroll", checkScroll, { passive: true });
-    window.addEventListener("resize", checkScroll);
-    return () => {
-      node.removeEventListener("scroll", checkScroll);
-      window.removeEventListener("resize", checkScroll);
-    };
-  }, [checkScroll]);
-
-  useEffect(() => {
-    if (autoPaused) return;
-    let raf = 0;
-    let last = performance.now();
-
-    const tick = (now: number) => {
-      // Cap dt so iOS Safari's rAF throttling during touch-scroll
-      // doesn't make the carousel "jump" forward to catch up when
-      // scroll ends. At 32px/s the visible discontinuity from a 500ms
-      // pause would be 16px — small but noticeable. Capping at 33ms
-      // (one 30fps frame) eliminates it.
-      const dt = Math.min((now - last) / 1000, 1 / 30);
-      last = now;
-
-      const node = scrollRef.current;
-      if (node) {
-        const half = node.scrollWidth / 2;
-        if (half > 0 && node.scrollLeft >= half) {
-          node.scrollLeft = node.scrollLeft - half;
-        }
-        node.scrollLeft += AUTO_SPEED_PX_PER_SEC * dt;
-      }
-      raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [autoPaused]);
-
-  const scrollBy = (delta: number) => {
-    scrollRef.current?.scrollBy({ left: delta, behavior: "smooth" });
-    setInteracted(true);
-    if (interactionTimerRef.current) {
-      window.clearTimeout(interactionTimerRef.current);
-    }
-    interactionTimerRef.current = window.setTimeout(
-      () => setInteracted(false),
-      PAUSE_AFTER_INTERACTION_MS,
-    );
-  };
-
-  useEffect(() => {
-    const node = scrollRef.current;
-    if (!node) return;
-    const onInteract = () => {
-      setInteracted(true);
-      if (interactionTimerRef.current) {
-        window.clearTimeout(interactionTimerRef.current);
-      }
-      interactionTimerRef.current = window.setTimeout(
-        () => setInteracted(false),
-        PAUSE_AFTER_INTERACTION_MS,
-      );
-    };
-    node.addEventListener("wheel", onInteract, { passive: true });
-    node.addEventListener("touchstart", onInteract, { passive: true });
-    return () => {
-      node.removeEventListener("wheel", onInteract);
-      node.removeEventListener("touchstart", onInteract);
-    };
-  }, []);
+  // Animation duration: at ~32px/s scroll speed, traversing 50% of the
+  // (duplicated) row takes one full card-set duration. We pick a single
+  // duration that feels right for both mobile (narrower cards) and
+  // desktop (wider cards) — slight speed difference is imperceptible.
+  // CSS marquee runs on the compositor thread, so iOS Safari doesn't
+  // throttle it during touch-scroll like it does with rAF/scrollLeft.
+  const marqueeDuration = "80s";
 
   return (
     <>
-      <div
-        ref={sectionRef}
-        className="relative mt-10 sm:mt-14"
-        onMouseEnter={() => setHovering(true)}
-        onMouseLeave={() => setHovering(false)}
-      >
+      <div className="group/carousel relative mt-10 sm:mt-14">
         <div
           className="pointer-events-none absolute left-0 top-0 bottom-0 w-16 sm:w-32 z-10 bg-gradient-to-r from-ink-950 via-ink-950/80 to-transparent"
           aria-hidden
@@ -344,29 +227,28 @@ function Carousel({ items }: { items: Guarantee[] }) {
         />
 
         <div
-          ref={scrollRef}
           aria-label="Carrusel de compromisos firmados"
-          className="flex gap-4 sm:gap-5 overflow-x-auto overscroll-x-contain py-6 sm:py-8 px-5 sm:px-10 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+          className="overflow-hidden py-6 sm:py-8"
         >
-          {/* Original set — the accessible, interactive list of commitments.
-              Screen readers, keyboard nav, and crawlers see only this group. */}
-          {items.map((g, i) => (
-            <GuaranteeCard
-              key={`a-${g.id}`}
-              guarantee={g}
-              index={i}
-              onOpen={() => setExpanded(g)}
-            />
-          ))}
+          <div
+            className="flex gap-4 sm:gap-5 w-max px-5 sm:px-10 group-hover/carousel:[animation-play-state:paused]"
+            style={{
+              animation: `marquee ${marqueeDuration} linear infinite`,
+            }}
+          >
+            {/* Original set — accessible, interactive, announced by SR. */}
+            {items.map((g, i) => (
+              <GuaranteeCard
+                key={`a-${g.id}`}
+                guarantee={g}
+                index={i}
+                onOpen={() => setExpanded(g)}
+              />
+            ))}
 
-          {/* Duplicate set — rendered only on desktop so the rAF autoscroll
-              can loop seamlessly back to position 0 when it crosses the
-              halfway point. The wrapper marks the whole set as aria-hidden
-              + inert; `display: contents` lets the cards still participate
-              in the parent flex layout while the wrapper itself is invisible
-              to layout. Cards inside also carry their own ariaHidden as
-              defense in depth. */}
-          {useDuplicates && (
+            {/* Duplicate set — required so the marquee keyframe
+                (translateX 0 -> -50%) wraps back to the start position
+                without a visible jump. Hidden from a11y/SEO. */}
             <div
               className="contents"
               aria-hidden="true"
@@ -383,57 +265,6 @@ function Carousel({ items }: { items: Guarantee[] }) {
                 />
               ))}
             </div>
-          )}
-        </div>
-
-        <div
-          className="container flex items-center justify-between gap-3 mt-2 sm:mt-4"
-          aria-hidden
-        >
-          <span
-            className={cn(
-              "inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.22em] text-ember-50/45 transition-opacity duration-500",
-              autoPaused ? "opacity-100" : "opacity-60",
-            )}
-          >
-            <span
-              className={cn(
-                "w-1.5 h-1.5 rounded-full transition-colors duration-500",
-                autoPaused
-                  ? "bg-ember-50/50"
-                  : "bg-ember-300 animate-pulse-glow",
-              )}
-            />
-            {autoPaused ? "Pausado" : "Auto-scroll"}
-          </span>
-
-          <div className="flex gap-2 ml-auto">
-            <button
-              type="button"
-              aria-label="Compromiso anterior"
-              onClick={() => scrollBy(-380)}
-              disabled={!canLeft}
-              className={cn(
-                "grid place-items-center w-11 h-11 rounded-full border border-ember-300/25 bg-ember-300/[0.06] text-ember-300 transition-all duration-300 no-tap-highlight",
-                "hover:bg-ember-300/[0.14] hover:border-ember-300/50 hover:shadow-glow-sm active:scale-95",
-                "disabled:opacity-25 disabled:cursor-not-allowed disabled:hover:bg-ember-300/[0.06] disabled:hover:border-ember-300/25 disabled:hover:shadow-none",
-              )}
-            >
-              <ArrowLeft className="w-5 h-5" />
-            </button>
-            <button
-              type="button"
-              aria-label="Siguiente compromiso"
-              onClick={() => scrollBy(380)}
-              disabled={!canRight}
-              className={cn(
-                "grid place-items-center w-11 h-11 rounded-full border border-ember-300/25 bg-ember-300/[0.06] text-ember-300 transition-all duration-300 no-tap-highlight",
-                "hover:bg-ember-300/[0.14] hover:border-ember-300/50 hover:shadow-glow-sm active:scale-95",
-                "disabled:opacity-25 disabled:cursor-not-allowed disabled:hover:bg-ember-300/[0.06] disabled:hover:border-ember-300/25 disabled:hover:shadow-none",
-              )}
-            >
-              <ArrowRight className="w-5 h-5" />
-            </button>
           </div>
         </div>
       </div>
