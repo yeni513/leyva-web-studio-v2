@@ -3,7 +3,6 @@
 import * as React from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { useIsMobile } from "@/lib/use-is-mobile";
 
 interface RevealProps extends React.HTMLAttributes<HTMLDivElement> {
   delay?: number;
@@ -13,9 +12,9 @@ interface RevealProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 /**
- * Mobile-safe reveal. Mobile and reduced-motion users see content
- * rendered statically (no IntersectionObserver, no opacity-0 trap).
- * Desktop gets a subtle fade-up.
+ * Section reveal. The only thing that disables the fade-up is
+ * prefers-reduced-motion. Mobile users get the same entrance animation
+ * as desktop — only a real accessibility preference opts them out.
  */
 export function Reveal({
   className,
@@ -27,9 +26,8 @@ export function Reveal({
   ...rest
 }: RevealProps) {
   const prefersReduced = useReducedMotion();
-  const isMobile = useIsMobile();
 
-  if (prefersReduced || isMobile) {
+  if (prefersReduced) {
     const Tag = as as React.ElementType;
     return (
       <Tag className={cn(className)} {...rest}>

@@ -23,7 +23,6 @@ import {
 } from "lucide-react";
 import { SectionHeading } from "@/components/section-heading";
 import { Reveal } from "@/components/ui/reveal";
-import { useIsMobile } from "@/lib/use-is-mobile";
 
 const beforeItems = [
   "Plantilla genérica",
@@ -66,12 +65,14 @@ const premiumWins = [
  * Desktop gets the pinned Apple-style scrollytelling experience.
  */
 export function Transformation() {
-  const isMobile = useIsMobile();
   const reduced = useReducedMotion();
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
-  if (!mounted || isMobile || reduced) return <TransformationStatic />;
+  // Mobile and desktop share the scroll-driven transformation experience.
+  // Only prefers-reduced-motion (a11y) or SSR pre-mount routes to the
+  // static fallback.
+  if (!mounted || reduced) return <TransformationStatic />;
   return <TransformationScroll />;
 }
 

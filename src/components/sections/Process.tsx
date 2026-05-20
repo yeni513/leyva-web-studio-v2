@@ -10,7 +10,6 @@ import {
 import { motion, useReducedMotion } from "framer-motion";
 import { SectionHeading } from "@/components/section-heading";
 import { Reveal } from "@/components/ui/reveal";
-import { useIsMobile } from "@/lib/use-is-mobile";
 
 interface Step {
   n: string;
@@ -52,9 +51,10 @@ const steps: Step[] = [
 ];
 
 export function Process() {
-  const isMobile = useIsMobile();
   const reduced = useReducedMotion();
-  const safe = isMobile || !!reduced;
+  // Mobile gets the same connector / glow animations as desktop. Only
+  // prefers-reduced-motion (a11y) downgrades the timeline.
+  const safe = !!reduced;
 
   return (
     <section id="proceso" className="relative py-10 sm:py-16 bg-ink-950/40">

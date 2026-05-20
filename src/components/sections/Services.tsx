@@ -20,7 +20,6 @@ import {
 } from "lucide-react";
 import { SectionHeading } from "@/components/section-heading";
 import { Reveal } from "@/components/ui/reveal";
-import { useIsMobile } from "@/lib/use-is-mobile";
 import { prefillQuote } from "@/lib/prefill-quote";
 import { cn } from "@/lib/utils";
 
@@ -104,12 +103,13 @@ const OUTER_SPEED = -0.095;
 const EASE_PREMIUM = cubicBezier(0.22, 1, 0.36, 1);
 
 export function Services() {
-  const isMobile = useIsMobile();
   const reduced = useReducedMotion();
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
-  const useFallback = !mounted || isMobile || !!reduced;
+  // Mobile gets the orbital just like desktop. Only fallback is
+  // prefers-reduced-motion (real a11y opt-out) or pre-mount (SSR).
+  const useFallback = !mounted || !!reduced;
 
   return (
     <section
@@ -220,7 +220,7 @@ function ServicesOrbit() {
     <div className="mt-16 sm:mt-20 flex justify-center">
       <div
         ref={containerRef}
-        className="relative w-[800px] h-[800px] max-w-[95vw] aspect-square origin-center max-[900px]:scale-[0.85]"
+        className="relative w-[800px] h-[800px] max-w-[95vw] aspect-square origin-center max-[900px]:scale-[0.85] max-[640px]:scale-[0.62] max-[440px]:scale-[0.48]"
         onMouseEnter={() => setPaused(true)}
         onMouseLeave={() => setPaused(false)}
       >

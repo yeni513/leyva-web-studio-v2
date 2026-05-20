@@ -26,7 +26,6 @@ import {
 } from "lucide-react";
 import { SectionHeading } from "@/components/section-heading";
 import { Reveal } from "@/components/ui/reveal";
-import { useIsMobile } from "@/lib/use-is-mobile";
 import { useBodyScrollLock } from "@/lib/use-body-scroll-lock";
 import { cn } from "@/lib/utils";
 
@@ -219,17 +218,20 @@ function Carousel({ items }: { items: Guarantee[] }) {
   const [expanded, setExpanded] = useState<Guarantee | null>(null);
   const [inView, setInView] = useState(false);
   const reduced = useReducedMotion();
-  const isMobile = useIsMobile();
 
   const interactionTimerRef = useRef<number | null>(null);
 
+  // Autoscroll pauses on hover, on modal open, after a manual scroll/tap
+  // (touchstart triggers `interacted` for 4s), when offscreen, or when
+  // the user prefers reduced motion. Mobile is NOT a pause condition —
+  // the rAF loop runs on phones too, and gracefully yields to manual
+  // swipe via the touchstart handler.
   const autoPaused =
     hovering ||
     expanded !== null ||
     interacted ||
     !inView ||
-    !!reduced ||
-    isMobile;
+    !!reduced;
 
   useEffect(() => {
     const node = sectionRef.current;
@@ -245,11 +247,10 @@ function Carousel({ items }: { items: Guarantee[] }) {
     return () => observer.disconnect();
   }, []);
 
-  // Only render the duplicate set on desktop, where the rAF autoscroll
-  // runs and needs a seamless half-point jump-back. On mobile and
-  // reduced-motion the autoscroll is off — a second identical set would
-  // just be visible repeated content with no animation reason.
-  const useDuplicates = !reduced && !isMobile;
+  // Render the duplicate set whenever the autoscroll loop is going to
+  // run (everything except reduced-motion). Mobile included — the rAF
+  // loop needs the duplicates to jump-back seamlessly at the half-point.
+  const useDuplicates = !reduced;
 
   const checkScroll = useCallback(() => {
     const node = scrollRef.current;
@@ -393,7 +394,6 @@ function Carousel({ items }: { items: Guarantee[] }) {
           <span
             className={cn(
               "inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.22em] text-ember-50/45 transition-opacity duration-500",
-              isMobile && "hidden",
               autoPaused ? "opacity-100" : "opacity-60",
             )}
           >
@@ -722,8 +722,7 @@ function ExpandedModal({
 function StatCard({ stat, index }: { stat: Stat; index: number }) {
   const Icon = stat.icon;
   const reduced = useReducedMotion();
-  const isMobile = useIsMobile();
-  const safe = !!reduced || isMobile;
+  const safe = !!reduced;
 
   return (
     <div className="group relative rounded-2xl border border-white/[0.07] bg-gradient-to-b from-white/[0.04] to-white/[0.01] p-5 sm:p-6 overflow-hidden transition-all duration-500 hover:border-ember-300/35 hover:-translate-y-1 hover:shadow-glow-sm">

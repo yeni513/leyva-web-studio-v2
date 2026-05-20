@@ -4,7 +4,6 @@ import dynamic from "next/dynamic";
 import { ArrowUpRight, Calendar, MessageCircle, Sparkles, Star } from "lucide-react";
 import { AnchorButton } from "@/components/ui/button";
 import { StaticHeroBackground } from "@/components/visuals/StaticHeroBackground";
-import { useIsMobile } from "@/lib/use-is-mobile";
 import { site, whatsappLink } from "@/lib/site";
 
 const ShaderBackground = dynamic(
@@ -16,8 +15,6 @@ const ShaderBackground = dynamic(
 );
 
 export function Hero() {
-  const isMobile = useIsMobile();
-
   return (
     <section
       id="top"
@@ -26,18 +23,20 @@ export function Hero() {
       {/* Background layer */}
       <div className="absolute inset-0 -z-10">
         {/* Always-on static cinematic backdrop. Acts as a safety net so
-            the hero is never blank if the shader fails to mount. */}
+            the hero is never blank if WebGL is unsupported or the shader
+            fails to mount. */}
         <StaticHeroBackground className="absolute inset-0" />
 
-        {/* Desktop-only WebGL shader on top of the static backdrop */}
-        {!isMobile && (
-          <div className="absolute inset-0">
-            <ShaderBackground className="absolute inset-0 w-full h-full" />
-            {/* Vignette to make the content pop */}
-            <div className="absolute inset-0 bg-[radial-gradient(60%_55%_at_50%_45%,transparent_0%,rgba(7,6,8,0.55)_75%,rgba(7,6,8,0.92)_100%)] pointer-events-none" />
-            <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-b from-transparent to-ink-950 pointer-events-none" />
-          </div>
-        )}
+        {/* WebGL shader — runs on every device that supports it (desktop
+            AND mobile). The dynamic import + ssr:false + the static
+            backdrop above mean we degrade gracefully if WebGL is missing
+            or the chunk fails to load — no visible gap. */}
+        <div className="absolute inset-0">
+          <ShaderBackground className="absolute inset-0 w-full h-full" />
+          {/* Vignette to make the content pop */}
+          <div className="absolute inset-0 bg-[radial-gradient(60%_55%_at_50%_45%,transparent_0%,rgba(7,6,8,0.55)_75%,rgba(7,6,8,0.92)_100%)] pointer-events-none" />
+          <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-b from-transparent to-ink-950 pointer-events-none" />
+        </div>
 
         {/* Subtle hairline grid overlay */}
         <div

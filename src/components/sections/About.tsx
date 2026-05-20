@@ -19,7 +19,6 @@ import {
 } from "lucide-react";
 import { SectionHeading } from "@/components/section-heading";
 import { Reveal } from "@/components/ui/reveal";
-import { useIsMobile } from "@/lib/use-is-mobile";
 import { cn } from "@/lib/utils";
 
 const HAS_FOUNDER_PHOTO = true;
@@ -27,8 +26,10 @@ const HAS_FOUNDER_PHOTO = true;
 export function About() {
   const cardRef = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
-  const isMobile = useIsMobile();
-  const enableTilt = !reduced && !isMobile;
+  // Tilt enabled on every device. Touch devices (no mouseMove) will
+  // simply see the card at neutral rotation — same visual as desktop
+  // at rest before the user moves their mouse.
+  const enableTilt = !reduced;
 
   // Mouse-following 3D tilt (springy)
   const mouseX = useMotionValue(0);

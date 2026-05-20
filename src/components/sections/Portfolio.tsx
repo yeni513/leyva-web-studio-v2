@@ -34,7 +34,6 @@ import {
 } from "lucide-react";
 import { SectionHeading } from "@/components/section-heading";
 import { Reveal } from "@/components/ui/reveal";
-import { useIsMobile } from "@/lib/use-is-mobile";
 import { useBodyScrollLock } from "@/lib/use-body-scroll-lock";
 import { prefillQuote } from "@/lib/prefill-quote";
 
@@ -350,11 +349,13 @@ const cases: CaseStudy[] = [
 ];
 
 export function Portfolio() {
-  const isMobile = useIsMobile();
   const reduced = useReducedMotion();
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
-  const safe = !mounted || isMobile || !!reduced;
+  // Mobile gets the same scroll-driven fly-in cards as desktop. Only
+  // prefers-reduced-motion (a11y) or SSR pre-mount triggers the static
+  // grid.
+  const safe = !mounted || !!reduced;
 
   if (safe) return <PortfolioStatic />;
   return <PortfolioScroll />;
