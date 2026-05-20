@@ -5,7 +5,6 @@ import {
   AnimatePresence,
   cubicBezier,
   motion,
-  useReducedMotion,
 } from "framer-motion";
 import {
   ArrowLeft,
@@ -217,21 +216,17 @@ function Carousel({ items }: { items: Guarantee[] }) {
   const [interacted, setInteracted] = useState(false);
   const [expanded, setExpanded] = useState<Guarantee | null>(null);
   const [inView, setInView] = useState(false);
-  const reduced = useReducedMotion();
-
   const interactionTimerRef = useRef<number | null>(null);
 
-  // Autoscroll pauses on hover, on modal open, after a manual scroll/tap
-  // (touchstart triggers `interacted` for 4s), when offscreen, or when
-  // the user prefers reduced motion. Mobile is NOT a pause condition —
-  // the rAF loop runs on phones too, and gracefully yields to manual
-  // swipe via the touchstart handler.
+  // Autoscroll pauses only on direct interaction signals: hover, modal
+  // open, recent manual scroll/tap (touchstart triggers `interacted`
+  // for 4s), or when the section is offscreen. No motion-preference or
+  // device-class gate.
   const autoPaused =
     hovering ||
     expanded !== null ||
     interacted ||
-    !inView ||
-    !!reduced;
+    !inView;
 
   useEffect(() => {
     const node = sectionRef.current;
@@ -247,10 +242,9 @@ function Carousel({ items }: { items: Guarantee[] }) {
     return () => observer.disconnect();
   }, []);
 
-  // Render the duplicate set whenever the autoscroll loop is going to
-  // run (everything except reduced-motion). Mobile included — the rAF
-  // loop needs the duplicates to jump-back seamlessly at the half-point.
-  const useDuplicates = !reduced;
+  // Duplicate set always rendered — the seamless rAF loop needs cards
+  // past the half-point to jump back to without a visible discontinuity.
+  const useDuplicates = true;
 
   const checkScroll = useCallback(() => {
     const node = scrollRef.current;
@@ -463,7 +457,6 @@ function GuaranteeCard({
    *  seamless-loop autoscroll. Hidden from AT + crawlers + keyboard. */
   ariaHidden?: boolean;
 }) {
-  const reduced = useReducedMotion();
   const baseRotate = index % 2 === 0 ? -0.6 : 0.6;
   const hoverRotate = index % 2 === 0 ? 2 : -2;
 
@@ -475,18 +468,14 @@ function GuaranteeCard({
       aria-hidden={ariaHidden || undefined}
       inert={ariaHidden || undefined}
       initial={{ rotate: baseRotate }}
-      whileHover={
-        reduced
-          ? undefined
-          : {
-              rotateX: 4,
-              rotateY: -3,
-              rotate: hoverRotate,
-              scale: 1.04,
-              y: -6,
-              transition: { duration: 0.35, ease: "easeOut" },
-            }
-      }
+      whileHover={{
+        rotateX: 4,
+        rotateY: -3,
+        rotate: hoverRotate,
+        scale: 1.04,
+        y: -6,
+        transition: { duration: 0.35, ease: "easeOut" },
+      }}
       whileTap={{ scale: 0.98 }}
       style={{ perspective: 1000, transformStyle: "preserve-3d" }}
       className="group/card shrink-0 w-[280px] sm:w-[340px] h-[460px] sm:h-[500px] text-left rounded-3xl border border-white/[0.08] bg-gradient-to-b from-white/[0.04] to-white/[0.01] p-6 sm:p-7 relative overflow-hidden transition-[border-color,box-shadow] duration-500 hover:border-ember-300/45 hover:shadow-[0_30px_70px_-20px_rgba(236,139,42,0.50)] no-tap-highlight"
@@ -721,8 +710,7 @@ function ExpandedModal({
 // ─────────────────────────────────────────────────
 function StatCard({ stat, index }: { stat: Stat; index: number }) {
   const Icon = stat.icon;
-  const reduced = useReducedMotion();
-  const safe = !!reduced;
+  const safe = false;
 
   return (
     <div className="group relative rounded-2xl border border-white/[0.07] bg-gradient-to-b from-white/[0.04] to-white/[0.01] p-5 sm:p-6 overflow-hidden transition-all duration-500 hover:border-ember-300/35 hover:-translate-y-1 hover:shadow-glow-sm">

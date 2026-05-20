@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import {
   motion,
-  useReducedMotion,
   useScroll,
   useTransform,
 } from "framer-motion";
@@ -65,14 +64,13 @@ const premiumWins = [
  * Desktop gets the pinned Apple-style scrollytelling experience.
  */
 export function Transformation() {
-  const reduced = useReducedMotion();
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
-  // Mobile and desktop share the scroll-driven transformation experience.
-  // Only prefers-reduced-motion (a11y) or SSR pre-mount routes to the
-  // static fallback.
-  if (!mounted || reduced) return <TransformationStatic />;
+  // Full scroll-driven experience on every device + motion pref. Only
+  // the SSR pre-mount routes to the static fallback to keep server
+  // and client markup in sync.
+  if (!mounted) return <TransformationStatic />;
   return <TransformationScroll />;
 }
 

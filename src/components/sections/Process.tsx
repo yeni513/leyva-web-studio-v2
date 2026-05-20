@@ -7,7 +7,7 @@ import {
   Rocket,
   type LucideIcon,
 } from "lucide-react";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import { SectionHeading } from "@/components/section-heading";
 import { Reveal } from "@/components/ui/reveal";
 
@@ -51,10 +51,8 @@ const steps: Step[] = [
 ];
 
 export function Process() {
-  const reduced = useReducedMotion();
-  // Mobile gets the same connector / glow animations as desktop. Only
-  // prefers-reduced-motion (a11y) downgrades the timeline.
-  const safe = !!reduced;
+  // Connector/glow animations always on, every device, every motion pref.
+  const safe = false;
 
   return (
     <section id="proceso" className="relative py-10 sm:py-16 bg-ink-950/40">

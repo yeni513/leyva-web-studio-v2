@@ -5,7 +5,6 @@ import {
   AnimatePresence,
   cubicBezier,
   motion,
-  useReducedMotion,
   useScroll,
   useTransform,
   type MotionValue,
@@ -349,13 +348,11 @@ const cases: CaseStudy[] = [
 ];
 
 export function Portfolio() {
-  const reduced = useReducedMotion();
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
-  // Mobile gets the same scroll-driven fly-in cards as desktop. Only
-  // prefers-reduced-motion (a11y) or SSR pre-mount triggers the static
-  // grid.
-  const safe = !mounted || !!reduced;
+  // Scroll-driven fly-in runs on every device, every motion preference.
+  // Only the SSR pre-mount stays as a fallback.
+  const safe = !mounted;
 
   if (safe) return <PortfolioStatic />;
   return <PortfolioScroll />;

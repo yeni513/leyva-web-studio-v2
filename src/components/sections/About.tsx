@@ -5,7 +5,6 @@ import { useRef } from "react";
 import {
   motion,
   useMotionValue,
-  useReducedMotion,
   useSpring,
   useTransform,
 } from "framer-motion";
@@ -25,11 +24,9 @@ const HAS_FOUNDER_PHOTO = true;
 
 export function About() {
   const cardRef = useRef<HTMLDivElement>(null);
-  const reduced = useReducedMotion();
-  // Tilt enabled on every device. Touch devices (no mouseMove) will
-  // simply see the card at neutral rotation — same visual as desktop
-  // at rest before the user moves their mouse.
-  const enableTilt = !reduced;
+  // Tilt enabled unconditionally. Touch devices without mouseMove see
+  // the card at neutral rotation — same visual as desktop at rest.
+  const enableTilt = true;
 
   // Mouse-following 3D tilt (springy)
   const mouseX = useMotionValue(0);

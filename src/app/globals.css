@@ -46,16 +46,14 @@ button,
   touch-action: manipulation;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-  * {
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
-  }
-}
+/* Note: previously a `@media (prefers-reduced-motion: reduce)` block
+   forced animation-duration and transition-duration to 0.001ms across
+   the entire DOM. That was killing every CSS-driven effect (conic
+   halos, breathing auras, marquee, shimmers) for users whose devices
+   reported reduced motion — including iPhones where the user has
+   "Reduce Motion" enabled in Accessibility settings. Removed so the
+   full visual experience renders on every device regardless of
+   motion preference. */
 
 ::selection {
   background: rgba(236, 139, 42, 0.35);

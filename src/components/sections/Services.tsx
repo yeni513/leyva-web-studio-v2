@@ -5,7 +5,6 @@ import {
   AnimatePresence,
   cubicBezier,
   motion,
-  useReducedMotion,
 } from "framer-motion";
 import {
   ArrowUpRight,
@@ -103,13 +102,12 @@ const OUTER_SPEED = -0.095;
 const EASE_PREMIUM = cubicBezier(0.22, 1, 0.36, 1);
 
 export function Services() {
-  const reduced = useReducedMotion();
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
-  // Mobile gets the orbital just like desktop. Only fallback is
-  // prefers-reduced-motion (real a11y opt-out) or pre-mount (SSR).
-  const useFallback = !mounted || !!reduced;
+  // Orbital runs on every device, every motion preference. Only the
+  // SSR pre-mount stays as a fallback so server and client markup match.
+  const useFallback = !mounted;
 
   return (
     <section

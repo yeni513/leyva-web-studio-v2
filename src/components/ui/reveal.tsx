@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 interface RevealProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -12,9 +12,9 @@ interface RevealProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 /**
- * Section reveal. The only thing that disables the fade-up is
- * prefers-reduced-motion. Mobile users get the same entrance animation
- * as desktop — only a real accessibility preference opts them out.
+ * Section reveal — fade-up on scroll. Runs on every device, always.
+ * No reduced-motion or mobile fallback by design: the visual experience
+ * is the product.
  */
 export function Reveal({
   className,
@@ -25,17 +25,6 @@ export function Reveal({
   once = true,
   ...rest
 }: RevealProps) {
-  const prefersReduced = useReducedMotion();
-
-  if (prefersReduced) {
-    const Tag = as as React.ElementType;
-    return (
-      <Tag className={cn(className)} {...rest}>
-        {children}
-      </Tag>
-    );
-  }
-
   const MotionTag = motion[as] as React.ElementType;
 
   return (
