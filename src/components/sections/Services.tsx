@@ -158,9 +158,22 @@ function ServicesOrbit() {
   const outerPeriod = (2 * Math.PI) / Math.abs(OUTER_SPEED); // ~66.14s
 
   return (
-    <div className="mt-16 sm:mt-20 flex justify-center">
+    // Wrapper has aspect-square AND a responsive max-width that matches
+    // the scaled orbital's visual size at each breakpoint. The orbital
+    // itself stays at the full 800x800 logical size (the icon radii are
+    // absolute pixels) and is absolutely-positioned + transform-scaled
+    // inside the wrapper. Result: the layout reserves only the actual
+    // visible orbital area — no empty space above or below on mobile.
+    <div
+      className="mt-8 sm:mt-20 mx-auto relative aspect-square w-[95vw]
+                 max-w-[800px]
+                 max-[900px]:max-w-[680px]
+                 max-[640px]:max-w-[496px]
+                 max-[440px]:max-w-[384px]"
+    >
       <div
-        className="group/orbital relative w-[800px] h-[800px] max-w-[95vw] aspect-square origin-center max-[900px]:scale-[0.85] max-[640px]:scale-[0.62] max-[440px]:scale-[0.48]"
+        className="group/orbital absolute inset-0 m-auto w-[800px] h-[800px] origin-center
+                   max-[900px]:scale-[0.85] max-[640px]:scale-[0.62] max-[440px]:scale-[0.48]"
       >
         {/* Orbit paths */}
         <OrbitRing radius={INNER_RADIUS} delay={0} />
@@ -538,9 +551,9 @@ function SelectedView({ service }: { service: Service }) {
             fromLabel: `Servicio: ${service.title}`,
           })
         }
-        className="mt-5 inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-ember-300/35 bg-ember-300/[0.08] text-[11px] uppercase tracking-[0.18em] text-ember-300 hover:bg-ember-300/[0.16] hover:border-ember-300/55 transition-colors no-tap-highlight"
+        className="mt-5 inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full border border-ember-300/35 bg-ember-300/[0.08] text-[10.5px] uppercase tracking-[0.14em] text-ember-300 hover:bg-ember-300/[0.16] hover:border-ember-300/55 transition-colors no-tap-highlight whitespace-nowrap"
       >
-        Cotizar este servicio
+        Pedir cotización
         <ArrowUpRight className="w-3.5 h-3.5" />
       </button>
     </motion.div>
