@@ -278,7 +278,9 @@ function AvailabilityPill() {
         <span className="absolute inset-0 rounded-full bg-emerald-400 animate-ping opacity-60" />
         <span className="relative w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_10px_-1px_rgba(74,222,128,0.85)]" />
       </span>
-      <span className="text-emerald-200">Acepta nuevos proyectos</span>
+      <span className="text-emerald-200">
+        2 cupos disponibles este mes
+      </span>
     </div>
   );
 }

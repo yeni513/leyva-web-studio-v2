@@ -1,7 +1,26 @@
 import type { Metadata, Viewport } from "next";
+import { Inter, Fraunces } from "next/font/google";
 import "./globals.css";
 import { site } from "@/lib/site";
 import { StructuredData } from "@/components/structured-data";
+import { FloatingWhatsApp } from "@/components/floating-whatsapp";
+
+// Body — Inter variable, every weight available via `font-sans`.
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-sans",
+  display: "swap",
+});
+
+// Display — Fraunces variable serif with optical sizing. Used by every
+// section heading + gradient-text headline. The opsz axis lets the same
+// face look sharp at 14px (eyebrow) and at 80px (hero h1).
+const fraunces = Fraunces({
+  subsets: ["latin"],
+  axes: ["opsz"],
+  variable: "--font-display",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -88,10 +107,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es-US" className="dark">
+    <html
+      lang="es-US"
+      className={`dark ${inter.variable} ${fraunces.variable}`}
+    >
       <body className="min-h-screen bg-ink-950 text-ember-50/90 font-sans antialiased overflow-x-hidden">
         <StructuredData />
         {children}
+        <FloatingWhatsApp />
       </body>
     </html>
   );

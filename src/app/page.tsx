@@ -25,8 +25,8 @@ export default function HomePage() {
         <Transformation />
         <Process />
         <About />
-        <Packages />
         <Portfolio />
+        <Packages />
         <Guarantees />
         <FAQ />
         <Contact />

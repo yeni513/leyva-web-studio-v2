@@ -7,6 +7,10 @@ export const site = {
   contact: {
     whatsapp: "12166225575",
     whatsappDisplay: "+1 (216) 622-5575",
+    // Same line — used for tel: links so local-US prospects can call
+    // directly from the navbar / footer instead of going through chat.
+    phone: "+12166225575",
+    phoneDisplay: "+1 (216) 622-5575",
     // hola@leyvawebstudio.com está enrutado vía Cloudflare Email Routing
     // a la bandeja personal. También hay un catch-all *@leyvawebstudio.com
     // → bandeja personal por si alguien escribe a cualquier alias.

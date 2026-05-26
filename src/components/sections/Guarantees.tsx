@@ -180,7 +180,7 @@ export function Guarantees() {
                 <span className="gradient-text">la firmamos en contrato.</span>
               </>
             }
-            description="Estamos arrancando, así que en lugar de testimonios prestados te ofrecemos algo mejor: compromisos por escrito. Si no cumplimos uno solo, nos cuesta a nosotros — no a ti."
+            description="Ocho compromisos por escrito que entran en el contrato que firmamos contigo. Si no cumplimos uno solo, te cuesta a nosotros — no a ti."
           />
         </Reveal>
       </div>

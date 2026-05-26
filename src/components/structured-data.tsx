@@ -73,8 +73,14 @@ export function StructuredData() {
     ],
     address: {
       "@type": "PostalAddress",
+      addressLocality: "Cleveland",
       addressRegion: "OH",
       addressCountry: "US",
+    },
+    geo: {
+      "@type": "GeoCoordinates",
+      latitude: 41.4993,
+      longitude: -81.6944,
     },
     sameAs: [],
     knowsAbout: [

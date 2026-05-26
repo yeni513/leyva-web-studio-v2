@@ -3,9 +3,11 @@
 import { useEffect, useRef, useState } from "react";
 import {
   motion,
+  useReducedMotion,
   useScroll,
   useTransform,
 } from "framer-motion";
+import { useIsMobile } from "@/lib/use-is-mobile";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -66,11 +68,14 @@ const premiumWins = [
 export function Transformation() {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
+  const isMobile = useIsMobile();
+  const reducedMotion = useReducedMotion();
 
-  // Full scroll-driven experience on every device + motion pref. Only
-  // the SSR pre-mount routes to the static fallback to keep server
-  // and client markup in sync.
-  if (!mounted) return <TransformationStatic />;
+  // The scroll-pinned 220vh experience is desktop + motion-allowed only.
+  // On mobile it scroll-jacks a tiny screen, and with reduced motion it
+  // is a WCAG 2.3.3 trigger. The static side-by-side card layout is the
+  // genuine fallback — not a placeholder.
+  if (!mounted || isMobile || reducedMotion) return <TransformationStatic />;
   return <TransformationScroll />;
 }
 

@@ -5,7 +5,9 @@ import {
   AnimatePresence,
   cubicBezier,
   motion,
+  useReducedMotion,
 } from "framer-motion";
+import { useIsMobile } from "@/lib/use-is-mobile";
 import {
   ArrowUpRight,
   Gauge,
@@ -104,10 +106,14 @@ const EASE_PREMIUM = cubicBezier(0.22, 1, 0.36, 1);
 export function Services() {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
+  const isMobile = useIsMobile();
+  const reducedMotion = useReducedMotion();
 
-  // Orbital runs on every device, every motion preference. Only the
-  // SSR pre-mount stays as a fallback so server and client markup match.
-  const useFallback = !mounted;
+  // Route to the static 6-card grid on mobile, with reduced motion, and
+  // during SSR pre-mount. The orbital is reserved for desktop with
+  // motion enabled — its 6 nested-rotating icons + breathing auras are
+  // genuinely heavy on a phone and a vestibular trigger.
+  const useFallback = !mounted || isMobile || !!reducedMotion;
 
   return (
     <section
@@ -175,9 +181,9 @@ function ServicesOrbit() {
       <div
         className="group/orbital absolute top-1/2 left-1/2 w-[800px] h-[800px] origin-center
                    [transform:translate(-50%,-50%)]
-                   max-[900px]:[transform:scale(0.85)_translate(-50%,-50%)]
-                   max-[640px]:[transform:scale(0.62)_translate(-50%,-50%)]
-                   max-[440px]:[transform:scale(0.45)_translate(-50%,-50%)]"
+                   max-[900px]:[transform:translate(-50%,-50%)_scale(0.85)]
+                   max-[640px]:[transform:translate(-50%,-50%)_scale(0.62)]
+                   max-[440px]:[transform:translate(-50%,-50%)_scale(0.45)]"
       >
         {/* Orbit paths */}
         <OrbitRing radius={INNER_RADIUS} delay={0} />

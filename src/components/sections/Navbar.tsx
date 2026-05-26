@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Menu, X, ArrowUpRight } from "lucide-react";
+import { Menu, X, ArrowUpRight, Phone } from "lucide-react";
 import { BrandMark } from "@/components/brand";
 import { AnchorButton } from "@/components/ui/button";
+import { site } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 const links = [
@@ -84,6 +85,14 @@ export function Navbar() {
           </ul>
 
           <div className="hidden md:flex items-center gap-2">
+            <a
+              href={`tel:${site.contact.phone}`}
+              aria-label={`Llamar al ${site.contact.phoneDisplay}`}
+              className="hidden lg:inline-flex items-center gap-2 h-10 px-3 rounded-full text-sm text-ember-50/80 hover:text-ember-50 hover:bg-white/[0.04] transition-colors no-tap-highlight"
+            >
+              <Phone className="w-3.5 h-3.5 text-ember-300/85" />
+              <span className="tabular-nums">{site.contact.phoneDisplay}</span>
+            </a>
             <AnchorButton
               href="/#contact"
               size="sm"
@@ -140,7 +149,7 @@ export function Navbar() {
                 </a>
               </li>
             ))}
-            <li className="pt-2">
+            <li className="pt-2 space-y-2">
               <AnchorButton
                 href="/#contact"
                 onClick={() => setOpen(false)}
@@ -150,6 +159,16 @@ export function Navbar() {
                 Cotizar mi sitio
                 <ArrowUpRight className="w-4 h-4" />
               </AnchorButton>
+              <a
+                href={`tel:${site.contact.phone}`}
+                onClick={() => setOpen(false)}
+                className="inline-flex items-center justify-center gap-2 w-full h-11 px-4 rounded-full border border-white/[0.08] bg-white/[0.02] text-ember-50/85 hover:text-ember-50 hover:bg-white/[0.05] transition-colors no-tap-highlight text-sm"
+              >
+                <Phone className="w-4 h-4 text-ember-300/85" />
+                <span className="tabular-nums">
+                  Llamar · {site.contact.phoneDisplay}
+                </span>
+              </a>
             </li>
           </ul>
         </div>

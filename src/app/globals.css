@@ -3,9 +3,10 @@
 @tailwind utilities;
 
 :root {
-  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
-    Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-display: "Inter", Georgia, serif;
+  /* --font-sans and --font-display are injected by next/font (Inter +
+     Fraunces) in src/app/layout.tsx. The Tailwind theme reads them via
+     var(--font-sans) / var(--font-display), so this file no longer
+     overrides them. */
   --ember: 236 139 42;
 }
 
@@ -46,14 +47,33 @@ button,
   touch-action: manipulation;
 }
 
-/* Note: previously a `@media (prefers-reduced-motion: reduce)` block
-   forced animation-duration and transition-duration to 0.001ms across
-   the entire DOM. That was killing every CSS-driven effect (conic
-   halos, breathing auras, marquee, shimmers) for users whose devices
-   reported reduced motion — including iPhones where the user has
-   "Reduce Motion" enabled in Accessibility settings. Removed so the
-   full visual experience renders on every device regardless of
-   motion preference. */
+/* Scoped reduced-motion support.
+   Previous version was either nuclear (kills every transition site-wide,
+   including modal entrances and hover states — bad UX) or absent (kills
+   vestibular safety — WCAG 2.3.3 violation). This sits in between:
+   disable only the long infinite background animations + smooth-scroll.
+   Discrete state transitions (hover, focus, modal in/out, button press)
+   stay because they have no vestibular risk and are part of the UI
+   feedback loop. Scroll-pinned + parallax-heavy sections (Transformation,
+   Portfolio scroll, Services orbital) also branch to their static
+   variants via Framer's useReducedMotion() at the component level. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .animate-marquee,
+  .animate-shine,
+  .animate-orbit-halo,
+  .animate-orbit-breathe,
+  .animate-orbit-shimmer,
+  .animate-pulse-glow,
+  .animate-fade-up,
+  .animate-fade-in,
+  .gradient-text {
+    animation: none !important;
+  }
+}
 
 ::selection {
   background: rgba(236, 139, 42, 0.35);

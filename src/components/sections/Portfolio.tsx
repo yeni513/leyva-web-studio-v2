@@ -5,10 +5,12 @@ import {
   AnimatePresence,
   cubicBezier,
   motion,
+  useReducedMotion,
   useScroll,
   useTransform,
   type MotionValue,
 } from "framer-motion";
+import { useIsMobile } from "@/lib/use-is-mobile";
 import {
   ArrowUpRight,
   Calendar,
@@ -20,7 +22,6 @@ import {
   Image as ImageIcon,
   MapPin,
   MessageCircle,
-  Quote as QuoteIcon,
   Scissors,
   ShieldCheck,
   Sparkles,
@@ -350,11 +351,14 @@ const cases: CaseStudy[] = [
 export function Portfolio() {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
-  // Scroll-driven fly-in runs on every device, every motion preference.
-  // Only the SSR pre-mount stays as a fallback.
-  const safe = !mounted;
+  const isMobile = useIsMobile();
+  const reducedMotion = useReducedMotion();
 
-  if (safe) return <PortfolioStatic />;
+  // Scroll-driven fly-in is desktop + motion-allowed only. On mobile
+  // it's expensive (filter+drop-shadow on 4 cards across scroll) and
+  // the static grid is genuinely premium-looking on its own. With
+  // reduced motion the same rule applies for WCAG.
+  if (!mounted || isMobile || reducedMotion) return <PortfolioStatic />;
   return <PortfolioScroll />;
 }
 
@@ -537,22 +541,16 @@ function FlyInCard({
     [fromLeft ? 8 : -8, 0],
     ease,
   );
-  // Combined filter: motion blur that focuses + drop shadow that grows
-  // as the card lands. Both strings have identical structure so framer
-  // can interpolate them frame-perfect.
-  const filter = useTransform(
-    progress,
-    [start, end],
-    [
-      "blur(8px) drop-shadow(0 0 0 rgba(0,0,0,0))",
-      "blur(0px) drop-shadow(0 30px 45px rgba(0,0,0,0.50))",
-    ],
-  );
 
+  // Note: we used to interpolate `filter: blur() drop-shadow()` here,
+  // but interpolating filter on a large card every scroll frame is one
+  // of the most expensive things you can ask a GPU to do. The depth +
+  // landing impact reads from x/scale/rotate/skewX alone. Static shadow
+  // applied via Tailwind class instead.
   return (
     <motion.article
-      style={{ x, opacity, rotate, scale, skewX, filter }}
-      className="will-change-transform origin-center"
+      style={{ x, opacity, rotate, scale, skewX }}
+      className="will-change-transform origin-center drop-shadow-[0_20px_40px_rgba(0,0,0,0.40)]"
     >
       <CaseCard data={data} onOpen={onOpen} />
     </motion.article>
@@ -1082,23 +1080,15 @@ function SiteReview({ data }: { data: CaseStudy }) {
       className="px-6 sm:px-12 py-12 sm:py-16 border-t border-white/[0.05] bg-ember-300/[0.02]"
     >
       <div className="max-w-3xl mx-auto text-center">
-        <QuoteIcon className="w-8 h-8 mx-auto text-ember-300/60" />
-        <blockquote className="mt-5 font-display text-xl sm:text-2xl font-medium leading-snug text-ember-50/95 text-balance">
-          “{data.modal.review.quote}”
-        </blockquote>
-        <div className="mt-6 inline-flex items-center gap-3">
-          <div className="flex items-center gap-0.5">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <Star
-                key={i}
-                className="w-3.5 h-3.5 fill-ember-300 text-ember-300"
-              />
-            ))}
-          </div>
-          <span className="text-sm text-ember-50/60">
-            {data.modal.review.author}
-          </span>
-        </div>
+        <p className="text-[10px] uppercase tracking-[0.22em] text-ember-300/85">
+          El resultado
+        </p>
+        <h3 className="mt-3 font-display text-2xl sm:text-3xl font-semibold tracking-tight text-ember-50 text-balance">
+          {data.modal.review.author}
+        </h3>
+        <p className="mt-6 text-lg sm:text-xl leading-relaxed text-ember-50/85 text-balance">
+          {data.modal.review.quote}
+        </p>
       </div>
     </motion.section>
   );
