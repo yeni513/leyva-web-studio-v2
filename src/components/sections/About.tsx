@@ -227,7 +227,7 @@ function PhotoOrbit() {
         <div className="absolute inset-0 rounded-full overflow-hidden border border-ember-300/35 shadow-[0_18px_45px_-12px_rgba(236,139,42,0.55)]">
           {HAS_FOUNDER_PHOTO ? (
             <Image
-              src="/founder.jpg"
+              src="/founder.png"
               alt="Alexander, fundador de Leyva Web Studio"
               width={344}
               height={344}
