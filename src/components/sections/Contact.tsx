@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
+  ChevronDown,
   Clock,
   Lock,
   Mail,
@@ -89,6 +90,11 @@ const initialForm: FormState = {
 export function Contact() {
   const [form, setForm] = useState<FormState>(initialForm);
   const [prefilledFrom, setPrefilledFrom] = useState<string | null>(null);
+  // Optional fields (project type, timeline, budget, has-content) live
+  // behind a "Más detalles" disclosure so first-time visitors see 4
+  // essential fields instead of 8. The form still composes the same
+  // WhatsApp message; the defaults are sane.
+  const [showMore, setShowMore] = useState(false);
 
   const update = <K extends keyof FormState>(k: K, v: FormState[K]) =>
     setForm((s) => ({ ...s, [k]: v }));
@@ -105,6 +111,11 @@ export function Contact() {
         ...(data.hasContent && { hasContent: data.hasContent }),
         ...(data.message && { message: data.message }),
       }));
+      // If a CTA prefilled fields that live inside the "Más detalles"
+      // disclosure, auto-expand it so the user can see what was set.
+      if (data.timeline || data.hasContent || data.budget || data.type) {
+        setShowMore(true);
+      }
       if (data.fromLabel) {
         setPrefilledFrom(data.fromLabel);
       }
@@ -319,20 +330,7 @@ export function Contact() {
                 </Field>
               </div>
 
-              <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <Field label="Tipo de proyecto">
-                  <select
-                    value={form.type}
-                    onChange={(e) => update("type", e.target.value)}
-                    className={inputCls}
-                  >
-                    {projectTypes.map((p) => (
-                      <option key={p} value={p}>
-                        {p}
-                      </option>
-                    ))}
-                  </select>
-                </Field>
+              <div className="mt-4">
                 <Field
                   label="Industria"
                   highlight={!!form.industry && form.industry !== ""}
@@ -355,81 +353,127 @@ export function Contact() {
                 </Field>
               </div>
 
-              <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <Field
-                  label="¿Cuándo lo necesitas?"
-                  highlight={!!form.timeline}
-                >
-                  <select
-                    value={form.timeline}
-                    onChange={(e) => update("timeline", e.target.value)}
-                    className={cn(
-                      inputCls,
-                      !!form.timeline && fieldHighlightCls,
-                    )}
-                  >
-                    <option value="">Selecciona el tiempo</option>
-                    {timelineOptions.map((t) => (
-                      <option key={t} value={t}>
-                        {t}
-                      </option>
-                    ))}
-                  </select>
-                </Field>
-                <Field label="Presupuesto estimado">
-                  <select
-                    value={form.budget}
-                    onChange={(e) => update("budget", e.target.value)}
-                    className={inputCls}
-                  >
-                    {budgetOptions.map((p) => (
-                      <option key={p} value={p}>
-                        {p}
-                      </option>
-                    ))}
-                  </select>
-                </Field>
-              </div>
-
-              {/* Has content — chip selector */}
               <div className="mt-4">
-                <span className="text-[11px] uppercase tracking-[0.18em] text-ember-50/60 block">
-                  ¿Tienes contenido listo? (textos, fotos)
-                </span>
-                <div className="mt-2.5 flex flex-wrap gap-2">
-                  {contentOptions.map((opt) => {
-                    const active = form.hasContent === opt;
-                    return (
-                      <button
-                        key={opt}
-                        type="button"
-                        onClick={() =>
-                          update("hasContent", active ? "" : opt)
-                        }
-                        className={cn(
-                          "px-3 py-1.5 rounded-full text-xs border transition-all duration-200 no-tap-highlight",
-                          active
-                            ? "border-ember-300/55 bg-ember-300/[0.14] text-ember-50 shadow-[0_0_14px_-4px_rgba(236,139,42,0.55)]"
-                            : "border-white/[0.08] bg-white/[0.02] text-ember-50/70 hover:border-ember-300/30 hover:bg-ember-300/[0.06] hover:text-ember-50",
-                        )}
-                      >
-                        {opt}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-
-              <div className="mt-4">
-                <Field label="Cuéntanos más (opcional)">
+                <Field label="Cuéntanos qué quieres lograr">
                   <textarea
                     rows={4}
                     value={form.message}
                     onChange={(e) => update("message", e.target.value)}
-                    placeholder="¿Qué quieres lograr con tu sitio?"
+                    placeholder="Ej: quiero más reservas / clientes / cotizaciones por mi sitio."
                     className={cn(inputCls, "resize-none")}
                   />
                 </Field>
+              </div>
+
+              {/* Optional disclosure — type / timeline / budget / content */}
+              <div className="mt-5 border-t border-white/[0.06] pt-4">
+                <button
+                  type="button"
+                  onClick={() => setShowMore((v) => !v)}
+                  aria-expanded={showMore}
+                  aria-controls="contact-more-details"
+                  className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.18em] text-ember-50/65 hover:text-ember-300 transition-colors no-tap-highlight"
+                >
+                  <ChevronDown
+                    className={cn(
+                      "w-3.5 h-3.5 transition-transform duration-300",
+                      showMore && "rotate-180",
+                    )}
+                  />
+                  {showMore ? "Ocultar detalles" : "Más detalles (opcional)"}
+                </button>
+
+                <div
+                  id="contact-more-details"
+                  className={cn(
+                    "grid transition-all duration-500 ease-out",
+                    showMore
+                      ? "grid-rows-[1fr] opacity-100 mt-4"
+                      : "grid-rows-[0fr] opacity-0 mt-0",
+                  )}
+                >
+                  <div className="overflow-hidden">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <Field label="Tipo de proyecto">
+                        <select
+                          value={form.type}
+                          onChange={(e) => update("type", e.target.value)}
+                          className={inputCls}
+                        >
+                          {projectTypes.map((p) => (
+                            <option key={p} value={p}>
+                              {p}
+                            </option>
+                          ))}
+                        </select>
+                      </Field>
+                      <Field
+                        label="¿Cuándo lo necesitas?"
+                        highlight={!!form.timeline}
+                      >
+                        <select
+                          value={form.timeline}
+                          onChange={(e) => update("timeline", e.target.value)}
+                          className={cn(
+                            inputCls,
+                            !!form.timeline && fieldHighlightCls,
+                          )}
+                        >
+                          <option value="">Selecciona el tiempo</option>
+                          {timelineOptions.map((t) => (
+                            <option key={t} value={t}>
+                              {t}
+                            </option>
+                          ))}
+                        </select>
+                      </Field>
+                    </div>
+
+                    <div className="mt-4">
+                      <Field label="Presupuesto estimado">
+                        <select
+                          value={form.budget}
+                          onChange={(e) => update("budget", e.target.value)}
+                          className={inputCls}
+                        >
+                          {budgetOptions.map((p) => (
+                            <option key={p} value={p}>
+                              {p}
+                            </option>
+                          ))}
+                        </select>
+                      </Field>
+                    </div>
+
+                    <div className="mt-4">
+                      <span className="text-[11px] uppercase tracking-[0.18em] text-ember-50/60 block">
+                        ¿Tienes contenido listo? (textos, fotos)
+                      </span>
+                      <div className="mt-2.5 flex flex-wrap gap-2">
+                        {contentOptions.map((opt) => {
+                          const active = form.hasContent === opt;
+                          return (
+                            <button
+                              key={opt}
+                              type="button"
+                              onClick={() =>
+                                update("hasContent", active ? "" : opt)
+                              }
+                              className={cn(
+                                "px-3 py-1.5 rounded-full text-xs border transition-all duration-200 no-tap-highlight",
+                                active
+                                  ? "border-ember-300/55 bg-ember-300/[0.14] text-ember-50 shadow-[0_0_14px_-4px_rgba(236,139,42,0.55)]"
+                                  : "border-white/[0.08] bg-white/[0.02] text-ember-50/70 hover:border-ember-300/30 hover:bg-ember-300/[0.06] hover:text-ember-50",
+                              )}
+                            >
+                              {opt}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
 
               <div className="mt-6">

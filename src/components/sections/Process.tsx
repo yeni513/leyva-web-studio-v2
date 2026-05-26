@@ -7,7 +7,7 @@ import {
   Rocket,
   type LucideIcon,
 } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { SectionHeading } from "@/components/section-heading";
 import { Reveal } from "@/components/ui/reveal";
 
@@ -51,8 +51,10 @@ const steps: Step[] = [
 ];
 
 export function Process() {
-  // Connector/glow animations always on, every device, every motion pref.
-  const safe = false;
+  // Skip the traveling-glow connector + the card reveal under reduced
+  // motion. Hover effects + the static connector line stay because
+  // they're discrete UI feedback, not background animation.
+  const safe = !!useReducedMotion();
 
   return (
     <section id="proceso" className="relative py-10 sm:py-16 bg-ink-950/40">
@@ -170,34 +172,19 @@ function ProcessCard({
           aria-hidden
         />
 
-        {/* Icon with pulse rings */}
+        {/* Icon — clean static state; pulse rings only on hover so the
+            section doesn't fight 8 simultaneous infinite animations
+            with the connector line + card reveals. The whole-card
+            hover treatment carries the interactivity signal already. */}
         <div className="relative inline-block">
-          {!safe && (
-            <>
-              <motion.span
-                className="absolute inset-0 rounded-full border border-ember-300/40 pointer-events-none"
-                animate={{ scale: [1, 1.7, 1], opacity: [0.55, 0, 0.55] }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  delay: index * 0.55,
-                  ease: "easeOut",
-                }}
-                aria-hidden
-              />
-              <motion.span
-                className="absolute inset-0 rounded-full border border-ember-300/20 pointer-events-none"
-                animate={{ scale: [1, 2.1, 1], opacity: [0.4, 0, 0.4] }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  delay: index * 0.55 + 0.6,
-                  ease: "easeOut",
-                }}
-                aria-hidden
-              />
-            </>
-          )}
+          <span
+            className="absolute inset-0 rounded-full border border-ember-300/40 pointer-events-none opacity-0 scale-100 group-hover:opacity-100 group-hover:scale-[1.55] transition-all duration-700 ease-out"
+            aria-hidden
+          />
+          <span
+            className="absolute inset-0 rounded-full border border-ember-300/20 pointer-events-none opacity-0 scale-100 group-hover:opacity-100 group-hover:scale-[1.95] transition-all duration-1000 ease-out delay-100"
+            aria-hidden
+          />
           <span className="relative inline-grid place-items-center w-12 h-12 rounded-full border border-ember-300/30 bg-ink-950 text-ember-300 z-10 transition-all duration-500 group-hover:border-ember-300/65 group-hover:bg-ember-300/[0.08] group-hover:shadow-[0_0_30px_-5px_rgba(236,139,42,0.65)]">
             <Icon className="w-5 h-5 transition-transform duration-500 ease-out group-hover:scale-110" />
           </span>
@@ -210,27 +197,16 @@ function ProcessCard({
           {step.desc}
         </p>
 
-        {/* Animated shimmer divider */}
-        <div className="relative mt-5 h-px overflow-hidden rounded-full">
-          <div className="absolute inset-0 bg-white/[0.08]" />
-          {!safe && (
-            <motion.div
-              className="absolute inset-y-0 w-1/3"
-              style={{
-                background:
-                  "linear-gradient(to right, transparent, rgba(236,139,42,0.9), transparent)",
-              }}
-              animate={{ x: ["-110%", "320%"] }}
-              transition={{
-                duration: 3.5,
-                repeat: Infinity,
-                ease: "linear",
-                delay: index * 0.45,
-              }}
-              aria-hidden
-            />
-          )}
-        </div>
+        {/* Static hairline divider — the shimmer was running infinitely
+            on every card (4 × infinite Framer animations) and added
+            visual noise without conveying information. The connector
+            line at the top of the section already carries the
+            "progression" signal. */}
+        <div className="relative mt-5 h-px rounded-full bg-white/[0.08]" />
+        <div
+          className="absolute left-5 right-5 -mt-px h-px opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-r from-transparent via-ember-300/70 to-transparent pointer-events-none"
+          aria-hidden
+        />
 
         <p className="relative mt-4 text-[11px] uppercase tracking-[0.18em] text-ember-300/85 transition-colors duration-300 group-hover:text-ember-200">
           {step.time}

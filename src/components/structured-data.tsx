@@ -82,7 +82,12 @@ export function StructuredData() {
       latitude: 41.4993,
       longitude: -81.6944,
     },
-    sameAs: [],
+    // Verifiable cross-references for Google's knowledge panel. Add
+    // social/professional URLs as they go live — each one strengthens
+    // the entity graph and the "is this a real business?" signal.
+    sameAs: [
+      "https://github.com/yeni513/leyva-web-studio-v2",
+    ],
     knowsAbout: [
       "Diseño web",
       "Desarrollo web",

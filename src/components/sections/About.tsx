@@ -227,7 +227,7 @@ function PhotoOrbit() {
         <div className="absolute inset-0 rounded-full overflow-hidden border border-ember-300/35 shadow-[0_18px_45px_-12px_rgba(236,139,42,0.55)]">
           {HAS_FOUNDER_PHOTO ? (
             <Image
-              src="/founder.png"
+              src="/founder.jpg"
               alt="Alexander, fundador de Leyva Web Studio"
               width={344}
               height={344}
@@ -272,6 +272,14 @@ function PhotoOrbit() {
 // "Disponible ahora" live status indicator (top right)
 // ─────────────────────────────────────────────────
 function AvailabilityPill() {
+  // Dynamic month label — "2 cupos en julio" feels alive vs the static
+  // "este mes" which reads as a template. Recalculated on every render
+  // so the copy auto-updates without anyone touching the source. We
+  // capitalize the first letter because `toLocaleDateString` returns
+  // it lowercase in Spanish ("julio" → "Julio").
+  const month = new Date().toLocaleDateString("es-MX", { month: "long" });
+  const monthCap = month.charAt(0).toUpperCase() + month.slice(1);
+
   return (
     <div className="absolute top-4 sm:top-5 right-4 sm:right-5 z-10 inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-emerald-400/30 bg-emerald-400/[0.06] backdrop-blur-md text-[10px] sm:text-[11px] font-medium tracking-tight">
       <span className="relative grid place-items-center">
@@ -279,7 +287,7 @@ function AvailabilityPill() {
         <span className="relative w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_10px_-1px_rgba(74,222,128,0.85)]" />
       </span>
       <span className="text-emerald-200">
-        2 cupos disponibles este mes
+        2 cupos en {monthCap}
       </span>
     </div>
   );

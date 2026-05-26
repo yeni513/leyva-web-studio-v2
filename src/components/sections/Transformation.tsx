@@ -90,15 +90,18 @@ function TransformationScroll() {
     offset: ["start start", "end end"],
   });
 
-  // Eyebrow swap
+  // Eyebrow swap — non-overlapping ranges. The previous version had
+  // both eyebrows visible between 0.45–0.50 which produced a brief
+  // double-text flicker. Now "Antes" fully fades out by 0.45 before
+  // "Después" starts fading in at 0.46.
   const eyebrowBefore = useTransform(
     scrollYProgress,
-    [0, 0.4, 0.5],
+    [0, 0.35, 0.45],
     [1, 0.4, 0],
   );
   const eyebrowAfter = useTransform(
     scrollYProgress,
-    [0.45, 0.6, 1],
+    [0.46, 0.6, 1],
     [0, 0.65, 1],
   );
 

@@ -22,14 +22,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "yearly",
       priority: 0.3,
     },
-    // Anchor URLs for major sections — helps Google understand structure
-    ...["servicios", "proceso", "paquetes", "trabajo", "faq", "contact"].map(
-      (anchor) => ({
-        url: `${site.url}/#${anchor}`,
-        lastModified: now,
-        changeFrequency: "weekly" as const,
-        priority: 0.7,
-      }),
-    ),
+    // Note: section anchors (#servicios, #faq, etc.) used to live here,
+    // but Google ignores fragment URLs in sitemaps. They added bytes
+    // without indexing benefit. Add new top-level routes as the site
+    // grows (e.g. /casos/[slug] or /servicios/restaurantes).
   ];
 }
