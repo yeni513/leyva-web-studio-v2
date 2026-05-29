@@ -448,11 +448,16 @@ function ExpandedModal({
 
   useEffect(() => {
     if (!isOpen) return;
+    // Remember what was focused so we can restore it on close (a11y).
+    const trigger = document.activeElement as HTMLElement | null;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
     };
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      trigger?.focus?.({ preventScroll: true });
+    };
   }, [isOpen, onClose]);
 
   return (
