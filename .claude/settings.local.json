@@ -25,7 +25,8 @@
       "Bash(git commit -m ' *)",
       "Bash(git push *)",
       "Bash(git ls-remote *)",
-      "Bash(npm install *)"
+      "Bash(npm install *)",
+      "Bash(git status *)"
     ]
   }
 }
