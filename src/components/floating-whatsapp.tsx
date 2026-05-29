@@ -67,7 +67,9 @@ export function FloatingWhatsApp() {
           : "opacity-0 translate-y-4 pointer-events-none",
       )}
       style={{
-        right: "calc(1rem + env(safe-area-inset-right, 0px))",
+        // Bottom-LEFT on mobile so it never collides with the AI chatbot
+        // launcher (bottom-right). Both stay thumb-reachable.
+        left: "calc(1rem + env(safe-area-inset-left, 0px))",
         bottom: "calc(1rem + env(safe-area-inset-bottom, 0px))",
       }}
     >

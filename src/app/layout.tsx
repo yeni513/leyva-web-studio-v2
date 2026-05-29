@@ -4,6 +4,7 @@ import "./globals.css";
 import { site } from "@/lib/site";
 import { StructuredData } from "@/components/structured-data";
 import { FloatingWhatsApp } from "@/components/floating-whatsapp";
+import { UltimateChatbot } from "@/components/chatbot/UltimateChatbot";
 
 // Body — Inter variable, every weight available via `font-sans`.
 const inter = Inter({
@@ -122,6 +123,7 @@ export default function RootLayout({
         <StructuredData />
         {children}
         <FloatingWhatsApp />
+        <UltimateChatbot />
       </body>
     </html>
   );
