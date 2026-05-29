@@ -63,6 +63,14 @@ export function StructuredData() {
     description: site.description,
     url: site.url,
     logo: `${site.url}/icon.svg`,
+    image: `${site.url}/og-image.png`,
+    slogan:
+      "Sitios web premium que hacen ver profesional a tu negocio y convierten visitantes en clientes.",
+    founder: {
+      "@type": "Person",
+      name: "Alexander Rodríguez",
+      jobTitle: "Fundador y desarrollador",
+    },
     priceRange: "$$",
     telephone: `+${site.contact.whatsapp}`,
     email: site.contact.email,

@@ -18,7 +18,7 @@ export default function HomePage() {
     <>
       <ScrollManager />
       <Navbar />
-      <main className="relative">
+      <main id="main-content" className="relative">
         <Hero />
         <IndustryMarquee />
         <Services />

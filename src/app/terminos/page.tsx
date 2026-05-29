@@ -16,7 +16,7 @@ export default function TermsPage() {
   return (
     <>
       <Navbar />
-      <main className="relative pt-32 pb-24">
+      <main id="main-content" className="relative pt-32 pb-24">
         <div className="container max-w-3xl">
           <Link
             href="/"

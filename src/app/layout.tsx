@@ -120,6 +120,13 @@ export default function RootLayout({
       className={`dark ${inter.variable} ${fraunces.variable}`}
     >
       <body className="min-h-screen bg-ink-950 text-ember-50/90 font-sans antialiased overflow-x-hidden">
+        {/* Keyboard / screen-reader skip link — hidden until focused. */}
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[200] focus:rounded-full focus:bg-ember-300 focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-ink-950 focus:shadow-glow"
+        >
+          Saltar al contenido
+        </a>
         <StructuredData />
         {children}
         <FloatingWhatsApp />
