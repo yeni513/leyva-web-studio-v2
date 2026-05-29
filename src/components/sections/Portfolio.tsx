@@ -1,5 +1,6 @@
 "use client";
 
+import { motion, useReducedMotion } from "framer-motion";
 import {
   ArrowUpRight,
   ExternalLink,
@@ -126,9 +127,9 @@ export function Portfolio() {
 
         <div className="mt-14 grid grid-cols-1 md:grid-cols-2 gap-5">
           {projects.map((p, i) => (
-            <Reveal key={p.id} delay={i * 0.07}>
+            <CardReveal key={p.id} index={i}>
               <ProjectCard project={p} />
-            </Reveal>
+            </CardReveal>
           ))}
         </div>
 
@@ -157,6 +158,49 @@ export function Portfolio() {
         </Reveal>
       </div>
     </section>
+  );
+}
+
+// ─────────────────────────────────────────────────
+// Staggered "fly-in" entrance — each card arrives one after another from
+// its side (even = left, odd = right). Fires once when it scrolls into
+// view (not scroll-driven, so no jank / no horizontal overflow), and
+// collapses to a simple state under prefers-reduced-motion.
+// ─────────────────────────────────────────────────
+function CardReveal({
+  index,
+  children,
+}: {
+  index: number;
+  children: React.ReactNode;
+}) {
+  const reduced = useReducedMotion();
+  const fromLeft = index % 2 === 0;
+
+  if (reduced) {
+    return <div className="h-full">{children}</div>;
+  }
+
+  return (
+    <motion.div
+      className="h-full will-change-transform"
+      initial={{
+        opacity: 0,
+        x: fromLeft ? -64 : 64,
+        y: 28,
+        rotate: fromLeft ? -3 : 3,
+        scale: 0.94,
+      }}
+      whileInView={{ opacity: 1, x: 0, y: 0, rotate: 0, scale: 1 }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{
+        duration: 0.7,
+        delay: index * 0.14,
+        ease: [0.22, 1, 0.36, 1],
+      }}
+    >
+      {children}
+    </motion.div>
   );
 }
 
