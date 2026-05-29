@@ -1,11 +1,13 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
+import { FileText } from "lucide-react";
 import type {
   ChatMessage,
   Lang,
   LeadData,
 } from "@/lib/chatbot/chatbot-types";
+import { t } from "@/lib/chatbot/chatbot-config";
 import { ChatHeader } from "./ChatHeader";
 import { ChatMessages } from "./ChatMessages";
 import { ChatInput } from "./ChatInput";
@@ -134,7 +136,19 @@ export function ChatWindow({
           </div>
 
           {!leadOpen && (
-            <ChatInput lang={lang} disabled={isTyping} onSend={onSend} />
+            <>
+              {/* Always-available lead path — converts at any point in the
+                  chat, not only when the AI happens to offer it. */}
+              <button
+                type="button"
+                onClick={onOpenLead}
+                className="no-tap-highlight group flex w-full items-center justify-center gap-2 border-t border-white/[0.07] bg-ember-300/[0.05] px-4 py-2 text-[12px] font-medium text-ember-200 transition-colors hover:bg-ember-300/[0.12] hover:text-ember-50"
+              >
+                <FileText className="w-3.5 h-3.5" />
+                {t(lang).recommendCta}
+              </button>
+              <ChatInput lang={lang} disabled={isTyping} onSend={onSend} />
+            </>
           )}
         </div>
       </motion.div>

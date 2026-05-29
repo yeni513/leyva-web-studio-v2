@@ -490,10 +490,19 @@ export function Contact() {
                 </AnchorButton>
               </div>
 
-              <p className="mt-4 text-[11px] text-ember-50/55 leading-relaxed">
-                Al enviar, abrimos WhatsApp con tu información lista para que
-                solo presiones enviar. También nos llega copia por email para
-                no perder tu cotización.
+              {/* Trust strip at the friction peak — real, signed commitments
+                  (not fabricated proof) to reassure right at submit. */}
+              <div className="mt-3 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[11px] text-ember-50/60">
+                <span>Respuesta el mismo día</span>
+                <span className="w-1 h-1 rounded-full bg-ember-50/25" />
+                <span>Sin compromiso</span>
+                <span className="w-1 h-1 rounded-full bg-ember-50/25" />
+                <span>Código a tu nombre</span>
+              </div>
+
+              <p className="mt-3 text-[11px] text-ember-50/45 leading-relaxed text-center">
+                Abrimos WhatsApp con tu info lista — solo presionas enviar. Nos
+                llega copia por email para no perder tu cotización.
               </p>
             </form>
           </Reveal>
