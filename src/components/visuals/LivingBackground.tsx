@@ -24,7 +24,7 @@ export function LivingBackground() {
         className="absolute -top-[15%] left-[5%] w-[60vw] h-[60vw] max-w-[820px] max-h-[820px] rounded-full blur-3xl will-change-transform animate-aurora-a"
         style={{
           background:
-            "radial-gradient(circle, rgba(236,139,42,0.30), transparent 68%)",
+            "radial-gradient(circle, rgba(245,173,79,0.42), transparent 70%)",
         }}
       />
       {/* Bronze blob — right side, deeper tone */}
@@ -32,7 +32,7 @@ export function LivingBackground() {
         className="absolute top-[28%] right-[0%] w-[55vw] h-[55vw] max-w-[760px] max-h-[760px] rounded-full blur-3xl will-change-transform animate-aurora-b"
         style={{
           background:
-            "radial-gradient(circle, rgba(217,106,20,0.26), transparent 68%)",
+            "radial-gradient(circle, rgba(236,139,42,0.38), transparent 70%)",
         }}
       />
       {/* Deep amber blob — lower-center, breathes opacity */}
@@ -40,7 +40,7 @@ export function LivingBackground() {
         className="absolute bottom-[-12%] left-[22%] w-[65vw] h-[65vw] max-w-[880px] max-h-[880px] rounded-full blur-3xl will-change-transform animate-aurora-c"
         style={{
           background:
-            "radial-gradient(circle, rgba(236,139,42,0.24), transparent 68%)",
+            "radial-gradient(circle, rgba(252,201,122,0.34), transparent 70%)",
         }}
       />
 
