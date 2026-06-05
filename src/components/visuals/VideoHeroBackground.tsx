@@ -22,6 +22,7 @@ export function VideoHeroBackground({ className }: { className?: string }) {
       playsInline
       preload="auto"
       poster="/hero-poster.jpg"
+      disablePictureInPicture
       aria-hidden
       tabIndex={-1}
     >
