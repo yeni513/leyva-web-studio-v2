@@ -90,21 +90,21 @@ const config: Config = {
         // breathe (transform/opacity only, GPU-cheap). Three different
         // paths/durations so the field never looks like it loops.
         "aurora-a": {
-          "0%, 100%": { transform: "translate3d(-4%, -2%, 0) scale(1)" },
-          "50%": { transform: "translate3d(5%, 3%, 0) scale(1.15)" },
+          "0%, 100%": { transform: "translate3d(-7%, -4%, 0) scale(1)" },
+          "50%": { transform: "translate3d(9%, 6%, 0) scale(1.25)" },
         },
         "aurora-b": {
-          "0%, 100%": { transform: "translate3d(3%, 4%, 0) scale(1.08)" },
-          "50%": { transform: "translate3d(-5%, -3%, 0) scale(0.95)" },
+          "0%, 100%": { transform: "translate3d(6%, 7%, 0) scale(1.12)" },
+          "50%": { transform: "translate3d(-9%, -6%, 0) scale(0.92)" },
         },
         "aurora-c": {
           "0%, 100%": {
             transform: "translate3d(0, 0, 0) scale(1)",
-            opacity: "0.5",
+            opacity: "0.55",
           },
           "50%": {
-            transform: "translate3d(4%, -4%, 0) scale(1.2)",
-            opacity: "0.85",
+            transform: "translate3d(7%, -7%, 0) scale(1.3)",
+            opacity: "1",
           },
         },
       },
