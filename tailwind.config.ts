@@ -86,6 +86,27 @@ const config: Config = {
           "0%": { transform: "translateX(-110%) skewX(-12deg)" },
           "100%": { transform: "translateX(220%) skewX(-12deg)" },
         },
+        // Living-background aurora blobs — slow, compositor-only drift +
+        // breathe (transform/opacity only, GPU-cheap). Three different
+        // paths/durations so the field never looks like it loops.
+        "aurora-a": {
+          "0%, 100%": { transform: "translate3d(-4%, -2%, 0) scale(1)" },
+          "50%": { transform: "translate3d(5%, 3%, 0) scale(1.15)" },
+        },
+        "aurora-b": {
+          "0%, 100%": { transform: "translate3d(3%, 4%, 0) scale(1.08)" },
+          "50%": { transform: "translate3d(-5%, -3%, 0) scale(0.95)" },
+        },
+        "aurora-c": {
+          "0%, 100%": {
+            transform: "translate3d(0, 0, 0) scale(1)",
+            opacity: "0.5",
+          },
+          "50%": {
+            transform: "translate3d(4%, -4%, 0) scale(1.2)",
+            opacity: "0.85",
+          },
+        },
       },
       animation: {
         "fade-up": "fade-up 0.7s ease-out forwards",
@@ -96,6 +117,9 @@ const config: Config = {
         "orbit-halo": "orbit-halo 8s linear infinite",
         "orbit-breathe": "orbit-breathe 3.6s ease-in-out infinite",
         "orbit-shimmer": "orbit-shimmer 2.8s ease-out infinite",
+        "aurora-a": "aurora-a 26s ease-in-out infinite",
+        "aurora-b": "aurora-b 32s ease-in-out infinite",
+        "aurora-c": "aurora-c 22s ease-in-out infinite",
       },
     },
   },

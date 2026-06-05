@@ -1,29 +1,26 @@
 "use client";
 
-import dynamic from "next/dynamic";
+import { useEffect, useState } from "react";
 import { useReducedMotion } from "framer-motion";
 import { ArrowUpRight, Calendar, MessageCircle, Sparkles, Star } from "lucide-react";
 import { AnchorButton } from "@/components/ui/button";
 import { StaticHeroBackground } from "@/components/visuals/StaticHeroBackground";
+import { VideoHeroBackground } from "@/components/visuals/VideoHeroBackground";
 import { useIsMobile } from "@/lib/use-is-mobile";
 import { site, whatsappLink } from "@/lib/site";
 
-const ShaderBackground = dynamic(
-  () =>
-    import("@/components/visuals/ShaderBackground").then(
-      (m) => m.ShaderBackground,
-    ),
-  { ssr: false, loading: () => null },
-);
-
 export function Hero() {
-  // Two guards on the WebGL shader:
-  //   - Mobile: the static cinematic backdrop already looks great and
-  //     the shader's 12-iteration fbm loop is wasted GPU on phones.
-  //   - Reduced motion: animated noise can be a vestibular trigger.
+  // Cinematic video background — desktop + motion-allowed only:
+  //   - Mobile: the static cinematic backdrop looks great and we never
+  //     ship a multi-MB autoplay video over cellular / to small GPUs.
+  //   - Reduced motion: video motion can be a vestibular trigger.
+  // The `mounted` gate means the <video> only mounts after we know the
+  // real viewport, so its bytes never load on phones (no first-paint flash).
   const isMobile = useIsMobile();
   const reducedMotion = useReducedMotion();
-  const showShader = !isMobile && !reducedMotion;
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  const showVideo = mounted && !isMobile && !reducedMotion;
 
   return (
     <section
@@ -33,14 +30,14 @@ export function Hero() {
       {/* Background layer */}
       <div className="absolute inset-0 -z-10">
         {/* Always-on static cinematic backdrop. Carries the hero on
-            mobile + reduced-motion, and acts as a safety net if WebGL
-            fails to mount on desktop. */}
+            mobile + reduced-motion, and acts as the poster/safety net
+            until the video paints on desktop. */}
         <StaticHeroBackground className="absolute inset-0" />
 
-        {/* WebGL shader — desktop only, motion-allowed only. */}
-        {showShader && (
+        {/* Cinematic video — desktop only, motion-allowed only. */}
+        {showVideo && (
           <div className="absolute inset-0">
-            <ShaderBackground className="absolute inset-0 w-full h-full" />
+            <VideoHeroBackground className="absolute inset-0 w-full h-full object-cover" />
             <div className="absolute inset-0 bg-[radial-gradient(60%_55%_at_50%_45%,transparent_0%,rgba(7,6,8,0.55)_75%,rgba(7,6,8,0.92)_100%)] pointer-events-none" />
             <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-b from-transparent to-ink-950 pointer-events-none" />
           </div>
