@@ -12,7 +12,6 @@
 
 html,
 body {
-  background: #070608;
   color: #f4ecdf;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
@@ -24,6 +23,10 @@ body {
 }
 
 html {
+  /* Dark base lives on <html> (the canvas) so the <body> can stay
+     transparent — that's what lets the fixed LivingBackground (-z-10)
+     show through instead of being hidden behind an opaque body bg. */
+  background: #070608;
   scroll-behavior: smooth;
   /* Note: do NOT set overflow-x: hidden on <html>. It breaks
      position: sticky in descendants (Chrome/Safari quirk).
@@ -83,13 +86,10 @@ button,
   color: #fff8eb;
 }
 
-body {
-  background-image:
-    radial-gradient(1200px 600px at 50% -100px, rgba(236, 139, 42, 0.16), transparent 60%),
-    radial-gradient(800px 600px at 100% 110%, rgba(168, 80, 12, 0.10), transparent 60%),
-    radial-gradient(800px 600px at 0% 110%, rgba(122, 58, 8, 0.08), transparent 60%);
-  background-attachment: fixed;
-}
+/* The page-wide warm atmosphere now lives in the animated
+   LivingBackground layer (src/components/visuals/LivingBackground.tsx),
+   so the static body gradients were removed to avoid double-dimming it.
+   <body> is kept transparent on purpose. */
 
 @layer utilities {
   .text-balance {

@@ -120,7 +120,7 @@ export default function RootLayout({
       lang="es-US"
       className={`dark ${inter.variable} ${fraunces.variable}`}
     >
-      <body className="min-h-screen bg-ink-950 text-ember-50/90 font-sans antialiased overflow-x-hidden">
+      <body className="min-h-screen text-ember-50/90 font-sans antialiased overflow-x-hidden">
         {/* Page-wide living aurora behind all content. */}
         <LivingBackground />
         {/* Keyboard / screen-reader skip link — hidden until focused. */}
