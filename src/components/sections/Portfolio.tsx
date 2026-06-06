@@ -1,15 +1,8 @@
 "use client";
 
+import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
-import {
-  ArrowUpRight,
-  ExternalLink,
-  Leaf,
-  Refrigerator,
-  Sparkles,
-  UtensilsCrossed,
-  type LucideIcon,
-} from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import { SectionHeading } from "@/components/section-heading";
 import { Reveal } from "@/components/ui/reveal";
 import { cn } from "@/lib/utils";
@@ -29,11 +22,8 @@ interface Project {
   badgeType: BadgeType;
   description: string;
   tags: string[];
-  icon: LucideIcon;
-  /** Tailwind gradient classes for the stylized preview backdrop. */
-  accent: string;
-  /** Faux hero line shown inside the preview (stylized, not a screenshot). */
-  headline: string;
+  /** Real screenshot of the live site (captured headless, optimized). */
+  screenshot: string;
 }
 
 const projects: Project[] = [
@@ -48,9 +38,7 @@ const projects: Project[] = [
     description:
       "Nuestro sitio oficial: Next.js sobre Cloudflare Workers, chatbot con IA, captación de leads, estructura SEO y secciones enfocadas en conversión.",
     tags: ["Next.js", "Cloudflare", "Chatbot IA", "SEO", "Conversión"],
-    icon: Sparkles,
-    accent: "from-ember-300/45 via-ember-500/22 to-ember-700/10",
-    headline: "Sitios que hacen ver premium tu negocio",
+    screenshot: "/work/leyva.jpg",
   },
   {
     id: "tapatias",
@@ -63,9 +51,7 @@ const projects: Project[] = [
     description:
       "Concepto premium para restaurante: branding moderno, showcase de menú, visuales de comida y secciones de conversión para llamadas, visitas y catering.",
     tags: ["Branding", "Menú", "Catering", "Local SEO"],
-    icon: UtensilsCrossed,
-    accent: "from-ember-200/40 via-ember-400/20 to-ember-700/10",
-    headline: "Cocina que se ve tan bien como sabe",
+    screenshot: "/work/tapatias.jpg",
   },
   {
     id: "landscaping",
@@ -78,9 +64,7 @@ const projects: Project[] = [
     description:
       "Concepto para negocio de jardinería y servicios locales: confianza, visuales de antes/después, presentación de servicios y captación de clientes.",
     tags: ["Antes/Después", "Confianza", "Servicios", "Captación"],
-    icon: Leaf,
-    accent: "from-ember-300/38 via-ember-500/18 to-ember-800/10",
-    headline: "Jardines que se ven profesionales",
+    screenshot: "/work/landscaping.jpg",
   },
   {
     id: "chino",
@@ -93,9 +77,7 @@ const projects: Project[] = [
     description:
       "Concepto para negocio de electrodomésticos: estructura enfocada en producto, presentación tipo catálogo, secciones de confianza y layout orientado a ventas.",
     tags: ["Catálogo", "Producto", "Ventas", "Confianza"],
-    icon: Refrigerator,
-    accent: "from-ember-200/35 via-ember-400/18 to-ember-700/10",
-    headline: "Electrodomésticos con presencia de marca",
+    screenshot: "/work/chino.jpg",
   },
 ];
 
@@ -208,7 +190,6 @@ function CardReveal({
 // Single project card — whole card links to the real site
 // ─────────────────────────────────────────────────
 function ProjectCard({ project: p }: { project: Project }) {
-  const Icon = p.icon;
   const isLive = p.badgeType === "live";
 
   return (
@@ -251,14 +232,10 @@ function ProjectCard({ project: p }: { project: Project }) {
         </span>
       </div>
 
-      {/* Stylized site preview (branded representation, not a screenshot) */}
-      <div className="relative rounded-2xl border border-white/[0.07] overflow-hidden bg-ink-900 aspect-[16/10]">
-        <div className={`absolute inset-0 bg-gradient-to-br ${p.accent}`} />
-        <div className="absolute inset-0 bg-[radial-gradient(60%_60%_at_30%_25%,rgba(236,139,42,0.20),transparent_65%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(50%_50%_at_85%_85%,rgba(168,80,12,0.16),transparent_60%)]" />
-
+      {/* Real site preview — browser chrome + actual screenshot */}
+      <div className="relative rounded-2xl border border-white/[0.07] overflow-hidden bg-ink-900 aspect-[16/10] flex flex-col">
         {/* Browser chrome with the real domain */}
-        <div className="relative flex items-center gap-2 px-3 py-2 border-b border-white/[0.06] bg-ink-950/30 backdrop-blur-sm">
+        <div className="relative z-10 flex items-center gap-2 px-3 py-2 border-b border-white/[0.06] bg-ink-950/85 backdrop-blur-sm shrink-0">
           <div className="flex items-center gap-1 shrink-0">
             <span className="w-1.5 h-1.5 rounded-full bg-ember-400/70" />
             <span className="w-1.5 h-1.5 rounded-full bg-ember-300/60" />
@@ -273,23 +250,21 @@ function ProjectCard({ project: p }: { project: Project }) {
           <ExternalLink className="w-3 h-3 text-ember-50/40 shrink-0 transition-colors group-hover:text-ember-300" />
         </div>
 
-        {/* Interior — big icon + faux headline + faux CTA */}
-        <div className="relative flex flex-col justify-between h-[calc(100%-29px)] p-4 sm:p-5">
-          <span className="inline-grid place-items-center w-10 h-10 rounded-xl border border-ember-300/30 bg-ink-950/50 text-ember-300 backdrop-blur-sm shadow-[0_0_24px_-6px_rgba(236,139,42,0.55)]">
-            <Icon className="w-5 h-5" />
-          </span>
-          <div>
-            <p className="font-display font-semibold tracking-tight leading-[1.15] text-[clamp(0.95rem,2.6vw,1.25rem)] text-ember-50 max-w-[88%]">
-              {p.headline}
-            </p>
-            <span className="mt-2.5 inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-gradient-to-b from-ember-200 via-ember-300 to-ember-400 text-ink-950 text-[9px] font-semibold shadow-[0_0_18px_-4px_rgba(236,139,42,0.6)]">
-              {isLive ? "Ver sitio" : "Ver concepto"}
-              <ArrowUpRight className="w-2.5 h-2.5" />
-            </span>
-          </div>
+        {/* Actual screenshot of the live site */}
+        <div className="relative flex-1 overflow-hidden">
+          <Image
+            src={p.screenshot}
+            alt={`Captura del sitio de ${p.name}`}
+            fill
+            sizes="(max-width: 768px) 92vw, 46vw"
+            className="object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+          />
+          {/* Warm hover wash to tie it into the brand */}
+          <div className="absolute inset-0 bg-ember-500/0 group-hover:bg-ember-500/[0.06] transition-colors duration-500" />
+          <div className="absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-ink-950/40 to-transparent pointer-events-none" />
         </div>
 
-        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-ember-300/40 to-transparent" />
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-ember-300/40 to-transparent z-10" />
       </div>
 
       {/* Meta */}

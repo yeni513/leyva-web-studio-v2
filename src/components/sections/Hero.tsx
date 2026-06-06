@@ -124,14 +124,16 @@ export function Hero() {
         {/* Single trust strip under the CTAs — combines reassurance
             and proof so it's one line, not two stacked. */}
         <div className="mt-8 sm:mt-10 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs sm:text-sm text-ember-50/65">
-          <span className="inline-flex items-center gap-1.5">
+          <span className="inline-flex items-center gap-1.5 text-ember-50/85">
             <Star className="w-3.5 h-3.5 fill-ember-300 text-ember-300" />
-            Primera llamada gratis
+            Trabajo real que puedes ver
           </span>
+          <span className="hidden sm:block w-1 h-1 rounded-full bg-ember-50/20" />
+          <span>Primera llamada gratis</span>
           <span className="hidden sm:block w-1 h-1 rounded-full bg-ember-50/20" />
           <span>Entrega en 14 días</span>
           <span className="hidden sm:block w-1 h-1 rounded-full bg-ember-50/20" />
-          <span>El dueño te responde — no un help-desk</span>
+          <span>El dueño te responde</span>
         </div>
       </div>
     </section>

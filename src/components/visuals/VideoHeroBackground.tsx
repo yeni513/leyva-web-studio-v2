@@ -11,6 +11,11 @@
  * allow to autoplay without a user gesture. `poster` is the first frame
  * (hero-poster.jpg) so there's no flash before the video paints. Audio was
  * stripped at encode time; the element is decorative (aria-hidden).
+ *
+ * Two sources: AV1 (~450 KB) is offered first — Chrome/Edge/Firefox (and
+ * Safari with AV1 hardware) take it, an ~87% byte saving. Everyone else
+ * falls back to the H.264 mp4. So the speed-selling site keeps a fast LCP
+ * for the vast majority while staying universally compatible.
  */
 export function VideoHeroBackground({ className }: { className?: string }) {
   return (
@@ -26,6 +31,7 @@ export function VideoHeroBackground({ className }: { className?: string }) {
       aria-hidden
       tabIndex={-1}
     >
+      <source src="/hero.av1.mp4" type='video/mp4; codecs="av01.0.05M.08"' />
       <source src="/hero.mp4" type="video/mp4" />
     </video>
   );
