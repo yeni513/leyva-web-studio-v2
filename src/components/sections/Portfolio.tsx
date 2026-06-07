@@ -77,7 +77,7 @@ const projects: Project[] = [
     description:
       "Concepto para negocio de electrodomésticos: estructura enfocada en producto, presentación tipo catálogo, secciones de confianza y layout orientado a ventas.",
     tags: ["Catálogo", "Producto", "Ventas", "Confianza"],
-    screenshot: "/work/chino.jpg",
+    screenshot: "/work/chino-v2.jpg",
   },
 ];
 
