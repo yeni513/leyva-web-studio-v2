@@ -8,9 +8,9 @@
  * keep the lightweight StaticHeroBackground instead.
  *
  * Muted + playsInline + autoplay + loop is the only combination browsers
- * allow to autoplay without a user gesture. `poster` is the first frame
- * (hero-poster.jpg) so there's no flash before the video paints. Audio was
- * stripped at encode time; the element is decorative (aria-hidden).
+ * allow to autoplay without a user gesture. The parent mounts this after
+ * first paint/idle on desktop, so the static hero carries LCP and the video
+ * enhances the scene once critical content is already visible.
  *
  * Two sources: AV1 (~450 KB) is offered first — Chrome/Edge/Firefox (and
  * Safari with AV1 hardware) take it, an ~87% byte saving. Everyone else
@@ -25,7 +25,7 @@ export function VideoHeroBackground({ className }: { className?: string }) {
       muted
       loop
       playsInline
-      preload="auto"
+      preload="metadata"
       poster="/hero-poster.jpg"
       disablePictureInPicture
       aria-hidden

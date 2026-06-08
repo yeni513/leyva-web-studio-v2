@@ -5,7 +5,7 @@ import { site } from "@/lib/site";
 import { StructuredData } from "@/components/structured-data";
 import { Analytics } from "@/components/analytics";
 import { FloatingWhatsApp } from "@/components/floating-whatsapp";
-import { UltimateChatbot } from "@/components/chatbot/UltimateChatbot";
+import { LazyChatbot } from "@/components/chatbot/LazyChatbot";
 import { LivingBackground } from "@/components/visuals/LivingBackground";
 import { LanguageProvider } from "@/lib/i18n";
 
@@ -145,7 +145,7 @@ export default function RootLayout({
         <LanguageProvider>
           {children}
           <FloatingWhatsApp />
-          <UltimateChatbot />
+          <LazyChatbot />
         </LanguageProvider>
       </body>
     </html>

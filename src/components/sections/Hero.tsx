@@ -20,8 +20,24 @@ export function Hero() {
   const isMobile = useIsMobile();
   const reducedMotion = useReducedMotion();
   const [mounted, setMounted] = useState(false);
+  const [loadVideo, setLoadVideo] = useState(false);
   useEffect(() => setMounted(true), []);
-  const showVideo = mounted && !isMobile && !reducedMotion;
+  useEffect(() => {
+    if (!mounted || isMobile || reducedMotion) {
+      setLoadVideo(false);
+      return;
+    }
+
+    const load = () => setLoadVideo(true);
+    if ("requestIdleCallback" in window) {
+      const idleId = window.requestIdleCallback(load, { timeout: 1600 });
+      return () => window.cancelIdleCallback(idleId);
+    }
+
+    const timeoutId = globalThis.setTimeout(load, 900);
+    return () => globalThis.clearTimeout(timeoutId);
+  }, [mounted, isMobile, reducedMotion]);
+  const showVideo = loadVideo && !isMobile && !reducedMotion;
 
   const { lang } = useLang();
   const t = {
