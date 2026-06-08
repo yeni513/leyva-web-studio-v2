@@ -16,20 +16,22 @@ export const site = {
     // → bandeja personal por si alguien escribe a cualquier alias.
     email: "hola@leyvawebstudio.com",
     location: "Cleveland, Ohio · trabajamos en todo EE. UU. y LATAM",
-    // Cal.com booking link. Cuando esté seteado, el sitio muestra un CTA
-    // "Agendar 15 min" en Hero + FAQ. Si queda vacío, el CTA se oculta y
-    // los usuarios siguen yendo por WhatsApp como hasta ahora.
+    // Optional booking link, usually Cal.com. Keep empty until there is a
+    // real scheduling URL. Empty = CTAs fall back to contact / WhatsApp.
     // Setup: docs/SETUP-CALCOM.md
-    bookingUrl: "",
+    bookingUrl: (process.env.NEXT_PUBLIC_BOOKING_URL ?? "").trim(),
   },
   analytics: {
     // Cloudflare Web Analytics (free, cookieless, privacy-first).
-    // Get it: Cloudflare dashboard → Analytics & Logs → Web Analytics →
-    // Add a site → copy the token. Paste it here and redeploy — the
-    // beacon then loads automatically. Empty = analytics off (no script).
-    cfBeaconToken: "",
+    // Get it: Cloudflare dashboard -> Analytics & Logs -> Web Analytics ->
+    // Add a site -> copy the token. Empty = analytics off (no script).
+    cfBeaconToken: (process.env.NEXT_PUBLIC_CF_BEACON_TOKEN ?? "").trim(),
   },
 };
+
+export function getBookingUrl() {
+  return site.contact.bookingUrl;
+}
 
 export function whatsappLink(message: string) {
   const text = encodeURIComponent(message);

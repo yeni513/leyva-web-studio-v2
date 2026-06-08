@@ -24,7 +24,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { BrandMark } from "@/components/brand";
-import { site, whatsappLink, mailtoLink } from "@/lib/site";
+import { getBookingUrl, site, whatsappLink, mailtoLink } from "@/lib/site";
 import { prefillQuote, type QuotePrefill } from "@/lib/prefill-quote";
 import { useBodyScrollLock } from "@/lib/use-body-scroll-lock";
 import { useLang, type Lang } from "@/lib/i18n";
@@ -372,6 +372,7 @@ export function Footer() {
   const estudioItems = localizeFooter(ESTUDIO_RAW, lang);
   const negociosItems = localizeFooter(NEGOCIOS_RAW, lang);
   const [active, setActive] = useState<FooterItem | null>(null);
+  const bookingUrl = getBookingUrl();
 
   return (
     <footer className="relative border-t border-white/[0.06] bg-ink-950">
@@ -405,13 +406,25 @@ export function Footer() {
               </h2>
             </div>
             <div className="flex flex-col sm:flex-row gap-3">
-              <Link
-                href="/#contact"
-                className="inline-flex items-center justify-center gap-2 h-12 px-6 rounded-full bg-gradient-to-b from-ember-200 via-ember-300 to-ember-400 text-ink-950 font-medium hover:shadow-glow transition-all"
-              >
-                {en ? "Get my website" : "Obtén mi sitio web"}
-                <ArrowUpRight className="w-4 h-4" />
-              </Link>
+              {bookingUrl ? (
+                <a
+                  href={bookingUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 h-12 px-6 rounded-full bg-gradient-to-b from-ember-200 via-ember-300 to-ember-400 text-ink-950 font-medium hover:shadow-glow transition-all"
+                >
+                  {en ? "Book 15 min" : "Agendar 15 min"}
+                  <ArrowUpRight className="w-4 h-4" />
+                </a>
+              ) : (
+                <Link
+                  href="/#contact"
+                  className="inline-flex items-center justify-center gap-2 h-12 px-6 rounded-full bg-gradient-to-b from-ember-200 via-ember-300 to-ember-400 text-ink-950 font-medium hover:shadow-glow transition-all"
+                >
+                  {en ? "Get my website" : "Obtén mi sitio web"}
+                  <ArrowUpRight className="w-4 h-4" />
+                </Link>
+              )}
               <a
                 href={whatsappLink(
                   en

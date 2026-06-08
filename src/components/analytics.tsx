@@ -4,15 +4,15 @@ import { site } from "@/lib/site";
 /**
  * Cloudflare Web Analytics beacon — free, cookieless, privacy-first.
  *
- * Renders nothing until a token is set in src/lib/site.ts
- * (`analytics.cfBeaconToken`). No token = no script, zero overhead.
+ * Renders nothing until NEXT_PUBLIC_CF_BEACON_TOKEN is set.
+ * No token = no script, zero overhead.
  *
  * Alternative (zero code): for a Cloudflare-proxied site you can also
  * enable Web Analytics straight from the dashboard with automatic setup
  * and skip this beacon entirely.
  */
 export function Analytics() {
-  const token = site.analytics?.cfBeaconToken;
+  const token = site.analytics?.cfBeaconToken?.trim();
   if (!token) return null;
 
   return (

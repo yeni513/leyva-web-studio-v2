@@ -20,7 +20,7 @@ import {
 } from "lucide-react";
 import { SectionHeading } from "@/components/section-heading";
 import { Reveal } from "@/components/ui/reveal";
-import { whatsappLink } from "@/lib/site";
+import { getBookingUrl, whatsappLink } from "@/lib/site";
 import { prefillQuote } from "@/lib/prefill-quote";
 import { useLang, type Lang } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
@@ -363,6 +363,7 @@ function FaqRow({
 
 function NoQuestionFoundCard({ lang }: { lang: Lang }) {
   const en = lang === "en";
+  const bookingUrl = getBookingUrl();
   return (
     <div className="mt-10 max-w-3xl mx-auto relative rounded-2xl border border-ember-300/20 bg-gradient-to-br from-white/[0.045] via-ember-300/[0.035] to-transparent p-6 sm:p-8 overflow-hidden shadow-[0_20px_60px_-42px_rgba(0,0,0,0.95)]">
       <div
@@ -403,21 +404,33 @@ function NoQuestionFoundCard({ lang }: { lang: Lang }) {
             <MessageCircle className="w-4 h-4 text-ember-300" />
             WhatsApp
           </a>
-          <button
-            type="button"
-            onClick={() =>
-              prefillQuote({
-                message: en
-                  ? "I have a few questions before defining the project. Can we talk for 30 min?"
-                  : "Tengo algunas preguntas antes de definir el proyecto. ¿Podemos hablar 30 min?",
-                fromLabel: en ? "FAQ — direct question" : "FAQ — pregunta directa",
-              })
-            }
-            className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-b from-ember-100 via-ember-300 to-ember-500 text-ink-950 text-sm font-semibold shadow-[0_14px_34px_-22px_rgba(236,139,42,0.95)] hover:shadow-[0_18px_42px_-22px_rgba(236,139,42,1)] transition-shadow no-tap-highlight"
-          >
-            {en ? "Let's talk" : "Hablemos"}
-            <ArrowUpRight className="w-4 h-4" />
-          </button>
+          {bookingUrl ? (
+            <a
+              href={bookingUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-b from-ember-100 via-ember-300 to-ember-500 text-ink-950 text-sm font-semibold shadow-[0_14px_34px_-22px_rgba(236,139,42,0.95)] hover:shadow-[0_18px_42px_-22px_rgba(236,139,42,1)] transition-shadow no-tap-highlight"
+            >
+              {en ? "Book 15 min" : "Agendar 15 min"}
+              <ArrowUpRight className="w-4 h-4" />
+            </a>
+          ) : (
+            <button
+              type="button"
+              onClick={() =>
+                prefillQuote({
+                  message: en
+                    ? "I have a few questions before defining the project. Can we talk for 30 min?"
+                    : "Tengo algunas preguntas antes de definir el proyecto. ¿Podemos hablar 30 min?",
+                  fromLabel: en ? "FAQ — direct question" : "FAQ — pregunta directa",
+                })
+              }
+              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-b from-ember-100 via-ember-300 to-ember-500 text-ink-950 text-sm font-semibold shadow-[0_14px_34px_-22px_rgba(236,139,42,0.95)] hover:shadow-[0_18px_42px_-22px_rgba(236,139,42,1)] transition-shadow no-tap-highlight"
+            >
+              {en ? "Let's talk" : "Hablemos"}
+              <ArrowUpRight className="w-4 h-4" />
+            </button>
+          )}
         </div>
       </div>
     </div>

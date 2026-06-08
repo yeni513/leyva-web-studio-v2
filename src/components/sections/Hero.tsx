@@ -8,7 +8,7 @@ import { StaticHeroBackground } from "@/components/visuals/StaticHeroBackground"
 import { VideoHeroBackground } from "@/components/visuals/VideoHeroBackground";
 import { useIsMobile } from "@/lib/use-is-mobile";
 import { useLang } from "@/lib/i18n";
-import { site, whatsappLink } from "@/lib/site";
+import { getBookingUrl, whatsappLink } from "@/lib/site";
 
 export function Hero() {
   // Cinematic video background — desktop + motion-allowed only:
@@ -40,6 +40,7 @@ export function Hero() {
   const showVideo = loadVideo && !isMobile && !reducedMotion;
 
   const { lang } = useLang();
+  const bookingUrl = getBookingUrl();
   const t = {
     es: {
       badge: "Estudio web premium para negocios locales · Cleveland, OH",
@@ -134,9 +135,9 @@ export function Hero() {
             {t.cta}
             <ArrowUpRight className="w-5 h-5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </AnchorButton>
-          {site.contact.bookingUrl ? (
+          {bookingUrl ? (
             <AnchorButton
-              href={site.contact.bookingUrl}
+              href={bookingUrl}
               target="_blank"
               rel="noopener noreferrer"
               size="xl"

@@ -6,7 +6,7 @@ import { Menu, X, ArrowUpRight, Phone } from "lucide-react";
 import { BrandMark } from "@/components/brand";
 import { AnchorButton } from "@/components/ui/button";
 import { LangToggle } from "@/components/lang-toggle";
-import { site } from "@/lib/site";
+import { getBookingUrl, site } from "@/lib/site";
 import { useLang } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
@@ -21,9 +21,10 @@ const links = [
 export function Navbar() {
   const { lang } = useLang();
   const t = {
-    es: { cta: "Cotizar mi sitio", call: "Llamar", nav: "Navegación principal", open: "Abrir menú", close: "Cerrar menú", callAria: "Llamar al" },
-    en: { cta: "Get a free quote", call: "Call", nav: "Primary navigation", open: "Open menu", close: "Close menu", callAria: "Call" },
+    es: { cta: "Cotizar mi sitio", book: "Agendar 15 min", call: "Llamar", nav: "Navegación principal", open: "Abrir menú", close: "Cerrar menú", callAria: "Llamar al" },
+    en: { cta: "Get a free quote", book: "Book 15 min", call: "Call", nav: "Primary navigation", open: "Open menu", close: "Close menu", callAria: "Call" },
   }[lang];
+  const bookingUrl = getBookingUrl();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -103,12 +104,14 @@ export function Navbar() {
               <span className="tabular-nums">{site.contact.phoneDisplay}</span>
             </a>
             <AnchorButton
-              href="/#contact"
+              href={bookingUrl || "/#contact"}
+              target={bookingUrl ? "_blank" : undefined}
+              rel={bookingUrl ? "noopener noreferrer" : undefined}
               size="sm"
               variant="primary"
               className="h-10 px-4 text-sm"
             >
-              {t.cta}
+              {bookingUrl ? t.book : t.cta}
               <ArrowUpRight className="w-4 h-4" />
             </AnchorButton>
           </div>
@@ -163,12 +166,14 @@ export function Navbar() {
                 <LangToggle />
               </div>
               <AnchorButton
-                href="/#contact"
+                href={bookingUrl || "/#contact"}
+                target={bookingUrl ? "_blank" : undefined}
+                rel={bookingUrl ? "noopener noreferrer" : undefined}
                 onClick={() => setOpen(false)}
                 size="lg"
                 className="w-full"
               >
-                {t.cta}
+                {bookingUrl ? t.book : t.cta}
                 <ArrowUpRight className="w-4 h-4" />
               </AnchorButton>
               <a
