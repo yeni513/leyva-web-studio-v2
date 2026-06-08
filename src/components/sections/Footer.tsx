@@ -295,10 +295,15 @@ export function Footer() {
               cinematográficos que convierten visitantes en clientes.
             </p>
             <p className="mt-3 max-w-sm text-[13px] text-ember-50/45 leading-relaxed">
-              Web design in Cleveland, Ohio · diseño web para restaurantes,
-              contractors, tiendas y servicios locales en Cleveland y todo
-              EE. UU. Local SEO, Google Business Profile, mantenimiento mensual
-              y chatbots con IA.
+              <a
+                href="/web-design-cleveland"
+                className="text-ember-50/65 hover:text-ember-300 underline-offset-2 hover:underline transition-colors"
+              >
+                Web design in Cleveland, Ohio
+              </a>{" "}
+              · diseño web para restaurantes, contractors, tiendas y servicios
+              locales en Cleveland y todo EE. UU. Local SEO, Google Business
+              Profile, mantenimiento mensual y chatbots con IA.
             </p>
             <div className="mt-5 flex flex-col gap-2 text-sm text-ember-50/70">
               <a

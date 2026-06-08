@@ -22,6 +22,13 @@ export const site = {
     // Setup: docs/SETUP-CALCOM.md
     bookingUrl: "",
   },
+  analytics: {
+    // Cloudflare Web Analytics (free, cookieless, privacy-first).
+    // Get it: Cloudflare dashboard → Analytics & Logs → Web Analytics →
+    // Add a site → copy the token. Paste it here and redeploy — the
+    // beacon then loads automatically. Empty = analytics off (no script).
+    cfBeaconToken: "",
+  },
 };
 
 export function whatsappLink(message: string) {

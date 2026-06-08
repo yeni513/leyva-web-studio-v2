@@ -3,6 +3,7 @@ import { Inter, Fraunces } from "next/font/google";
 import "./globals.css";
 import { site } from "@/lib/site";
 import { StructuredData } from "@/components/structured-data";
+import { Analytics } from "@/components/analytics";
 import { FloatingWhatsApp } from "@/components/floating-whatsapp";
 import { UltimateChatbot } from "@/components/chatbot/UltimateChatbot";
 import { LivingBackground } from "@/components/visuals/LivingBackground";
@@ -139,6 +140,7 @@ export default function RootLayout({
           Saltar al contenido
         </a>
         <StructuredData />
+        <Analytics />
         {children}
         <FloatingWhatsApp />
         <UltimateChatbot />
