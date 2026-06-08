@@ -18,11 +18,13 @@ import {
 } from "lucide-react";
 import { SectionHeading } from "@/components/section-heading";
 import { Reveal } from "@/components/ui/reveal";
+import { useLang, type Lang } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 const HAS_FOUNDER_PHOTO = true;
 
 export function About() {
+  const { lang } = useLang();
   const cardRef = useRef<HTMLDivElement>(null);
   // Tilt enabled unconditionally. Touch devices without mouseMove see
   // the card at neutral rotation — same visual as desktop at rest.
@@ -63,14 +65,25 @@ export function About() {
       <div className="container relative">
         <Reveal>
           <SectionHeading
-            eyebrow="Quién está detrás"
+            eyebrow={lang === "en" ? "Who's behind it" : "Quién está detrás"}
             title={
-              <>
-                No es una agencia con 30 empleados.{" "}
-                <span className="gradient-text">Soy yo.</span>
-              </>
+              lang === "en" ? (
+                <>
+                  It&apos;s not an agency with 30 employees.{" "}
+                  <span className="gradient-text">It&apos;s me.</span>
+                </>
+              ) : (
+                <>
+                  No es una agencia con 30 empleados.{" "}
+                  <span className="gradient-text">Soy yo.</span>
+                </>
+              )
             }
-            description="Hablas directamente con quien diseña y programa tu sitio. Sin intermediarios, sin call centers, sin equipos rotativos."
+            description={
+              lang === "en"
+                ? "You talk directly to the person who designs and builds your site. No middlemen, no call centers, no rotating teams."
+                : "Hablas directamente con quien diseña y programa tu sitio. Sin intermediarios, sin call centers, sin equipos rotativos."
+            }
           />
         </Reveal>
 
@@ -120,32 +133,57 @@ export function About() {
               />
 
               {/* "Disponible ahora" live status pill */}
-              <AvailabilityPill />
+              <AvailabilityPill lang={lang} />
 
               <div className="relative grid grid-cols-1 md:grid-cols-[auto_1fr] gap-8 md:gap-10 items-start">
                 <PhotoOrbit />
 
                 <div className="relative">
                   <h3 className="font-display text-2xl sm:text-3xl font-semibold tracking-tight text-ember-50 leading-tight">
-                    Alexander, fundador de Leyva.
+                    {lang === "en"
+                      ? "Alexander, founder of Leyva."
+                      : "Alexander, fundador de Leyva."}
                   </h3>
 
-                  <p className="mt-4 text-[15px] sm:text-base text-ember-50/80 leading-relaxed">
-                    Leyva Web Studio nace de una observación simple: vi
-                    demasiados dueños de negocio pagando{" "}
-                    <Highlight muted>$200/mes</Highlight> a plantillas
-                    genéricas que no convierten, o{" "}
-                    <Highlight muted>$15K USD</Highlight> a agencias que
-                    tardan <Highlight muted>4 meses</Highlight> y desaparecen
-                    después del lanzamiento.
-                  </p>
-                  <p className="mt-3 text-[15px] sm:text-base text-ember-50/80 leading-relaxed">
-                    Yo trabajo distinto: te entrego un sitio hecho a la medida
-                    en <Highlight>14 días</Highlight>, con{" "}
-                    <Highlight>plan mensual de cuidado</Highlight> y soporte
-                    directo conmigo cuando lo necesites — no con un ticket
-                    perdido en un help desk.
-                  </p>
+                  {lang === "en" ? (
+                    <>
+                      <p className="mt-4 text-[15px] sm:text-base text-ember-50/80 leading-relaxed">
+                        Leyva Web Studio started from a simple observation: I saw
+                        too many business owners paying{" "}
+                        <Highlight muted>$200/mo</Highlight> for generic templates
+                        that don&apos;t convert, or{" "}
+                        <Highlight muted>$15K USD</Highlight> to agencies that take{" "}
+                        <Highlight muted>4 months</Highlight> and disappear after
+                        launch.
+                      </p>
+                      <p className="mt-3 text-[15px] sm:text-base text-ember-50/80 leading-relaxed">
+                        I work differently: I deliver a custom site in{" "}
+                        <Highlight>14 days</Highlight>, with a{" "}
+                        <Highlight>monthly care plan</Highlight> and support
+                        straight from me whenever you need it — not a ticket lost
+                        in a help desk.
+                      </p>
+                    </>
+                  ) : (
+                    <>
+                      <p className="mt-4 text-[15px] sm:text-base text-ember-50/80 leading-relaxed">
+                        Leyva Web Studio nace de una observación simple: vi
+                        demasiados dueños de negocio pagando{" "}
+                        <Highlight muted>$200/mes</Highlight> a plantillas
+                        genéricas que no convierten, o{" "}
+                        <Highlight muted>$15K USD</Highlight> a agencias que
+                        tardan <Highlight muted>4 meses</Highlight> y desaparecen
+                        después del lanzamiento.
+                      </p>
+                      <p className="mt-3 text-[15px] sm:text-base text-ember-50/80 leading-relaxed">
+                        Yo trabajo distinto: te entrego un sitio hecho a la medida
+                        en <Highlight>14 días</Highlight>, con{" "}
+                        <Highlight>plan mensual de cuidado</Highlight> y soporte
+                        directo conmigo cuando lo necesites — no con un ticket
+                        perdido en un help desk.
+                      </p>
+                    </>
+                  )}
 
                   {/* Animated stats row */}
                   <div className="mt-6 grid grid-cols-3 gap-2.5 sm:gap-3">
@@ -153,19 +191,19 @@ export function About() {
                       icon={Zap}
                       to={14}
                       suffix="d"
-                      label="entrega máxima"
+                      label={lang === "en" ? "max delivery" : "entrega máxima"}
                     />
                     <StatCard
                       icon={Clock}
                       to={4}
                       suffix="h"
-                      label="respuesta lun-vie"
+                      label={lang === "en" ? "reply mon–fri" : "respuesta lun-vie"}
                     />
                     <StatCard
                       icon={Calendar}
                       to={2}
                       suffix="×"
-                      label="rondas de revisión"
+                      label={lang === "en" ? "revision rounds" : "rondas de revisión"}
                     />
                   </div>
 
@@ -271,13 +309,13 @@ function PhotoOrbit() {
 // ─────────────────────────────────────────────────
 // "Disponible ahora" live status indicator (top right)
 // ─────────────────────────────────────────────────
-function AvailabilityPill() {
-  // Dynamic month label — "2 cupos en julio" feels alive vs the static
-  // "este mes" which reads as a template. Recalculated on every render
-  // so the copy auto-updates without anyone touching the source. We
-  // capitalize the first letter because `toLocaleDateString` returns
-  // it lowercase in Spanish ("julio" → "Julio").
-  const month = new Date().toLocaleDateString("es-MX", { month: "long" });
+function AvailabilityPill({ lang }: { lang: Lang }) {
+  // Dynamic month label — "2 cupos en julio" / "2 spots in July" feels
+  // alive vs a static "este mes". Recalculated on every render.
+  const month = new Date().toLocaleDateString(
+    lang === "en" ? "en-US" : "es-MX",
+    { month: "long" },
+  );
   const monthCap = month.charAt(0).toUpperCase() + month.slice(1);
 
   return (
@@ -287,7 +325,7 @@ function AvailabilityPill() {
         <span className="relative w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_10px_-1px_rgba(74,222,128,0.85)]" />
       </span>
       <span className="text-emerald-200">
-        2 cupos en {monthCap}
+        {lang === "en" ? `2 spots in ${monthCap}` : `2 cupos en ${monthCap}`}
       </span>
     </div>
   );
