@@ -254,7 +254,7 @@ function ProjectCard({ project: p }: { project: Project }) {
         <div className="relative flex-1 overflow-hidden">
           <Image
             src={p.screenshot}
-            alt={`Captura del sitio de ${p.name}`}
+            alt={`${p.name} — sitio web de ${p.industry} diseñado por Leyva Web Studio en Cleveland, Ohio`}
             fill
             sizes="(max-width: 768px) 92vw, 46vw"
             className="object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.04]"

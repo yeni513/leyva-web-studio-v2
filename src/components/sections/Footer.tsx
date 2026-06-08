@@ -294,6 +294,12 @@ export function Footer() {
               Estudio web hecho a la medida para negocios locales. Diseñamos sitios
               cinematográficos que convierten visitantes en clientes.
             </p>
+            <p className="mt-3 max-w-sm text-[13px] text-ember-50/45 leading-relaxed">
+              Web design in Cleveland, Ohio · diseño web para restaurantes,
+              contractors, tiendas y servicios locales en Cleveland y todo
+              EE. UU. Local SEO, Google Business Profile, mantenimiento mensual
+              y chatbots con IA.
+            </p>
             <div className="mt-5 flex flex-col gap-2 text-sm text-ember-50/70">
               <a
                 href={whatsappLink("Hola Leyva")}
