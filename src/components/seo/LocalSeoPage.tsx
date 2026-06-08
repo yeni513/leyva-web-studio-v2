@@ -95,14 +95,6 @@ export function LocalSeoPage({ data }: { data: LocalSeoPageData }) {
           },
         ],
       },
-      {
-        "@type": "FAQPage",
-        mainEntity: data.faqs.map((f) => ({
-          "@type": "Question",
-          name: f.q,
-          acceptedAnswer: { "@type": "Answer", text: f.a },
-        })),
-      },
     ],
   };
 
