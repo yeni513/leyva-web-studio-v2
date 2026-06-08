@@ -10,20 +10,29 @@ import { LivingBackground } from "@/components/visuals/LivingBackground";
 import { LanguageProvider } from "@/lib/i18n";
 
 // Body — Inter variable, every weight available via `font-sans`.
+// preload:false on purpose — Inter paints body copy, never the mobile LCP
+// element (the hero <h1> uses Fraunces). Not preloading it frees the
+// critical early bandwidth for Fraunces so the heading reaches its final
+// paint sooner. Inter still loads via swap with a metric-matched fallback
+// (adjustFontFallback default), so there's no visible reflow and CLS stays 0.
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
   display: "swap",
+  preload: false,
 });
 
 // Display — Fraunces variable serif with optical sizing. Used by every
 // section heading + gradient-text headline. The opsz axis lets the same
 // face look sharp at 14px (eyebrow) and at 80px (hero h1).
+// This is the mobile LCP font (hero heading), so it keeps preload:true and
+// gets the early-bandwidth priority.
 const fraunces = Fraunces({
   subsets: ["latin"],
   axes: ["opsz"],
   variable: "--font-display",
   display: "swap",
+  preload: true,
 });
 
 export const metadata: Metadata = {

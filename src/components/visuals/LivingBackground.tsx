@@ -19,9 +19,12 @@ export function LivingBackground() {
       aria-hidden
       className="fixed inset-0 -z-10 overflow-hidden pointer-events-none"
     >
-      {/* Ember blob — top-left, the warmest */}
+      {/* Ember blob — top-left, the warmest.
+          No will-change: the browser auto-promotes transform-animated layers
+          while they animate; forcing 3 permanent large GPU layers only wastes
+          mobile memory + first-composite time during the hero paint. */}
       <div
-        className="absolute -top-[15%] left-[5%] w-[60vw] h-[60vw] max-w-[820px] max-h-[820px] rounded-full blur-3xl will-change-transform animate-aurora-a"
+        className="absolute -top-[15%] left-[5%] w-[60vw] h-[60vw] max-w-[820px] max-h-[820px] rounded-full blur-3xl animate-aurora-a"
         style={{
           background:
             "radial-gradient(circle, rgba(245,173,79,0.32), transparent 70%)",
@@ -29,7 +32,7 @@ export function LivingBackground() {
       />
       {/* Bronze blob — right side, deeper tone */}
       <div
-        className="absolute top-[28%] right-[0%] w-[55vw] h-[55vw] max-w-[760px] max-h-[760px] rounded-full blur-3xl will-change-transform animate-aurora-b"
+        className="absolute top-[28%] right-[0%] w-[55vw] h-[55vw] max-w-[760px] max-h-[760px] rounded-full blur-3xl animate-aurora-b"
         style={{
           background:
             "radial-gradient(circle, rgba(236,139,42,0.28), transparent 70%)",
@@ -37,7 +40,7 @@ export function LivingBackground() {
       />
       {/* Deep amber blob — lower-center, breathes opacity */}
       <div
-        className="absolute bottom-[-12%] left-[22%] w-[65vw] h-[65vw] max-w-[880px] max-h-[880px] rounded-full blur-3xl will-change-transform animate-aurora-c"
+        className="absolute bottom-[-12%] left-[22%] w-[65vw] h-[65vw] max-w-[880px] max-h-[880px] rounded-full blur-3xl animate-aurora-c"
         style={{
           background:
             "radial-gradient(circle, rgba(252,201,122,0.25), transparent 70%)",
