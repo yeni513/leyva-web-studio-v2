@@ -5,6 +5,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { ExternalLink } from "lucide-react";
 import { SectionHeading } from "@/components/section-heading";
 import { Reveal } from "@/components/ui/reveal";
+import { useLang, type Lang } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 type BadgeType = "live" | "concept";
@@ -26,62 +27,123 @@ interface Project {
   screenshot: string;
 }
 
-const projects: Project[] = [
+interface RawProject {
+  id: string;
+  name: string;
+  url: string;
+  domain: string;
+  badgeType: BadgeType;
+  screenshot: string;
+  es: { industry: string; badge: string; description: string; tags: string[] };
+  en: { industry: string; badge: string; description: string; tags: string[] };
+}
+
+const RAW_PROJECTS: RawProject[] = [
   {
     id: "leyva",
     name: "Leyva Web Studio",
     url: "https://leyvawebstudio.com/",
     domain: "leyvawebstudio.com",
-    industry: "Estudio web · Sitio oficial",
-    badge: "Sitio en vivo",
     badgeType: "live",
-    description:
-      "Nuestro sitio oficial: Next.js sobre Cloudflare Workers, chatbot con IA, captación de leads, estructura SEO y secciones enfocadas en conversión.",
-    tags: ["Next.js", "Cloudflare", "Chatbot IA", "SEO", "Conversión"],
     screenshot: "/work/leyva.jpg",
+    es: {
+      industry: "Estudio web · Sitio oficial",
+      badge: "Sitio en vivo",
+      description:
+        "Nuestro sitio oficial: Next.js sobre Cloudflare Workers, chatbot con IA, captación de leads, estructura SEO y secciones enfocadas en conversión.",
+      tags: ["Next.js", "Cloudflare", "Chatbot IA", "SEO", "Conversión"],
+    },
+    en: {
+      industry: "Web studio · Official site",
+      badge: "Live site",
+      description:
+        "Our official site: Next.js on Cloudflare Workers, AI chatbot, lead capture, SEO structure and conversion-focused sections.",
+      tags: ["Next.js", "Cloudflare", "AI chatbot", "SEO", "Conversion"],
+    },
   },
   {
     id: "tapatias",
     name: "Tapatías Taquería",
     url: "https://tapatias-premium-demo.vercel.app/",
     domain: "tapatias-premium-demo.vercel.app",
-    industry: "Restaurante",
-    badge: "Concepto privado",
     badgeType: "concept",
-    description:
-      "Concepto premium para restaurante: branding moderno, showcase de menú, visuales de comida y secciones de conversión para llamadas, visitas y catering.",
-    tags: ["Branding", "Menú", "Catering", "Local SEO"],
     screenshot: "/work/tapatias.jpg",
+    es: {
+      industry: "Restaurante",
+      badge: "Concepto privado",
+      description:
+        "Concepto premium para restaurante: branding moderno, showcase de menú, visuales de comida y secciones de conversión para llamadas, visitas y catering.",
+      tags: ["Branding", "Menú", "Catering", "Local SEO"],
+    },
+    en: {
+      industry: "Restaurant",
+      badge: "Private concept",
+      description:
+        "Premium restaurant concept: modern branding, menu showcase, food visuals and conversion sections for calls, visits and catering.",
+      tags: ["Branding", "Menu", "Catering", "Local SEO"],
+    },
   },
   {
     id: "landscaping",
     name: "Landscaping Premium",
     url: "https://landscaping-premium-demo.vercel.app/",
     domain: "landscaping-premium-demo.vercel.app",
-    industry: "Servicios · Jardinería",
-    badge: "Demo de servicio",
     badgeType: "concept",
-    description:
-      "Concepto para negocio de jardinería y servicios locales: confianza, visuales de antes/después, presentación de servicios y captación de clientes.",
-    tags: ["Antes/Después", "Confianza", "Servicios", "Captación"],
     screenshot: "/work/landscaping.jpg",
+    es: {
+      industry: "Servicios · Jardinería",
+      badge: "Demo de servicio",
+      description:
+        "Concepto para negocio de jardinería y servicios locales: confianza, visuales de antes/después, presentación de servicios y captación de clientes.",
+      tags: ["Antes/Después", "Confianza", "Servicios", "Captación"],
+    },
+    en: {
+      industry: "Services · Landscaping",
+      badge: "Service demo",
+      description:
+        "Concept for a landscaping and local-services business: trust, before/after visuals, service presentation and lead capture.",
+      tags: ["Before/After", "Trust", "Services", "Lead capture"],
+    },
   },
   {
     id: "chino",
     name: "Chino Electrodomésticos",
     url: "https://chino-electrodomesticos.vercel.app/",
     domain: "chino-electrodomesticos.vercel.app",
-    industry: "Electrodomésticos · Ecommerce",
-    badge: "Demo ecommerce",
     badgeType: "concept",
-    description:
-      "Concepto para negocio de electrodomésticos: estructura enfocada en producto, presentación tipo catálogo, secciones de confianza y layout orientado a ventas.",
-    tags: ["Catálogo", "Producto", "Ventas", "Confianza"],
     screenshot: "/work/chino-v2.jpg",
+    es: {
+      industry: "Electrodomésticos · Ecommerce",
+      badge: "Demo ecommerce",
+      description:
+        "Concepto para negocio de electrodomésticos: estructura enfocada en producto, presentación tipo catálogo, secciones de confianza y layout orientado a ventas.",
+      tags: ["Catálogo", "Producto", "Ventas", "Confianza"],
+    },
+    en: {
+      industry: "Appliances · Ecommerce",
+      badge: "Ecommerce demo",
+      description:
+        "Concept for an appliance business: product-focused structure, catalog-style presentation, trust sections and a sales-oriented layout.",
+      tags: ["Catalog", "Product", "Sales", "Trust"],
+    },
   },
 ];
 
+function localizeProjects(lang: Lang): Project[] {
+  return RAW_PROJECTS.map((p) => ({
+    id: p.id,
+    name: p.name,
+    url: p.url,
+    domain: p.domain,
+    badgeType: p.badgeType,
+    screenshot: p.screenshot,
+    ...p[lang],
+  }));
+}
+
 export function Portfolio() {
+  const { lang } = useLang();
+  const projects = localizeProjects(lang);
   return (
     <section
       id="trabajo"
@@ -96,21 +158,32 @@ export function Portfolio() {
       <div className="container relative">
         <Reveal>
           <SectionHeading
-            eyebrow="Trabajo y conceptos"
+            eyebrow={lang === "en" ? "Work & concepts" : "Trabajo y conceptos"}
             title={
-              <>
-                Trabajo seleccionado y{" "}
-                <span className="gradient-text">conceptos premium.</span>
-              </>
+              lang === "en" ? (
+                <>
+                  Selected work and{" "}
+                  <span className="gradient-text">premium concepts.</span>
+                </>
+              ) : (
+                <>
+                  Trabajo seleccionado y{" "}
+                  <span className="gradient-text">conceptos premium.</span>
+                </>
+              )
             }
-            description="Builds reales y demos conceptuales de alto nivel, creados para mostrar cómo un negocio local puede verse más profesional, generar confianza más rápido y convertir más visitantes en clientes."
+            description={
+              lang === "en"
+                ? "Real builds and high-end concept demos, created to show how a local business can look more professional, earn trust faster and turn more visitors into customers."
+                : "Builds reales y demos conceptuales de alto nivel, creados para mostrar cómo un negocio local puede verse más profesional, generar confianza más rápido y convertir más visitantes en clientes."
+            }
           />
         </Reveal>
 
         <div className="mt-14 grid grid-cols-1 md:grid-cols-2 gap-5">
           {projects.map((p, i) => (
             <CardReveal key={p.id} index={i}>
-              <ProjectCard project={p} />
+              <ProjectCard project={p} lang={lang} />
             </CardReveal>
           ))}
         </div>
@@ -118,24 +191,38 @@ export function Portfolio() {
         {/* Honest trust note */}
         <Reveal>
           <p className="mt-10 max-w-3xl mx-auto text-center text-[13px] leading-relaxed text-ember-50/55">
-            Algunos proyectos son conceptos privados creados con fines de
-            presentación: muestran el nivel de diseño, estrategia y
-            funcionalidad que entregamos. Las marcas mostradas se usan solo con
-            fines demostrativos.
+            {lang === "en"
+              ? "Some projects are private concept demos created for presentation purposes: they show the level of design, strategy and functionality we deliver. Brand names are used for demonstration only."
+              : "Algunos proyectos son conceptos privados creados con fines de presentación: muestran el nivel de diseño, estrategia y funcionalidad que entregamos. Las marcas mostradas se usan solo con fines demostrativos."}
           </p>
         </Reveal>
 
         {/* Conversion bridge into the offer */}
         <Reveal>
           <p className="mt-6 text-center text-sm text-ember-50/70">
-            ¿Quieres un sitio así para tu negocio?{" "}
-            <a
-              href="#contact"
-              className="text-ember-300 hover:text-ember-200 underline-offset-4 hover:underline"
-            >
-              Pídenos una cotización
-            </a>
-            .
+            {lang === "en" ? (
+              <>
+                Want a site like this for your business?{" "}
+                <a
+                  href="#contact"
+                  className="text-ember-300 hover:text-ember-200 underline-offset-4 hover:underline"
+                >
+                  Ask for a quote
+                </a>
+                .
+              </>
+            ) : (
+              <>
+                ¿Quieres un sitio así para tu negocio?{" "}
+                <a
+                  href="#contact"
+                  className="text-ember-300 hover:text-ember-200 underline-offset-4 hover:underline"
+                >
+                  Pídenos una cotización
+                </a>
+                .
+              </>
+            )}
           </p>
         </Reveal>
       </div>
@@ -189,7 +276,7 @@ function CardReveal({
 // ─────────────────────────────────────────────────
 // Single project card — whole card links to the real site
 // ─────────────────────────────────────────────────
-function ProjectCard({ project: p }: { project: Project }) {
+function ProjectCard({ project: p, lang }: { project: Project; lang: Lang }) {
   const isLive = p.badgeType === "live";
 
   return (
@@ -197,7 +284,11 @@ function ProjectCard({ project: p }: { project: Project }) {
       href={p.url}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label={`Ver proyecto ${p.name} (abre en una pestaña nueva)`}
+      aria-label={
+        lang === "en"
+          ? `Open ${p.name} (opens in a new tab)`
+          : `Ver proyecto ${p.name} (abre en una pestaña nueva)`
+      }
       className="group relative block h-full rounded-3xl border border-white/[0.07] bg-gradient-to-b from-white/[0.035] to-white/[0.01] p-5 sm:p-6 overflow-hidden transition-all duration-500 hover:border-ember-300/35 hover:-translate-y-1.5 hover:shadow-[0_25px_60px_-20px_rgba(236,139,42,0.35)] no-tap-highlight"
     >
       {/* Hover top-right radial glow */}
@@ -291,7 +382,7 @@ function ProjectCard({ project: p }: { project: Project }) {
 
         {/* CTA */}
         <span className="mt-5 inline-flex items-center gap-2 rounded-full border border-ember-300/30 bg-ember-300/[0.06] px-4 py-2 text-[13px] font-medium text-ember-50 transition-colors group-hover:bg-ember-300/[0.14] group-hover:border-ember-300/55">
-          Ver proyecto
+          {lang === "en" ? "View project" : "Ver proyecto"}
           <ExternalLink className="w-3.5 h-3.5 text-ember-300 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
         </span>
       </div>

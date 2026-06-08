@@ -22,6 +22,7 @@ import {
 import { SectionHeading } from "@/components/section-heading";
 import { Reveal } from "@/components/ui/reveal";
 import { prefillQuote } from "@/lib/prefill-quote";
+import { useLang, type Lang } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 interface Service {
@@ -34,66 +35,119 @@ interface Service {
   phaseDeg: number;
 }
 
-const services: Service[] = [
+interface RawService extends Omit<Service, "title" | "desc" | "detail"> {
+  es: { title: string; desc: string; detail: string };
+  en: { title: string; desc: string; detail: string };
+}
+
+const SERVICES_RAW: RawService[] = [
   {
     id: "design",
     icon: LayoutTemplate,
-    title: "Sitios web a la medida",
-    desc: "Diseño cinematográfico, copy persuasivo y desarrollo limpio en Next.js.",
-    detail:
-      "Cada sitio se construye desde cero alrededor de tu negocio. Sin plantillas, sin diseño genérico — Next.js, TypeScript y diseño hecho a mano.",
     orbit: "inner",
     phaseDeg: 270,
+    es: {
+      title: "Sitios web a la medida",
+      desc: "Diseño cinematográfico, copy persuasivo y desarrollo limpio en Next.js.",
+      detail:
+        "Cada sitio se construye desde cero alrededor de tu negocio. Sin plantillas, sin diseño genérico — Next.js, TypeScript y diseño hecho a mano.",
+    },
+    en: {
+      title: "Custom websites",
+      desc: "Cinematic design, persuasive copy and clean Next.js development.",
+      detail:
+        "Every site is built from scratch around your business. No templates, no generic design — Next.js, TypeScript and hand-crafted design.",
+    },
   },
   {
     id: "mobile",
     icon: Smartphone,
-    title: "Mobile-first real",
-    desc: "Probado en celulares reales, no solo en DevTools.",
-    detail:
-      "Probamos en iPhone y Android reales antes de entregar. Cero secciones rotas, cero contenido oculto, cero scroll horizontal.",
     orbit: "inner",
     phaseDeg: 30,
+    es: {
+      title: "Mobile-first real",
+      desc: "Probado en celulares reales, no solo en DevTools.",
+      detail:
+        "Probamos en iPhone y Android reales antes de entregar. Cero secciones rotas, cero contenido oculto, cero scroll horizontal.",
+    },
+    en: {
+      title: "Truly mobile-first",
+      desc: "Tested on real phones, not just in DevTools.",
+      detail:
+        "We test on real iPhones and Androids before delivery. Zero broken sections, zero hidden content, zero horizontal scroll.",
+    },
   },
   {
     id: "speed",
     icon: Gauge,
-    title: "Velocidad y Core Web Vitals",
-    desc: "Imágenes optimizadas, fuentes locales y código limpio.",
-    detail:
-      "Optimizamos imágenes a AVIF/WebP, servimos fuentes locales y mantenemos el JS al mínimo. Tu sitio carga rápido y Google lo nota.",
     orbit: "inner",
     phaseDeg: 150,
+    es: {
+      title: "Velocidad y Core Web Vitals",
+      desc: "Imágenes optimizadas, fuentes locales y código limpio.",
+      detail:
+        "Optimizamos imágenes a AVIF/WebP, servimos fuentes locales y mantenemos el JS al mínimo. Tu sitio carga rápido y Google lo nota.",
+    },
+    en: {
+      title: "Speed & Core Web Vitals",
+      desc: "Optimized images, local fonts and clean code.",
+      detail:
+        "We optimize images to AVIF/WebP, serve local fonts and keep JS to a minimum. Your site loads fast and Google notices.",
+    },
   },
   {
     id: "seo",
     icon: Search,
-    title: "SEO local",
-    desc: "Estructura, metadatos y contenido pensados para tu ciudad.",
-    detail:
-      "Schema markup, sitemaps, Open Graph, alt text, headings semánticos. Los clientes de tu ciudad te encuentran primero, no a la competencia.",
     orbit: "outer",
     phaseDeg: 330,
+    es: {
+      title: "SEO local",
+      desc: "Estructura, metadatos y contenido pensados para tu ciudad.",
+      detail:
+        "Schema markup, sitemaps, Open Graph, alt text, headings semánticos. Los clientes de tu ciudad te encuentran primero, no a la competencia.",
+    },
+    en: {
+      title: "Local SEO",
+      desc: "Structure, metadata and content built for your city.",
+      detail:
+        "Schema markup, sitemaps, Open Graph, alt text, semantic headings. Customers in your city find you first, not the competition.",
+    },
   },
   {
     id: "catalog",
     icon: ShoppingCart,
-    title: "Catálogos y reservas",
-    desc: "Menús digitales, propiedades, servicios y reservas por WhatsApp.",
-    detail:
-      "Catálogos con filtros, galerías rápidas, formularios de cotización y reservas directas por WhatsApp. Sin fricción entre el visitante y la venta.",
     orbit: "outer",
     phaseDeg: 90,
+    es: {
+      title: "Catálogos y reservas",
+      desc: "Menús digitales, propiedades, servicios y reservas por WhatsApp.",
+      detail:
+        "Catálogos con filtros, galerías rápidas, formularios de cotización y reservas directas por WhatsApp. Sin fricción entre el visitante y la venta.",
+    },
+    en: {
+      title: "Catalogs & bookings",
+      desc: "Digital menus, listings, services and WhatsApp bookings.",
+      detail:
+        "Catalogs with filters, fast galleries, quote forms and direct WhatsApp bookings. Zero friction between the visitor and the sale.",
+    },
   },
   {
     id: "support",
     icon: Wrench,
-    title: "Soporte y mantenimiento",
-    desc: "Cambios mensuales, monitoreo y respaldos.",
-    detail:
-      "Mantenemos tu sitio impecable: actualizaciones, monitoreo de uptime, respaldos automáticos y hasta 2 rondas de cambios mensuales incluidas.",
     orbit: "outer",
     phaseDeg: 210,
+    es: {
+      title: "Soporte y mantenimiento",
+      desc: "Cambios mensuales, monitoreo y respaldos.",
+      detail:
+        "Mantenemos tu sitio impecable: actualizaciones, monitoreo de uptime, respaldos automáticos y hasta 2 rondas de cambios mensuales incluidas.",
+    },
+    en: {
+      title: "Support & maintenance",
+      desc: "Monthly edits, monitoring and backups.",
+      detail:
+        "We keep your site flawless: updates, uptime monitoring, automatic backups and up to 2 rounds of monthly edits included.",
+    },
   },
 ];
 
@@ -103,11 +157,23 @@ const INNER_SPEED = 0.16; // rad/s — slightly slower so the bigger orbit still
 const OUTER_SPEED = -0.095;
 const EASE_PREMIUM = cubicBezier(0.22, 1, 0.36, 1);
 
+function localizeServices(lang: Lang): Service[] {
+  return SERVICES_RAW.map((s) => ({
+    id: s.id,
+    icon: s.icon,
+    orbit: s.orbit,
+    phaseDeg: s.phaseDeg,
+    ...s[lang],
+  }));
+}
+
 export function Services() {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
   const isMobile = useIsMobile();
   const reducedMotion = useReducedMotion();
+  const { lang } = useLang();
+  const services = localizeServices(lang);
 
   // Route to the static 6-card grid on mobile, with reduced motion, and
   // during SSR pre-mount. The orbital is reserved for desktop with
@@ -129,24 +195,40 @@ export function Services() {
       <div className="container relative">
         <Reveal>
           <SectionHeading
-            eyebrow="Servicios"
+            eyebrow={lang === "en" ? "Services" : "Servicios"}
             title={
-              <>
-                Todo lo que tu negocio necesita
-                <br className="hidden sm:block" /> para verse{" "}
-                <span className="gradient-text">profesional online.</span>
-              </>
+              lang === "en" ? (
+                <>
+                  Everything your business needs
+                  <br className="hidden sm:block" /> to look{" "}
+                  <span className="gradient-text">professional online.</span>
+                </>
+              ) : (
+                <>
+                  Todo lo que tu negocio necesita
+                  <br className="hidden sm:block" /> para verse{" "}
+                  <span className="gradient-text">profesional online.</span>
+                </>
+              )
             }
             description={
-              useFallback
-                ? "No vendemos plantillas. Diseñamos cada sitio desde cero alrededor de tu negocio, tu cliente ideal y la acción que necesitas que tomen."
-                : "Haz clic en cualquier órbita para explorar lo que entregamos. Cada servicio se diseña alrededor de tu negocio y tu cliente ideal."
+              lang === "en"
+                ? useFallback
+                  ? "We don't sell templates. We design every site from scratch around your business, your ideal customer and the action you need them to take."
+                  : "Click any orbit to explore what we deliver. Every service is designed around your business and your ideal customer."
+                : useFallback
+                  ? "No vendemos plantillas. Diseñamos cada sitio desde cero alrededor de tu negocio, tu cliente ideal y la acción que necesitas que tomen."
+                  : "Haz clic en cualquier órbita para explorar lo que entregamos. Cada servicio se diseña alrededor de tu negocio y tu cliente ideal."
             }
           />
         </Reveal>
       </div>
 
-      {useFallback ? <ServicesGrid /> : <ServicesOrbit />}
+      {useFallback ? (
+        <ServicesGrid services={services} lang={lang} />
+      ) : (
+        <ServicesOrbit services={services} lang={lang} />
+      )}
     </section>
   );
 }
@@ -154,7 +236,13 @@ export function Services() {
 // ─────────────────────────────────────────────────
 // DESKTOP — orbital UI with center hub
 // ─────────────────────────────────────────────────
-function ServicesOrbit() {
+function ServicesOrbit({
+  services,
+  lang,
+}: {
+  services: Service[];
+  lang: Lang;
+}) {
   const [selected, setSelected] = useState<Service | null>(null);
 
   // Period of one full revolution per orbit. We reuse the existing
@@ -193,6 +281,7 @@ function ServicesOrbit() {
         <CenterHub
           selected={selected}
           onClear={() => setSelected(null)}
+          lang={lang}
         />
 
         {/* Orbiting service icons. Each icon sits inside a five-layer
@@ -478,9 +567,11 @@ function OrbitingIcon({
 function CenterHub({
   selected,
   onClear,
+  lang,
 }: {
   selected: Service | null;
   onClear: () => void;
+  lang: Lang;
 }) {
   return (
     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[270px] h-[270px] z-30 pointer-events-none">
@@ -513,7 +604,7 @@ function CenterHub({
           <button
             type="button"
             onClick={onClear}
-            aria-label="Limpiar selección"
+            aria-label={lang === "en" ? "Clear selection" : "Limpiar selección"}
             className="absolute top-3.5 right-3.5 z-10 grid place-items-center w-6 h-6 rounded-full border border-white/[0.10] bg-white/[0.04] text-ember-50/60 hover:text-ember-50 hover:bg-white/[0.10] transition-colors text-[14px] leading-none"
           >
             ×
@@ -523,9 +614,9 @@ function CenterHub({
         <div className="relative w-[270px] text-center">
           <AnimatePresence mode="wait">
             {selected ? (
-              <SelectedView key={selected.id} service={selected} />
+              <SelectedView key={selected.id} service={selected} lang={lang} />
             ) : (
-              <DefaultView key="default" />
+              <DefaultView key="default" lang={lang} />
             )}
           </AnimatePresence>
         </div>
@@ -534,7 +625,7 @@ function CenterHub({
   );
 }
 
-function SelectedView({ service }: { service: Service }) {
+function SelectedView({ service, lang }: { service: Service; lang: Lang }) {
   const Icon = service.icon;
   return (
     <motion.div
@@ -557,20 +648,26 @@ function SelectedView({ service }: { service: Service }) {
         onClick={() =>
           prefillQuote({
             type: "Sitio nuevo",
-            message: `Me interesa el servicio: ${service.title}. ${service.detail}`,
-            fromLabel: `Servicio: ${service.title}`,
+            message:
+              lang === "en"
+                ? `I'm interested in: ${service.title}. ${service.detail}`
+                : `Me interesa el servicio: ${service.title}. ${service.detail}`,
+            fromLabel:
+              lang === "en"
+                ? `Service: ${service.title}`
+                : `Servicio: ${service.title}`,
           })
         }
         className="mt-5 inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full border border-ember-300/35 bg-ember-300/[0.08] text-[10.5px] uppercase tracking-[0.14em] text-ember-300 hover:bg-ember-300/[0.16] hover:border-ember-300/55 transition-colors no-tap-highlight whitespace-nowrap"
       >
-        Pedir cotización
+        {lang === "en" ? "Get a quote" : "Pedir cotización"}
         <ArrowUpRight className="w-3.5 h-3.5" />
       </button>
     </motion.div>
   );
 }
 
-function DefaultView() {
+function DefaultView({ lang }: { lang: Lang }) {
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.92 }}
@@ -586,14 +683,16 @@ function DefaultView() {
         />
       </div>
       <p className="mt-4 font-display text-[18px] text-ember-50 font-medium">
-        Servicios curados
+        {lang === "en" ? "Curated services" : "Servicios curados"}
       </p>
       <p className="mt-2 text-[12.5px] leading-relaxed text-ember-50/65">
-        Haz clic en cualquier ícono para explorar lo que entregamos.
+        {lang === "en"
+          ? "Click any icon to explore what we deliver."
+          : "Haz clic en cualquier ícono para explorar lo que entregamos."}
       </p>
       <div className="mt-5 inline-flex items-center gap-1.5 text-[10px] uppercase tracking-[0.22em] text-ember-300/70">
         <span className="w-1 h-1 rounded-full bg-ember-300 animate-pulse-glow" />
-        Hover para pausar
+        {lang === "en" ? "Hover to pause" : "Hover para pausar"}
       </div>
     </motion.div>
   );
@@ -602,7 +701,7 @@ function DefaultView() {
 // ─────────────────────────────────────────────────
 // MOBILE / reduced-motion — static 6-card grid
 // ─────────────────────────────────────────────────
-function ServicesGrid() {
+function ServicesGrid({ services, lang }: { services: Service[]; lang: Lang }) {
   return (
     <div className="container">
       <div className="mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
@@ -615,8 +714,12 @@ function ServicesGrid() {
                 onClick={() =>
                   prefillQuote({
                     type: "Sitio nuevo",
-                    message: `Me interesa el servicio: ${s.title}. ${s.detail}`,
-                    fromLabel: `Servicio: ${s.title}`,
+                    message:
+                      lang === "en"
+                        ? `I'm interested in: ${s.title}. ${s.detail}`
+                        : `Me interesa el servicio: ${s.title}. ${s.detail}`,
+                    fromLabel:
+                      lang === "en" ? `Service: ${s.title}` : `Servicio: ${s.title}`,
                   })
                 }
                 className="group relative block h-full w-full text-left rounded-2xl border border-white/[0.07] bg-gradient-to-b from-white/[0.04] to-white/[0.01] p-6 sm:p-7 transition-all duration-500 hover:border-ember-300/30 hover:from-ember-300/[0.06] hover:to-white/[0.01] shadow-card no-tap-highlight"

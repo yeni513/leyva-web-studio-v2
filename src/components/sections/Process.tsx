@@ -10,6 +10,7 @@ import {
 import { motion, useReducedMotion } from "framer-motion";
 import { SectionHeading } from "@/components/section-heading";
 import { Reveal } from "@/components/ui/reveal";
+import { useLang } from "@/lib/i18n";
 
 interface Step {
   n: string;
@@ -19,34 +20,35 @@ interface Step {
   time: string;
 }
 
-const steps: Step[] = [
+interface RawStep extends Omit<Step, "title" | "desc" | "time"> {
+  es: { title: string; desc: string; time: string };
+  en: { title: string; desc: string; time: string };
+}
+
+const STEPS_RAW: RawStep[] = [
   {
     n: "01",
     icon: Compass,
-    title: "Descubrimiento",
-    desc: "Hablamos 30 minutos sobre tu negocio, tu cliente ideal y lo que quieres lograr con tu sitio.",
-    time: "Día 1",
+    es: { title: "Descubrimiento", desc: "Hablamos 30 minutos sobre tu negocio, tu cliente ideal y lo que quieres lograr con tu sitio.", time: "Día 1" },
+    en: { title: "Discovery", desc: "A 30-minute call about your business, your ideal customer and what you want your site to achieve.", time: "Day 1" },
   },
   {
     n: "02",
     icon: PenTool,
-    title: "Diseño",
-    desc: "Propuesta visual cinematográfica, estructura clara y copy persuasivo en español listo para aprobar.",
-    time: "Días 2–5",
+    es: { title: "Diseño", desc: "Propuesta visual cinematográfica, estructura clara y copy persuasivo en español listo para aprobar.", time: "Días 2–5" },
+    en: { title: "Design", desc: "A cinematic visual proposal, clear structure and persuasive copy, ready for you to approve.", time: "Days 2–5" },
   },
   {
     n: "03",
     icon: Code2,
-    title: "Desarrollo",
-    desc: "Construimos tu sitio en Next.js, optimizado para velocidad, móvil y SEO. Lo revisas en vivo.",
-    time: "Días 6–12",
+    es: { title: "Desarrollo", desc: "Construimos tu sitio en Next.js, optimizado para velocidad, móvil y SEO. Lo revisas en vivo.", time: "Días 6–12" },
+    en: { title: "Development", desc: "We build your site in Next.js, optimized for speed, mobile and SEO. You review it live.", time: "Days 6–12" },
   },
   {
     n: "04",
     icon: Rocket,
-    title: "Lanzamiento",
-    desc: "Publicamos, conectamos dominio, instalamos analítica y te enseñamos a editar lo básico.",
-    time: "Día 13–14",
+    es: { title: "Lanzamiento", desc: "Publicamos, conectamos dominio, instalamos analítica y te enseñamos a editar lo básico.", time: "Día 13–14" },
+    en: { title: "Launch", desc: "We publish, connect your domain, set up analytics and show you how to edit the basics.", time: "Day 13–14" },
   },
 ];
 
@@ -55,20 +57,37 @@ export function Process() {
   // motion. Hover effects + the static connector line stay because
   // they're discrete UI feedback, not background animation.
   const safe = !!useReducedMotion();
+  const { lang } = useLang();
+  const steps: Step[] = STEPS_RAW.map((s) => ({
+    n: s.n,
+    icon: s.icon,
+    ...s[lang],
+  }));
 
   return (
     <section id="proceso" className="relative py-10 sm:py-16 bg-ink-950/40">
       <div className="container">
         <Reveal>
           <SectionHeading
-            eyebrow="Cómo trabajamos"
+            eyebrow={lang === "en" ? "How we work" : "Cómo trabajamos"}
             title={
-              <>
-                De la primera llamada a tu sitio en vivo{" "}
-                <span className="gradient-text">en 14 días.</span>
-              </>
+              lang === "en" ? (
+                <>
+                  From the first call to your site live{" "}
+                  <span className="gradient-text">in 14 days.</span>
+                </>
+              ) : (
+                <>
+                  De la primera llamada a tu sitio en vivo{" "}
+                  <span className="gradient-text">en 14 días.</span>
+                </>
+              )
             }
-            description="Un proceso claro, sin sorpresas y sin perder semanas. Tú apruebas, nosotros entregamos."
+            description={
+              lang === "en"
+                ? "A clear process, no surprises and no wasted weeks. You approve, we deliver."
+                : "Un proceso claro, sin sorpresas y sin perder semanas. Tú apruebas, nosotros entregamos."
+            }
           />
         </Reveal>
 
