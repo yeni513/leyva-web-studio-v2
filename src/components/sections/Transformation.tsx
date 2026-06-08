@@ -8,6 +8,7 @@ import {
   useTransform,
 } from "framer-motion";
 import { useIsMobile } from "@/lib/use-is-mobile";
+import { useLang, type Lang } from "@/lib/i18n";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -15,7 +16,6 @@ import {
   Check,
   MapPin,
   MessageCircle,
-  ShieldCheck,
   Sparkles,
   Star,
   UtensilsCrossed,
@@ -25,41 +25,62 @@ import {
 import { SectionHeading } from "@/components/section-heading";
 import { Reveal } from "@/components/ui/reveal";
 
-const beforeItems = [
-  "Plantilla genérica",
-  "Botones débiles",
-  "Mala carga móvil",
-  "Cero confianza",
-];
+const beforeItems = {
+  es: ["Plantilla genérica", "Botones débiles", "Mala carga móvil", "Cero confianza"],
+  en: ["Generic template", "Weak buttons", "Poor mobile loading", "Zero trust"],
+};
 
-const afterItems = [
-  "Diseño cinematográfico",
-  "CTAs fuertes y claros",
-  "Mobile perfecto",
-  "Reseñas y casos visibles",
-];
+const afterItems = {
+  es: ["Diseño cinematográfico", "CTAs fuertes y claros", "Mobile perfecto", "Reseñas y casos visibles"],
+  en: ["Cinematic design", "Strong, clear CTAs", "Perfect mobile", "Reviews & cases visible"],
+};
 
-const basicIssues = [
-  "Plantilla genérica que se ve igual a 1000 sitios",
-  "Botones débiles, sin jerarquía ni llamada clara",
-  "Cargas lentas y mala experiencia en celular",
-  "Cero confianza: sin reseñas, sin pruebas",
-  "Visitantes que se van sin contactarte",
-];
+const basicIssues = {
+  es: [
+    "Plantilla genérica que se ve igual a 1000 sitios",
+    "Botones débiles, sin jerarquía ni llamada clara",
+    "Cargas lentas y mala experiencia en celular",
+    "Cero confianza: sin reseñas, sin pruebas",
+    "Visitantes que se van sin contactarte",
+  ],
+  en: [
+    "Generic template that looks like 1000 other sites",
+    "Weak buttons, no hierarchy or clear CTA",
+    "Slow loads and bad mobile experience",
+    "Zero trust: no reviews, no proof",
+    "Visitors who leave without contacting you",
+  ],
+};
 
-const cardData = [
-  { icon: Wine, title: "Cava de autor", sub: "50+ etiquetas" },
-  { icon: Calendar, title: "Reservas hoy", sub: "Respuesta inmediata" },
-  { icon: MapPin, title: "Roma Norte", sub: "CDMX" },
-];
+const cardData = {
+  es: [
+    { icon: Wine, title: "Cava de autor", sub: "50+ etiquetas" },
+    { icon: Calendar, title: "Reservas hoy", sub: "Respuesta inmediata" },
+    { icon: MapPin, title: "Roma Norte", sub: "CDMX" },
+  ],
+  en: [
+    { icon: Wine, title: "Signature cellar", sub: "50+ labels" },
+    { icon: Calendar, title: "Book today", sub: "Instant reply" },
+    { icon: MapPin, title: "Roma Norte", sub: "Mexico City" },
+  ],
+};
 
-const premiumWins = [
-  "Diseño cinematográfico hecho a la medida",
-  "CTAs fuertes en cada sección, sin dudas",
-  "Carga rápida y experiencia perfecta en celular",
-  "Reseñas, casos y elementos de confianza visibles",
-  "Visitantes que terminan en WhatsApp o cotización",
-];
+const premiumWins = {
+  es: [
+    "Diseño cinematográfico hecho a la medida",
+    "CTAs fuertes en cada sección, sin dudas",
+    "Carga rápida y experiencia perfecta en celular",
+    "Reseñas, casos y elementos de confianza visibles",
+    "Visitantes que terminan en WhatsApp o cotización",
+  ],
+  en: [
+    "Custom cinematic design",
+    "Strong CTAs in every section, no doubts",
+    "Fast loading and a perfect mobile experience",
+    "Reviews, cases and trust elements visible",
+    "Visitors who end up on WhatsApp or a quote",
+  ],
+};
 
 /**
  * Mobile / reduced-motion users get the side-by-side static cards.
@@ -70,20 +91,26 @@ export function Transformation() {
   useEffect(() => setMounted(true), []);
   const isMobile = useIsMobile();
   const reducedMotion = useReducedMotion();
+  const { lang } = useLang();
 
   // The scroll-pinned 220vh experience is desktop + motion-allowed only.
   // On mobile it scroll-jacks a tiny screen, and with reduced motion it
   // is a WCAG 2.3.3 trigger. The static side-by-side card layout is the
   // genuine fallback — not a placeholder.
-  if (!mounted || isMobile || reducedMotion) return <TransformationStatic />;
-  return <TransformationScroll />;
+  if (!mounted || isMobile || reducedMotion)
+    return <TransformationStatic lang={lang} />;
+  return <TransformationScroll lang={lang} />;
 }
 
 // ─────────────────────────────────────────────────────────
 // DESKTOP: Sticky scroll-driven transformation
 // ─────────────────────────────────────────────────────────
 
-function TransformationScroll() {
+function TransformationScroll({ lang }: { lang: Lang }) {
+  const en = lang === "en";
+  const before = beforeItems[lang];
+  const after = afterItems[lang];
+  const cards = cardData[lang];
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -268,7 +295,7 @@ function TransformationScroll() {
   return (
     <section
       ref={ref}
-      aria-label="De básico a premium"
+      aria-label={en ? "From basic to premium" : "De básico a premium"}
       className="relative"
       style={{ height: "220vh" }}
     >
@@ -290,20 +317,29 @@ function TransformationScroll() {
               className="absolute inset-0 flex items-center justify-center gap-2 text-[11px] uppercase tracking-[0.22em] text-ember-50/55"
             >
               <span className="w-1 h-1 rounded-full bg-ember-50/40" />
-              Antes — Sitio web básico
+              {en ? "Before — Basic website" : "Antes — Sitio web básico"}
             </motion.div>
             <motion.div
               style={{ opacity: eyebrowAfter }}
               className="absolute inset-0 flex items-center justify-center gap-2 text-[11px] uppercase tracking-[0.22em] text-ember-300"
             >
               <Sparkles className="w-3 h-3" />
-              Después — Premium Leyva
+              {en ? "After — Premium Leyva" : "Después — Premium Leyva"}
             </motion.div>
           </div>
 
           <h2 className="font-display text-center font-semibold tracking-tight text-balance text-[clamp(1.9rem,4.5vw,3.2rem)] leading-[1.05] text-ember-50">
-            De <span className="text-ember-50/55">básico</span> a{" "}
-            <span className="gradient-text">premium.</span>
+            {en ? (
+              <>
+                From <span className="text-ember-50/55">basic</span> to{" "}
+                <span className="gradient-text">premium.</span>
+              </>
+            ) : (
+              <>
+                De <span className="text-ember-50/55">básico</span> a{" "}
+                <span className="gradient-text">premium.</span>
+              </>
+            )}
           </h2>
 
           {/* Mockup */}
@@ -388,11 +424,11 @@ function TransformationScroll() {
                     </span>
                   </div>
                   <div className="flex items-center gap-4 text-[10px] text-ember-50/65">
-                    <span>Menú</span>
-                    <span>Reservar</span>
-                    <span>Contacto</span>
+                    <span>{en ? "Menu" : "Menú"}</span>
+                    <span>{en ? "Book" : "Reservar"}</span>
+                    <span>{en ? "Contact" : "Contacto"}</span>
                     <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full border border-ember-300/40 text-ember-300 bg-ember-300/[0.06]">
-                      Reservar
+                      {en ? "Book" : "Reservar"}
                       <ArrowUpRight className="w-2.5 h-2.5" />
                     </span>
                   </div>
@@ -420,9 +456,13 @@ function TransformationScroll() {
                     style={{ opacity: realHeadlineOpacity, y: realHeadlineY }}
                     className="relative font-display font-semibold tracking-tight leading-[1.05] text-[clamp(1rem,2.4vw,1.45rem)]"
                   >
-                    <span className="text-ember-50">Cocina mediterránea</span>
+                    <span className="text-ember-50">
+                      {en ? "Mediterranean kitchen" : "Cocina mediterránea"}
+                    </span>
                     <br />
-                    <span className="gradient-text">con alma de barrio.</span>
+                    <span className="gradient-text">
+                      {en ? "with neighborhood soul." : "con alma de barrio."}
+                    </span>
                   </motion.h3>
                 </div>
 
@@ -439,8 +479,9 @@ function TransformationScroll() {
                     style={{ opacity: subtitleOpacity }}
                     className="relative text-[12px] sm:text-[13px] text-ember-50/70 leading-snug max-w-[78%]"
                   >
-                    Reservas el mismo día, menú de temporada y cava de 50+
-                    etiquetas. Roma Norte, CDMX.
+                    {en
+                      ? "Same-day reservations, seasonal menu and a 50+ label cellar. Roma Norte, Mexico City."
+                      : "Reservas el mismo día, menú de temporada y cava de 50+ etiquetas. Roma Norte, CDMX."}
                   </motion.p>
                 </div>
 
@@ -460,7 +501,7 @@ function TransformationScroll() {
                       style={{ opacity: ctaLabelOpacity }}
                       className="relative inline-flex items-center gap-1.5 text-[11px] font-semibold text-ink-950 tracking-tight"
                     >
-                      Reservar mesa
+                      {en ? "Book a table" : "Reservar mesa"}
                       <ArrowUpRight className="w-3 h-3" />
                     </motion.span>
                   </motion.div>
@@ -474,7 +515,7 @@ function TransformationScroll() {
                       style={{ opacity: ctaLabelOpacity }}
                       className="text-[11px] font-medium text-ember-50/90 tracking-tight"
                     >
-                      Ver menú
+                      {en ? "View menu" : "Ver menú"}
                     </motion.span>
                   </motion.div>
 
@@ -492,14 +533,14 @@ function TransformationScroll() {
                       ))}
                     </div>
                     <span className="text-[10px] text-ember-50/80 tracking-tight">
-                      +200 reseñas
+                      {en ? "+200 reviews" : "+200 reseñas"}
                     </span>
                   </motion.div>
                 </div>
 
                 {/* Service cards — empty boxes that fill with real content */}
                 <div className="grid grid-cols-3 gap-2.5 mt-5">
-                  {cardData.map((card, i) => {
+                  {cards.map((card, i) => {
                     const Icon = card.icon;
                     return (
                       <motion.div
@@ -553,7 +594,7 @@ function TransformationScroll() {
 
           {/* Wins / before-after rail */}
           <div className="mt-6 sm:mt-8 grid grid-cols-2 max-w-3xl mx-auto gap-x-8 gap-y-2.5">
-            {afterItems.map((item, i) => (
+            {after.map((item, i) => (
               <div
                 key={item}
                 className="relative h-6 flex items-center text-sm"
@@ -566,7 +607,7 @@ function TransformationScroll() {
                     <X className="w-3 h-3" />
                   </span>
                   <span className="line-through decoration-ember-50/25 whitespace-nowrap">
-                    {beforeItems[i]}
+                    {before[i]}
                   </span>
                 </motion.div>
                 <motion.div
@@ -585,7 +626,7 @@ function TransformationScroll() {
           {/* Progress bar */}
           <div className="mt-5 sm:mt-7 max-w-xl mx-auto">
             <div className="flex items-center justify-between text-[10px] uppercase tracking-[0.22em] mb-2">
-              <span className="text-ember-50/55">Básico</span>
+              <span className="text-ember-50/55">{en ? "Basic" : "Básico"}</span>
               <motion.span className="text-ember-300 font-mono tabular-nums">
                 {progressText}
               </motion.span>
@@ -608,21 +649,36 @@ function TransformationScroll() {
 // MOBILE / reduced-motion: static side-by-side cards
 // ─────────────────────────────────────────────────────────
 
-function TransformationStatic() {
+function TransformationStatic({ lang }: { lang: Lang }) {
+  const en = lang === "en";
+  const issues = basicIssues[lang];
+  const wins = premiumWins[lang];
   return (
     <section className="relative py-10 sm:py-16">
       <div className="container">
         <Reveal>
           <SectionHeading
-            eyebrow="De básico a premium"
+            eyebrow={en ? "From basic to premium" : "De básico a premium"}
             title={
-              <>
-                Convertimos sitios{" "}
-                <span className="text-ember-50/60">básicos</span> en presencias
-                digitales <span className="gradient-text">premium.</span>
-              </>
+              en ? (
+                <>
+                  We turn <span className="text-ember-50/60">basic</span> sites
+                  into <span className="gradient-text">premium</span> digital
+                  presences.
+                </>
+              ) : (
+                <>
+                  Convertimos sitios{" "}
+                  <span className="text-ember-50/60">básicos</span> en presencias
+                  digitales <span className="gradient-text">premium.</span>
+                </>
+              )
             }
-            description="La mayoría de los negocios locales pierden clientes por tener un sitio que parece improvisado. Esto es lo que cambia cuando trabajamos contigo."
+            description={
+              en
+                ? "Most local businesses lose customers because their site looks improvised. This is what changes when we work with you."
+                : "La mayoría de los negocios locales pierden clientes por tener un sitio que parece improvisado. Esto es lo que cambia cuando trabajamos contigo."
+            }
           />
         </Reveal>
 
@@ -631,10 +687,10 @@ function TransformationStatic() {
             <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/15 to-transparent" />
             <div className="flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-ember-50/45">
               <span className="w-1.5 h-1.5 rounded-full bg-ember-50/30" />
-              Antes
+              {en ? "Before" : "Antes"}
             </div>
             <h3 className="mt-3 text-2xl font-semibold text-ember-50/85">
-              Sitio web básico
+              {en ? "Basic website" : "Sitio web básico"}
             </h3>
 
             <div className="mt-6 rounded-xl border border-white/[0.05] bg-ink-900/60 overflow-hidden">
@@ -657,7 +713,7 @@ function TransformationStatic() {
             </div>
 
             <ul className="mt-6 space-y-2.5">
-              {basicIssues.map((b) => (
+              {issues.map((b) => (
                 <li
                   key={b}
                   className="flex gap-3 text-sm text-ember-50/65"
@@ -684,10 +740,10 @@ function TransformationStatic() {
             <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-ember-300/40 to-transparent" />
             <div className="flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-ember-300">
               <Sparkles className="w-3 h-3" />
-              Después
+              {en ? "After" : "Después"}
             </div>
             <h3 className="mt-3 text-2xl font-semibold text-ember-50">
-              Sitio web premium Leyva
+              {en ? "Premium Leyva website" : "Sitio web premium Leyva"}
             </h3>
 
             <div className="mt-6 rounded-xl border border-ember-300/20 bg-gradient-to-b from-ink-900 to-ink-950 overflow-hidden">
@@ -723,7 +779,7 @@ function TransformationStatic() {
             </div>
 
             <ul className="mt-6 space-y-2.5">
-              {premiumWins.map((p) => (
+              {wins.map((p) => (
                 <li key={p} className="flex gap-3 text-sm text-ember-50/85">
                   <span className="mt-0.5 grid place-items-center w-4 h-4 rounded-full bg-ember-300/15 text-ember-300 shrink-0">
                     <Check className="w-3 h-3" />
