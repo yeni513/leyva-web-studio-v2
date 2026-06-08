@@ -242,7 +242,7 @@ export function FAQ() {
 
         {/* FAQ list */}
         <Reveal>
-          <div className="mt-10 max-w-3xl mx-auto rounded-2xl border border-white/[0.07] bg-gradient-to-b from-white/[0.03] to-white/[0.01] overflow-hidden">
+          <div className="mt-10 max-w-3xl mx-auto rounded-2xl border border-white/[0.09] bg-gradient-to-b from-white/[0.04] to-ink-950/20 overflow-hidden shadow-[0_20px_60px_-40px_rgba(0,0,0,0.95)]">
             <motion.div
               layout
               transition={{
@@ -297,14 +297,14 @@ function FaqRow({
     <div
       className={cn(
         "relative border-b border-white/[0.06] last:border-b-0 transition-colors duration-500",
-        isOpen && "bg-ember-300/[0.025]",
+        isOpen && "bg-white/[0.025]",
       )}
     >
       {/* Left accent line — only shown when open */}
       <div
         className={cn(
           "absolute left-0 top-3 bottom-3 w-[2px] rounded-full bg-gradient-to-b from-ember-200 via-ember-300 to-ember-500 transition-opacity duration-500",
-          isOpen ? "opacity-100 shadow-[0_0_12px_-1px_rgba(236,139,42,0.7)]" : "opacity-0",
+          isOpen ? "opacity-100" : "opacity-0",
         )}
         aria-hidden
       />
@@ -319,8 +319,8 @@ function FaqRow({
           className={cn(
             "shrink-0 grid place-items-center w-9 h-9 rounded-xl border transition-all duration-300",
             isOpen
-              ? "border-ember-300/55 bg-ember-300/[0.12] text-ember-300 shadow-[0_0_18px_-4px_rgba(236,139,42,0.55)]"
-              : "border-white/[0.08] bg-white/[0.02] text-ember-50/65",
+              ? "border-ember-300/42 bg-ember-300/[0.08] text-ember-300"
+              : "border-white/[0.09] bg-ink-950/35 text-ember-50/65",
           )}
         >
           <Icon className="w-4 h-4" />
@@ -337,8 +337,8 @@ function FaqRow({
           className={cn(
             "shrink-0 grid place-items-center w-8 h-8 rounded-full border transition-all duration-300",
             isOpen
-              ? "rotate-45 border-ember-300/55 bg-ember-300/[0.14] text-ember-300"
-              : "border-white/[0.08] text-ember-300/75",
+              ? "rotate-45 border-ember-300/45 bg-ember-300/[0.10] text-ember-300"
+              : "border-white/[0.09] text-ember-300/75",
           )}
         >
           <Plus className="w-4 h-4" />
@@ -364,19 +364,19 @@ function FaqRow({
 function NoQuestionFoundCard({ lang }: { lang: Lang }) {
   const en = lang === "en";
   return (
-    <div className="mt-10 max-w-3xl mx-auto relative rounded-2xl border border-ember-300/25 bg-gradient-to-br from-ember-300/[0.08] via-white/[0.015] to-transparent p-6 sm:p-8 overflow-hidden">
+    <div className="mt-10 max-w-3xl mx-auto relative rounded-2xl border border-ember-300/20 bg-gradient-to-br from-white/[0.045] via-ember-300/[0.035] to-transparent p-6 sm:p-8 overflow-hidden shadow-[0_20px_60px_-42px_rgba(0,0,0,0.95)]">
       <div
-        className="absolute -top-32 -right-32 w-72 h-72 rounded-full bg-ember-400/15 blur-3xl pointer-events-none"
+        className="absolute -top-32 -right-32 w-72 h-72 rounded-full bg-ember-400/[0.08] blur-3xl pointer-events-none"
         aria-hidden
       />
       <div
-        className="absolute -bottom-32 -left-32 w-64 h-64 rounded-full bg-ember-600/12 blur-3xl pointer-events-none"
+        className="absolute -bottom-32 -left-32 w-64 h-64 rounded-full bg-ember-600/[0.07] blur-3xl pointer-events-none"
         aria-hidden
       />
       <div className="absolute inset-x-12 top-0 h-px bg-gradient-to-r from-transparent via-ember-300/40 to-transparent" />
 
       <div className="relative flex flex-col md:flex-row md:items-center gap-5 md:gap-7">
-        <div className="grid place-items-center w-12 h-12 rounded-2xl border border-ember-300/35 bg-ember-300/[0.10] text-ember-300 shrink-0 shadow-[0_0_24px_-4px_rgba(236,139,42,0.55)]">
+        <div className="grid place-items-center w-12 h-12 rounded-2xl border border-ember-300/28 bg-ink-950/45 text-ember-300 shrink-0">
           <Sparkles className="w-5 h-5" />
         </div>
         <div className="flex-1 min-w-0">
@@ -413,7 +413,7 @@ function NoQuestionFoundCard({ lang }: { lang: Lang }) {
                 fromLabel: en ? "FAQ — direct question" : "FAQ — pregunta directa",
               })
             }
-            className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-b from-ember-200 via-ember-300 to-ember-400 text-ink-950 text-sm font-semibold shadow-[0_0_20px_-4px_rgba(236,139,42,0.55)] hover:shadow-[0_0_32px_-4px_rgba(236,139,42,0.80)] transition-shadow no-tap-highlight"
+            className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-b from-ember-100 via-ember-300 to-ember-500 text-ink-950 text-sm font-semibold shadow-[0_14px_34px_-22px_rgba(236,139,42,0.95)] hover:shadow-[0_18px_42px_-22px_rgba(236,139,42,1)] transition-shadow no-tap-highlight"
           >
             {en ? "Let's talk" : "Hablemos"}
             <ArrowUpRight className="w-4 h-4" />

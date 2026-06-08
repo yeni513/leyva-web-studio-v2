@@ -166,7 +166,7 @@ function ProcessCard({
       }}
       className="group relative h-full"
     >
-      <div className="relative h-full rounded-2xl border border-white/[0.07] bg-gradient-to-b from-white/[0.035] to-white/[0.01] p-6 sm:p-7 overflow-hidden transition-all duration-500 hover:border-ember-300/35 hover:-translate-y-1.5 hover:shadow-[0_25px_60px_-20px_rgba(236,139,42,0.35)]">
+      <div className="relative h-full rounded-2xl border border-white/[0.09] bg-gradient-to-b from-white/[0.04] to-ink-950/20 p-6 sm:p-7 overflow-hidden transition-all duration-500 hover:border-ember-300/28 hover:-translate-y-1 hover:shadow-[0_22px_54px_-30px_rgba(0,0,0,0.95)]">
         {/* Big ghost number — bleeds slightly past corner, clipped by overflow */}
         <span
           className="absolute -top-3 -right-1 font-display font-bold text-[96px] leading-none text-ember-300/[0.05] tracking-tighter pointer-events-none select-none transition-all duration-500 group-hover:text-ember-300/[0.14] group-hover:scale-110 origin-top-right"
@@ -180,7 +180,7 @@ function ProcessCard({
           className="absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-500 pointer-events-none group-hover:opacity-100"
           style={{
             background:
-              "radial-gradient(400px circle at 100% 0%, rgba(236,139,42,0.12), transparent 55%)",
+            "radial-gradient(400px circle at 100% 0%, rgba(236,139,42,0.075), transparent 55%)",
           }}
           aria-hidden
         />
@@ -204,7 +204,7 @@ function ProcessCard({
             className="absolute inset-0 rounded-full border border-ember-300/20 pointer-events-none opacity-0 scale-100 group-hover:opacity-100 group-hover:scale-[1.95] transition-all duration-1000 ease-out delay-100"
             aria-hidden
           />
-          <span className="relative inline-grid place-items-center w-12 h-12 rounded-full border border-ember-300/30 bg-ink-950 text-ember-300 z-10 transition-all duration-500 group-hover:border-ember-300/65 group-hover:bg-ember-300/[0.08] group-hover:shadow-[0_0_30px_-5px_rgba(236,139,42,0.65)]">
+          <span className="relative inline-grid place-items-center w-12 h-12 rounded-full border border-ember-300/25 bg-ink-950/70 text-ember-300 z-10 transition-all duration-500 group-hover:border-ember-300/48 group-hover:bg-ember-300/[0.06]">
             <Icon className="w-5 h-5 transition-transform duration-500 ease-out group-hover:scale-110" />
           </span>
         </div>
@@ -212,7 +212,7 @@ function ProcessCard({
         <h3 className="relative mt-6 text-lg font-semibold tracking-tight text-ember-50 transition-colors duration-300 group-hover:text-white">
           {step.title}
         </h3>
-        <p className="relative mt-2 text-sm leading-relaxed text-ember-50/70">
+        <p className="relative mt-2 text-sm leading-relaxed text-ember-50/66">
           {step.desc}
         </p>
 

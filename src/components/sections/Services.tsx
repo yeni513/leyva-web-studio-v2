@@ -722,10 +722,10 @@ function ServicesGrid({ services, lang }: { services: Service[]; lang: Lang }) {
                       lang === "en" ? `Service: ${s.title}` : `Servicio: ${s.title}`,
                   })
                 }
-                className="group relative block h-full w-full text-left rounded-2xl border border-white/[0.07] bg-gradient-to-b from-white/[0.04] to-white/[0.01] p-6 sm:p-7 transition-all duration-500 hover:border-ember-300/30 hover:from-ember-300/[0.06] hover:to-white/[0.01] shadow-card no-tap-highlight"
+                className="group relative block h-full w-full text-left rounded-2xl border border-white/[0.09] bg-gradient-to-b from-white/[0.045] to-ink-950/20 p-6 sm:p-7 transition-all duration-500 hover:border-ember-300/28 hover:from-white/[0.06] hover:to-ember-300/[0.025] hover:shadow-[0_18px_46px_-28px_rgba(0,0,0,0.9)] no-tap-highlight"
               >
                 <div className="relative flex items-start justify-between">
-                  <span className="inline-grid place-items-center w-11 h-11 rounded-xl border border-ember-300/25 bg-ember-300/[0.06] text-ember-300">
+                  <span className="inline-grid place-items-center w-11 h-11 rounded-xl border border-ember-300/22 bg-ink-950/45 text-ember-300">
                     <Icon className="w-5 h-5" />
                   </span>
                   <ArrowUpRight className="w-4 h-4 text-ember-50/40 transition-all duration-300 group-hover:text-ember-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
@@ -733,7 +733,7 @@ function ServicesGrid({ services, lang }: { services: Service[]; lang: Lang }) {
                 <h3 className="relative mt-6 text-lg sm:text-xl font-semibold tracking-tight text-ember-50">
                   {s.title}
                 </h3>
-                <p className="relative mt-2 text-[15px] leading-relaxed text-ember-50/70">
+                <p className="relative mt-2 text-[15px] leading-relaxed text-ember-50/66">
                   {s.desc}
                 </p>
               </button>

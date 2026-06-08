@@ -289,7 +289,7 @@ function ProjectCard({ project: p, lang }: { project: Project; lang: Lang }) {
           ? `Open ${p.name} (opens in a new tab)`
           : `Ver proyecto ${p.name} (abre en una pestaña nueva)`
       }
-      className="group relative block h-full rounded-3xl border border-white/[0.07] bg-gradient-to-b from-white/[0.035] to-white/[0.01] p-5 sm:p-6 overflow-hidden transition-all duration-500 hover:border-ember-300/35 hover:-translate-y-1.5 hover:shadow-[0_25px_60px_-20px_rgba(236,139,42,0.35)] no-tap-highlight"
+      className="group relative block h-full rounded-3xl border border-white/[0.09] bg-gradient-to-b from-white/[0.04] to-ink-950/20 p-5 sm:p-6 overflow-hidden transition-all duration-500 hover:border-ember-300/30 hover:-translate-y-1 hover:shadow-[0_22px_54px_-30px_rgba(0,0,0,0.95)] no-tap-highlight"
     >
       {/* Hover top-right radial glow */}
       <div
@@ -307,13 +307,13 @@ function ProjectCard({ project: p, lang }: { project: Project; lang: Lang }) {
           className={cn(
             "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] uppercase tracking-[0.16em] font-medium border backdrop-blur-md",
             isLive
-              ? "border-emerald-400/35 bg-emerald-400/[0.10] text-emerald-200"
-              : "border-ember-300/35 bg-ember-300/[0.10] text-ember-300",
+              ? "border-emerald-400/30 bg-emerald-400/[0.08] text-emerald-200"
+              : "border-ember-300/28 bg-ink-950/55 text-ember-300",
           )}
         >
           {isLive ? (
             <span className="relative grid place-items-center">
-              <span className="absolute inset-0 rounded-full bg-emerald-400 animate-ping opacity-60" />
+              <span className="absolute inset-0 rounded-full bg-emerald-400 animate-ping opacity-35" />
               <span className="relative w-1.5 h-1.5 rounded-full bg-emerald-400" />
             </span>
           ) : (
@@ -324,7 +324,7 @@ function ProjectCard({ project: p, lang }: { project: Project; lang: Lang }) {
       </div>
 
       {/* Real site preview — browser chrome + actual screenshot */}
-      <div className="relative rounded-2xl border border-white/[0.07] overflow-hidden bg-ink-900 aspect-[16/10] flex flex-col">
+      <div className="relative rounded-2xl border border-white/[0.09] overflow-hidden bg-ink-900 aspect-[16/10] flex flex-col">
         {/* Browser chrome with the real domain */}
         <div className="relative z-10 flex items-center gap-2 px-3 py-2 border-b border-white/[0.06] bg-ink-950/85 backdrop-blur-sm shrink-0">
           <div className="flex items-center gap-1 shrink-0">
@@ -351,7 +351,7 @@ function ProjectCard({ project: p, lang }: { project: Project; lang: Lang }) {
             className="object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.04]"
           />
           {/* Warm hover wash to tie it into the brand */}
-          <div className="absolute inset-0 bg-ember-500/0 group-hover:bg-ember-500/[0.06] transition-colors duration-500" />
+          <div className="absolute inset-0 bg-ember-500/0 group-hover:bg-ember-500/[0.035] transition-colors duration-500" />
           <div className="absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-ink-950/40 to-transparent pointer-events-none" />
         </div>
 
@@ -373,7 +373,7 @@ function ProjectCard({ project: p, lang }: { project: Project; lang: Lang }) {
           {p.tags.map((tag) => (
             <span
               key={tag}
-              className="inline-flex items-center px-2.5 py-1 rounded-full border border-white/[0.08] bg-white/[0.02] text-[11px] text-ember-50/70"
+            className="inline-flex items-center px-2.5 py-1 rounded-full border border-white/[0.08] bg-ink-950/35 text-[11px] text-ember-50/68"
             >
               {tag}
             </span>
@@ -381,7 +381,7 @@ function ProjectCard({ project: p, lang }: { project: Project; lang: Lang }) {
         </div>
 
         {/* CTA */}
-        <span className="mt-5 inline-flex items-center gap-2 rounded-full border border-ember-300/30 bg-ember-300/[0.06] px-4 py-2 text-[13px] font-medium text-ember-50 transition-colors group-hover:bg-ember-300/[0.14] group-hover:border-ember-300/55">
+        <span className="mt-5 inline-flex items-center gap-2 rounded-full border border-ember-300/24 bg-ink-950/35 px-4 py-2 text-[13px] font-medium text-ember-50 transition-colors group-hover:bg-ember-300/[0.08] group-hover:border-ember-300/42">
           {lang === "en" ? "View project" : "Ver proyecto"}
           <ExternalLink className="w-3.5 h-3.5 text-ember-300 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
         </span>

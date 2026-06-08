@@ -316,7 +316,7 @@ export function Contact() {
           <Reveal delay={0.05}>
             <form
               onSubmit={onSubmit}
-              className="relative rounded-3xl border border-ember-300/20 bg-gradient-to-b from-white/[0.04] to-white/[0.01] p-6 sm:p-8 shadow-glow-sm"
+              className="relative rounded-3xl border border-ember-300/18 bg-gradient-to-b from-white/[0.045] to-ink-950/20 p-6 sm:p-8 shadow-[0_24px_70px_-46px_rgba(236,139,42,0.85)]"
             >
               <div className="absolute -top-px inset-x-10 h-px bg-gradient-to-r from-transparent via-ember-300/40 to-transparent" />
 
@@ -336,7 +336,7 @@ export function Contact() {
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: -8, scale: 0.96 }}
                     transition={{ duration: 0.3 }}
-                    className="mt-4 inline-flex items-center gap-2 pl-3 pr-1.5 py-1 rounded-full bg-ember-300/[0.10] border border-ember-300/40 text-[11px]"
+                    className="mt-4 inline-flex items-center gap-2 pl-3 pr-1.5 py-1 rounded-full bg-ember-300/[0.075] border border-ember-300/32 text-[11px]"
                   >
                     <Sparkles className="w-3 h-3 text-ember-300" />
                     <span className="text-ember-50/85">
@@ -540,7 +540,7 @@ export function Contact() {
                               className={cn(
                                 "px-3 py-1.5 rounded-full text-xs border transition-all duration-200 no-tap-highlight",
                                 active
-                                  ? "border-ember-300/55 bg-ember-300/[0.14] text-ember-50 shadow-[0_0_14px_-4px_rgba(236,139,42,0.55)]"
+                                  ? "border-ember-300/45 bg-ember-300/[0.10] text-ember-50"
                                   : "border-white/[0.08] bg-white/[0.02] text-ember-50/70 hover:border-ember-300/30 hover:bg-ember-300/[0.06] hover:text-ember-50",
                               )}
                             >
@@ -592,11 +592,11 @@ export function Contact() {
 }
 
 const inputCls =
-  "w-full h-11 px-3.5 rounded-xl bg-ink-950/60 border border-white/[0.08] text-ember-50 placeholder:text-ember-50/35 focus:border-ember-300/50 focus:bg-ink-950 focus:outline-none transition-colors text-[15px]";
+  "w-full h-11 px-3.5 rounded-xl bg-ink-950/65 border border-white/[0.10] text-ember-50 placeholder:text-ember-50/35 focus:border-ember-300/45 focus:bg-ink-950 focus:outline-none transition-colors text-[15px]";
 
 // Subtle ember tint applied to fields the prefill system has populated.
 const fieldHighlightCls =
-  "border-ember-300/40 bg-ember-300/[0.04] shadow-[0_0_18px_-6px_rgba(236,139,42,0.45)]";
+  "border-ember-300/35 bg-ember-300/[0.035]";
 
 function Field({
   label,

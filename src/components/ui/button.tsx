@@ -10,9 +10,9 @@ const buttonVariants = cva(
     variants: {
       variant: {
         primary:
-          "relative text-ink-950 bg-gradient-to-b from-ember-200 via-ember-300 to-ember-400 hover:from-ember-100 hover:via-ember-200 hover:to-ember-300 shadow-glow hover:shadow-[0_0_60px_-6px_rgba(236,139,42,0.7)] active:scale-[0.98]",
+          "relative text-ink-950 bg-gradient-to-b from-ember-100 via-ember-300 to-ember-500 hover:from-ember-50 hover:via-ember-200 hover:to-ember-400 shadow-[0_14px_34px_-18px_rgba(236,139,42,0.9)] hover:shadow-[0_18px_44px_-18px_rgba(236,139,42,0.95)] active:scale-[0.98]",
         secondary:
-          "border border-ember-300/30 bg-ember-300/[0.04] text-ember-50 hover:bg-ember-300/[0.10] hover:border-ember-300/55 backdrop-blur-md active:scale-[0.98]",
+          "border border-ember-300/24 bg-ink-950/35 text-ember-50 hover:bg-ember-300/[0.08] hover:border-ember-300/45 backdrop-blur-md active:scale-[0.98]",
         ghost:
           "text-ember-50/85 hover:text-ember-50 hover:bg-ember-300/[0.06]",
         link: "text-ember-300 underline-offset-4 hover:underline px-0 py-0 rounded-none",

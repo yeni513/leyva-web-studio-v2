@@ -411,8 +411,8 @@ function PackageCard({ pkg: p, lang }: { pkg: Package; lang: Lang }) {
       className={cn(
         "relative h-full rounded-3xl p-7 sm:p-8 flex flex-col overflow-hidden transition-all duration-500",
         p.highlight
-          ? "border border-ember-300/40 bg-gradient-to-b from-ember-300/[0.10] to-white/[0.015] shadow-glow lg:scale-[1.02]"
-          : "border border-white/[0.07] bg-gradient-to-b from-white/[0.035] to-white/[0.01] hover:border-ember-300/25",
+          ? "border border-ember-300/34 bg-gradient-to-b from-ember-300/[0.075] to-ink-950/20 shadow-[0_24px_70px_-42px_rgba(236,139,42,0.85)] lg:scale-[1.015]"
+          : "border border-white/[0.09] bg-gradient-to-b from-white/[0.04] to-ink-950/20 hover:border-ember-300/22",
       )}
     >
       {p.highlight && (
@@ -420,10 +420,10 @@ function PackageCard({ pkg: p, lang }: { pkg: Package; lang: Lang }) {
           {/* Top accent line */}
           <div className="absolute -top-px inset-x-10 h-px bg-gradient-to-r from-transparent via-ember-300 to-transparent" />
           {/* Ambient glow */}
-          <div className="absolute -inset-x-10 -top-32 h-64 bg-ember-300/10 blur-3xl pointer-events-none" />
+          <div className="absolute -inset-x-10 -top-32 h-64 bg-ember-300/[0.07] blur-3xl pointer-events-none" />
           {/* "Recomendado" ribbon */}
           <div className="absolute top-6 right-6">
-            <span className="inline-flex items-center gap-1.5 pl-2 pr-3 py-1 rounded-full bg-gradient-to-b from-ember-200 via-ember-300 to-ember-400 text-ink-950 text-[10px] uppercase tracking-[0.18em] font-semibold shadow-[0_0_20px_-4px_rgba(236,139,42,0.7)]">
+            <span className="inline-flex items-center gap-1.5 pl-2 pr-3 py-1 rounded-full bg-gradient-to-b from-ember-100 via-ember-300 to-ember-500 text-ink-950 text-[10px] uppercase tracking-[0.18em] font-semibold shadow-[0_12px_28px_-18px_rgba(236,139,42,0.95)]">
               <Sparkles className="w-3 h-3" />
               {p.tag}
             </span>
@@ -437,7 +437,7 @@ function PackageCard({ pkg: p, lang }: { pkg: Package; lang: Lang }) {
           {p.name}
         </h3>
         {!p.highlight && (
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] uppercase tracking-[0.18em] bg-white/[0.04] text-ember-50/55 border border-white/[0.08] shrink-0 whitespace-nowrap">
+          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] uppercase tracking-[0.18em] bg-ink-950/35 text-ember-50/55 border border-white/[0.08] shrink-0 whitespace-nowrap">
             {p.tag}
           </span>
         )}
@@ -452,8 +452,8 @@ function PackageCard({ pkg: p, lang }: { pkg: Package; lang: Lang }) {
         className={cn(
           "relative mt-6 rounded-2xl border p-4 sm:p-5 grid grid-cols-2",
           p.highlight
-            ? "border-ember-300/35 bg-ink-950/40"
-            : "border-white/[0.08] bg-ink-950/40",
+            ? "border-ember-300/28 bg-ink-950/45"
+            : "border-white/[0.09] bg-ink-950/45",
         )}
       >
         <div className="pr-3 sm:pr-4 border-r border-white/[0.06]">

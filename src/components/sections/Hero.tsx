@@ -87,7 +87,7 @@ export function Hero() {
         {showVideo && (
           <div className="absolute inset-0">
             <VideoHeroBackground className="absolute inset-0 w-full h-full object-cover" />
-            <div className="absolute inset-0 bg-[radial-gradient(60%_55%_at_50%_45%,transparent_0%,rgba(7,6,8,0.55)_75%,rgba(7,6,8,0.92)_100%)] pointer-events-none" />
+            <div className="absolute inset-0 bg-[radial-gradient(60%_55%_at_50%_45%,transparent_0%,rgba(7,6,8,0.60)_76%,rgba(7,6,8,0.94)_100%)] pointer-events-none" />
             <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-b from-transparent to-ink-950 pointer-events-none" />
           </div>
         )}
@@ -111,17 +111,17 @@ export function Hero() {
       {/* Content */}
       <div className="container relative z-10 flex flex-col items-center justify-center min-h-[100svh] pt-28 pb-24 sm:pt-32 sm:pb-32 text-center">
         {/* Trust badge */}
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-ember-300/25 bg-ember-300/[0.04] backdrop-blur-md text-xs sm:text-sm text-ember-50/85 animate-fade-in">
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-ember-300/20 bg-ink-950/35 backdrop-blur-md text-xs sm:text-sm text-ember-50/82 animate-fade-in">
           <Sparkles className="w-3.5 h-3.5 text-ember-300" />
           <span>{t.badge}</span>
         </div>
 
-        <h1 className="mt-7 sm:mt-9 max-w-5xl font-display font-semibold tracking-tight text-balance text-[clamp(2.4rem,7vw,5.5rem)] leading-[1.08]">
+        <h1 className="mt-7 sm:mt-9 max-w-5xl font-display font-semibold tracking-tight text-balance text-[clamp(2.35rem,6.7vw,5.35rem)] leading-[1.07]">
           <span className="block text-ember-50">{t.h1a}</span>
           <span className="block gradient-text pb-[0.12em]">{t.h1b}</span>
         </h1>
 
-        <p className="mt-6 sm:mt-7 max-w-2xl text-base sm:text-lg text-ember-50/75 leading-relaxed text-pretty">
+        <p className="mt-6 sm:mt-7 max-w-2xl text-base sm:text-lg text-ember-50/72 leading-relaxed text-pretty">
           {t.sub}
         </p>
 
