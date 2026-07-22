@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Fraunces } from "next/font/google";
 import "./globals.css";
 import "./studio.css";
 import { site } from "@/lib/site";
@@ -48,7 +47,7 @@ export const metadata: Metadata = {
     siteName: `${site.brand} ${site.brandSub}`,
     images: [
       {
-        url: "/og-image.png",
+        url: "/og-image.jpg",
         width: 1200,
         height: 630,
         alt: `${site.brand} ${site.brandSub} — Sitios web premium para negocios locales`,
@@ -59,7 +58,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: `${site.brand} ${site.brandSub}`,
     description: site.description,
-    images: ["/og-image.png"],
+    images: ["/og-image.jpg"],
   },
   alternates: {
     canonical: "/",

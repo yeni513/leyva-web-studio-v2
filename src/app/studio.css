@@ -371,6 +371,19 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.7);
 }
 
+/* Expanded touch targets — visual size unchanged, hit area ≥44px */
+.st-lang-toggle button,
+.st-counter-nav {
+  position: relative;
+}
+
+.st-lang-toggle button::after,
+.st-counter-nav::after {
+  content: "";
+  position: absolute;
+  inset: -10px;
+}
+
 .st-pillnav-container {
   position: fixed;
   top: 14px;
