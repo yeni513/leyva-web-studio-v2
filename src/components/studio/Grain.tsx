@@ -2,17 +2,14 @@
 
 import { useEffect, useRef } from "react";
 
-/** Film-grain overlay — pre-baked frames, desktop only (ported from noise.js). */
+/** Film-grain overlay — pre-baked frames, all viewports (ported from noise.js). */
 export function Grain() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    if (
-      window.innerWidth <= 768 ||
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    ) {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       canvas.style.display = "none";
       return;
     }

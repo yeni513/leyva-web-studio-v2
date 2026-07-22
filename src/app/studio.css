@@ -2775,11 +2775,6 @@
 /* ============================================================
    RESPONSIVE — tablet & mobile
    ============================================================ */
-@media (max-width: 1024px) {
-  .st-hero-mini {
-    display: none;
-  }
-}
 
 @media (max-width: 900px) {
   .st-pk-grid {
@@ -2802,7 +2797,7 @@
 }
 
 @media (max-width: 768px) {
-  /* hero simplifications */
+  /* hero — everything from desktop, compacted to fit the narrow canvas */
   .st-huge {
     font-size: clamp(3.4rem, 16vw, 6rem);
   }
@@ -2811,14 +2806,34 @@
     padding: 18px 20px;
   }
 
-  .st-hero-services,
-  .st-hero-foot .st-foot-col-mid,
-  .st-hero-quicklinks {
-    display: none;
+  /* let the huge words stack instead of clipping STUDIO off-screen */
+  .st-hero-topline {
+    flex-wrap: wrap;
   }
 
   .st-grid-4 {
     grid-template-columns: 1fr;
+  }
+
+  .st-hero-services {
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+    margin-top: 14px;
+  }
+
+  .st-hero-services .st-services-list {
+    font-size: 10px;
+    line-height: 1.8;
+  }
+
+  .st-services-list.is-lined li {
+    padding-left: 16px;
+    margin-bottom: 5px;
+  }
+
+  .st-col-right {
+    grid-column: auto;
+    justify-self: end;
   }
 
   .st-hero-tags {
@@ -2827,48 +2842,98 @@
     gap: 6px 14px;
   }
 
+  .st-hero-quicklinks {
+    flex-wrap: wrap;
+    gap: 8px 16px;
+  }
+
   .st-hero-foot {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 6px 12px;
+    font-size: 9px;
+    line-height: 1.6;
   }
 
   .st-hero-foot .st-foot-links {
-    align-items: flex-start;
+    grid-column: 2;
+    grid-row: 1;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
   }
 
   .st-hero-foot .st-foot-links a {
     text-align: left;
+    min-width: 0;
   }
 
   .st-hero-mid {
-    margin-bottom: 20vh;
+    margin-bottom: 25vh;
   }
 
   .st-hero-wordmark {
-    display: none;
+    bottom: 38vh;
+    right: 5vw;
+    font-size: 1rem;
   }
 
   .st-console {
-    bottom: 9vh;
-    width: 86vw;
+    bottom: 14vh;
+    width: 88vw;
   }
 
   .st-waveform {
     height: 34px;
   }
 
-  /* dark sequence flows normally on mobile */
-  .st-dark-mask {
-    display: none !important;
+  /* compact pill nav — same anatomy, phone proportions */
+  .st-pillnav-container {
+    top: 10px;
+    width: min(292px, calc(100vw - 32px));
   }
 
-  .st-stm {
-    display: none;
+  .st-pillnav {
+    min-height: 46px;
+    padding: 0 12px;
   }
 
-  .st-mcube-section {
-    display: block;
+  .st-pillnav .st-pill-icon {
+    width: 30px;
+    height: 30px;
+  }
+
+  .st-pill-logo img {
+    height: 26px;
+    max-width: 150px;
+  }
+
+  /* dark sequence — full desktop choreography, scaled type */
+  .st-dark-nav {
+    right: auto;
+    left: 20px;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  /* wave columns fit side by side */
+  .st-wave-wrapper {
+    gap: 26px;
+  }
+
+  .st-wave-text {
+    font-size: 1.02rem;
+  }
+
+  /* works showcase — caption clears the wrapped name index */
+  .st-wk-caption {
+    flex-wrap: wrap;
+    padding-bottom: 128px;
+  }
+
+  .st-wk-index {
+    font-size: 0.78rem;
+    bottom: 12px;
   }
 
   /* gallery becomes column */
@@ -2888,7 +2953,9 @@
   }
 
   .st-footer-infobar {
-    display: none;
+    flex-wrap: wrap;
+    gap: 6px 14px;
+    font-size: 10px;
   }
 
   .st-footer-parallax {

@@ -1,8 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { ensureGsap, gsap } from "@/lib/studio/gsap";
-import { MOBILE_BP } from "@/lib/studio/data";
 import { useContent, useLang } from "@/lib/studio/i18n";
 import { prefillQuote } from "@/lib/prefill-quote";
 
@@ -12,7 +11,7 @@ import { prefillQuote } from "@/lib/prefill-quote";
  *   2. the window inflates to fullscreen as you scroll (scrub)
  *   3. pinned: the live projects wipe horizontally one per scroll segment,
  *      with a name index + diamond progress markers
- * Mobile falls back to a clean stacked list.
+ * Runs identically on every viewport — mobile gets the full mechanic.
  */
 
 /* scroll budget (vh) */
@@ -26,7 +25,6 @@ const easeInOutCubic = (x: number) =>
 export function WorksGallery() {
   const { galleryHeader, works, ui } = useContent();
   const { lang } = useLang();
-  const [isMobile, setIsMobile] = useState(false);
 
   const trackRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
@@ -37,14 +35,6 @@ export function WorksGallery() {
 
   const count = works.length;
   const totalVh = EXPAND_VH + (count - 1) * PANEL_VH;
-
-  useEffect(() => {
-    const mq = window.matchMedia(`(max-width: ${MOBILE_BP}px)`);
-    const apply = () => setIsMobile(mq.matches);
-    apply();
-    mq.addEventListener("change", apply);
-    return () => mq.removeEventListener("change", apply);
-  }, []);
 
   /* header word reveal */
   useEffect(() => {
@@ -86,9 +76,8 @@ export function WorksGallery() {
     return () => ctx.revert();
   }, [lang]);
 
-  /* the expand + wipe choreography (desktop only) */
+  /* the expand + wipe choreography */
   useEffect(() => {
-    if (isMobile) return;
     const track = trackRef.current;
     const header = headerRef.current;
     const frame = frameRef.current;
@@ -115,8 +104,9 @@ export function WorksGallery() {
       const ex = easeInOutCubic(clamp01(p / pExpand));
       const w = window.innerWidth;
       const h = window.innerHeight;
-      const smallW = Math.min(w * 0.42, 580);
-      const smallH = Math.min(h * 0.3, 300);
+      const narrow = w <= 768;
+      const smallW = narrow ? w * 0.72 : Math.min(w * 0.42, 580);
+      const smallH = narrow ? Math.min(h * 0.24, 250) : Math.min(h * 0.3, 300);
       const fw = smallW + (w - smallW) * ex;
       const fh = smallH + (h - smallH) * ex;
       frame.style.width = `${fw}px`;
@@ -163,60 +153,11 @@ export function WorksGallery() {
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [isMobile, count, totalVh, lang]);
+  }, [count, totalVh, lang]);
 
   const ctaClick = () =>
     prefillQuote({ message: ui.galleryPrefill, fromLabel: works[count - 1].name });
 
-  /* ── mobile: stacked cards ── */
-  if (isMobile) {
-    return (
-      <section className="st-gallery" id="proyectos" key={lang}>
-        <div className="st-gallery-header" ref={headerRef}>
-          <h2 className="st-gh-label">{galleryHeader.label}</h2>
-          <div className="st-gh-title">
-            {galleryHeader.lines.map((line) => (
-              <span key={line}>{line}</span>
-            ))}
-          </div>
-          <p className="st-gh-sub">{galleryHeader.sub}</p>
-        </div>
-        <div className="st-wk-mlist">
-          {works.map((work) =>
-            work.url ? (
-              <a
-                key={work.name}
-                className="st-wk-mcard"
-                href={work.url}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={work.cover} alt="" loading="lazy" decoding="async" />
-                <div className="st-wk-mcap">
-                  <strong>{work.name}</strong>
-                  <span>{work.industry}</span>
-                  <em>{ui.wkVisit}</em>
-                </div>
-              </a>
-            ) : (
-              <button key={work.name} className="st-wk-mcard" onClick={ctaClick}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={work.cover} alt="" loading="lazy" decoding="async" />
-                <div className="st-wk-mcap">
-                  <strong>{work.name}</strong>
-                  <span>{work.industry}</span>
-                  <em>{ui.wkCta}</em>
-                </div>
-              </button>
-            ),
-          )}
-        </div>
-      </section>
-    );
-  }
-
-  /* ── desktop: expand + wipe showcase ── */
   return (
     <section className="st-gallery" id="proyectos" key={lang}>
       <div

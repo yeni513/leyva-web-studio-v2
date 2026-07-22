@@ -8,7 +8,6 @@ import { Grain } from "./Grain";
 import { ScrollProgress } from "./ScrollProgress";
 import { StudioNav } from "./StudioNav";
 import { ScrollStage } from "./ScrollStage";
-import { MobileShowcase } from "./MobileShowcase";
 import { RingSectors } from "./RingSectors";
 import { WorksGallery } from "./WorksGallery";
 import { StudioPackages } from "./StudioPackages";
@@ -29,7 +28,6 @@ export function StudioExperience() {
         <LangToggle />
         <main>
           <ScrollStage />
-          <MobileShowcase />
           <RingSectors />
           <WorksGallery />
           <StudioPackages />

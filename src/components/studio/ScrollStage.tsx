@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { gsap } from "@/lib/studio/gsap";
 import { useLenis } from "@/lib/studio/lenis";
-import { cubeFaceImages, cubeFrontVideo, MOBILE_BP } from "@/lib/studio/data";
+import { cubeFaceImages, cubeFrontVideo } from "@/lib/studio/data";
 import { useContent } from "@/lib/studio/i18n";
 import { HeroSlider } from "./HeroSlider";
 import { LettersMatrix } from "./LettersMatrix";
@@ -26,7 +26,6 @@ function easeInOutCubic(x: number) {
 const clamp01 = (v: number) => Math.max(0, Math.min(v, 1));
 
 export function ScrollStage() {
-  const [isMobile, setIsMobile] = useState(false);
   const trackRef = useRef<HTMLDivElement>(null);
   const maskRef = useRef<HTMLDivElement>(null);
   const glow1Ref = useRef<HTMLDivElement>(null);
@@ -60,17 +59,8 @@ export function ScrollStage() {
   const waveLeftDataRef = useRef(waveLeft);
   waveLeftDataRef.current = waveLeft;
 
-  useEffect(() => {
-    const mq = window.matchMedia(`(max-width: ${MOBILE_BP}px)`);
-    const apply = () => setIsMobile(mq.matches);
-    apply();
-    mq.addEventListener("change", apply);
-    return () => mq.removeEventListener("change", apply);
-  }, []);
-
   /* Front cube face plays the ember film once it's near */
   useEffect(() => {
-    if (isMobile) return;
     const video = sceneRef.current?.querySelector("video");
     if (!video) return;
     const hydrate = () => {
@@ -86,11 +76,10 @@ export function ScrollStage() {
       window.removeEventListener("wheel", hydrate);
       window.removeEventListener("touchstart", hydrate);
     };
-  }, [isMobile]);
+  }, []);
 
-  /* Main choreography (desktop only) */
+  /* Main choreography — runs on every viewport size */
   useEffect(() => {
-    if (isMobile) return;
     const mask = maskRef.current;
     const sceneWrapper = sceneWrapperRef.current;
     const scene = sceneRef.current;
@@ -273,8 +262,11 @@ export function ScrollStage() {
       let currentScale = 0.0001;
       let currentX = -15;
       let currentY = baseRotY;
-      const baseSceneSize = 230;
-      const zoomedSceneSize = Math.min(winW * 0.44 * 0.9, winH * 0.72 * 0.9);
+      const narrow = winW <= 768;
+      const baseSceneSize = narrow ? 170 : 230;
+      const zoomedSceneSize = narrow
+        ? winW * 0.8
+        : Math.min(winW * 0.44 * 0.9, winH * 0.72 * 0.9);
       let currentSceneSize = baseSceneSize;
 
       const s2 = s2Ref.current;
@@ -406,7 +398,7 @@ export function ScrollStage() {
       gsap.ticker.remove(tick);
       window.removeEventListener("scroll", onScroll);
     };
-  }, [isMobile, lenis]);
+  }, [lenis]);
 
   return (
     <div className="st-scroll-track" ref={trackRef}>
@@ -588,11 +580,11 @@ export function ScrollStage() {
         </div>
       </div>
 
-      {/* pinned scroll distance for the dark choreography (desktop only) */}
-      {!isMobile && <div style={{ height: `${DARK_VH}vh` }} aria-hidden />}
+      {/* pinned scroll distance for the dark choreography */}
+      <div style={{ height: `${DARK_VH}vh` }} aria-hidden />
 
       {/* letters matrix scrolls over the pinned cube */}
-      {!isMobile && <LettersMatrix />}
+      <LettersMatrix />
     </div>
   );
 }
