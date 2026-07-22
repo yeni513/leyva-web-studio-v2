@@ -2932,8 +2932,10 @@
   }
 
   .st-wk-index {
-    font-size: 0.78rem;
+    font-size: 0.72rem;
     bottom: 12px;
+    padding: 0 14px;
+    column-gap: 0.45em;
   }
 
   /* gallery becomes column */
