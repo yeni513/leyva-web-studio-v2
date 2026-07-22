@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { Inter, Fraunces } from "next/font/google";
 import "./globals.css";
 import "./studio.css";
 import { site } from "@/lib/site";
@@ -8,7 +9,7 @@ import { LazyChatbot } from "@/components/chatbot/LazyChatbot";
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: `${site.brand} · ${site.brandSub} — Sitios web a la medida para negocios locales`,
+    default: `${site.brand} ${site.brandSub} — Diseño Web Premium en Cleveland, OH · Web Design Cleveland`,
     template: `%s · ${site.brand} ${site.brandSub}`,
   },
   description: site.description,
@@ -17,24 +18,32 @@ export const metadata: Metadata = {
   creator: site.brand,
   publisher: site.brand,
   keywords: [
-    "diseño web",
-    "desarrollo web Ohio",
-    "páginas web para negocios locales",
-    "sitios web para restaurantes",
+    // English — Cleveland local intent
+    "web design Cleveland",
+    "web designer Cleveland Ohio",
+    "website design for small business Cleveland",
+    "affordable web design Cleveland",
+    "local SEO Cleveland",
+    "web design for restaurants Cleveland",
+    "web design for contractors Cleveland",
+    "business websites in Cleveland",
+    "Spanish web designer Cleveland",
+    "AI chatbot for business",
+    "Google Business Profile optimization Cleveland",
+    // Spanish — intención local
+    "diseño web en Cleveland",
+    "páginas web para negocios en Cleveland",
+    "diseño web para restaurantes",
     "páginas web para contratistas",
-    "páginas web para inmobiliarias",
-    "web design Ohio",
-    "Hispanic small business websites",
-    "Next.js",
-    "estudio web",
-    "diseño cinematográfico",
+    "SEO local Cleveland Ohio",
+    "estudio web Cleveland",
   ],
   openGraph: {
     type: "website",
     locale: "es_US",
     alternateLocale: ["es_MX", "en_US"],
     url: site.url,
-    title: `${site.brand} ${site.brandSub} — Sitios web a la medida`,
+    title: `${site.brand} ${site.brandSub} — Diseño Web Premium en Cleveland, OH`,
     description: site.description,
     siteName: `${site.brand} ${site.brandSub}`,
     images: [
@@ -54,6 +63,13 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: "/",
+  },
+  icons: {
+    icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
+    apple: [
+      { url: "/apple-touch-icon.svg", type: "image/svg+xml" },
+      { url: "/icon.svg", sizes: "any", type: "image/svg+xml" },
+    ],
   },
   robots: {
     index: true,

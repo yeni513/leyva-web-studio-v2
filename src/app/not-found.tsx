@@ -4,7 +4,7 @@ import { BrandMark } from "@/components/brand";
 
 export default function NotFound() {
   return (
-    <main className="relative min-h-[100svh] flex items-center justify-center overflow-hidden">
+    <main id="main-content" className="relative min-h-[100svh] flex items-center justify-center overflow-hidden">
       {/* Ambient warm glow */}
       <div
         className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] max-w-[140vw] max-h-[140vw] rounded-full bg-[radial-gradient(50%_50%_at_50%_50%,rgba(236,139,42,0.15),transparent_70%)] pointer-events-none"

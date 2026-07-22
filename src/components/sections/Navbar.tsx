@@ -1,20 +1,30 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Menu, X, ArrowUpRight } from "lucide-react";
+import { Menu, X, ArrowUpRight, Phone } from "lucide-react";
 import { BrandMark } from "@/components/brand";
 import { AnchorButton } from "@/components/ui/button";
+import { LangToggle } from "@/components/lang-toggle";
+import { getBookingUrl, site } from "@/lib/site";
+import { useLang } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 const links = [
-  { href: "/#servicios", label: "Servicios" },
-  { href: "/#proceso", label: "Proceso" },
-  { href: "/#paquetes", label: "Paquetes" },
-  { href: "/#trabajo", label: "Trabajo" },
-  { href: "/#faq", label: "FAQ" },
+  { href: "/#servicios", es: "Servicios", en: "Services" },
+  { href: "/#proceso", es: "Proceso", en: "Process" },
+  { href: "/#paquetes", es: "Paquetes", en: "Pricing" },
+  { href: "/#trabajo", es: "Trabajo", en: "Work" },
+  { href: "/#faq", es: "FAQ", en: "FAQ" },
 ];
 
 export function Navbar() {
+  const { lang } = useLang();
+  const t = {
+    es: { cta: "Cotizar mi sitio", book: "Agendar 15 min", call: "Llamar", nav: "Navegación principal", open: "Abrir menú", close: "Cerrar menú", callAria: "Llamar al" },
+    en: { cta: "Get a free quote", book: "Book 15 min", call: "Call", nav: "Primary navigation", open: "Open menu", close: "Close menu", callAria: "Call" },
+  }[lang];
+  const bookingUrl = getBookingUrl();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -60,15 +70,15 @@ export function Navbar() {
               ? "bg-ink-950/70 backdrop-blur-xl shadow-[0_10px_40px_-20px_rgba(0,0,0,0.8)] border-white/[0.09]"
               : "bg-ink-950/30 backdrop-blur-md",
           )}
-          aria-label="Navegación principal"
+          aria-label={t.nav}
         >
-          <a
+          <Link
             href="/"
             className="no-tap-highlight shrink-0"
             aria-label="Leyva Web Studio — Ir al inicio"
           >
             <BrandMark />
-          </a>
+          </Link>
 
           <ul className="hidden md:flex items-center gap-1 text-sm text-ember-50/80">
             {links.map((l) => (
@@ -77,20 +87,31 @@ export function Navbar() {
                   href={l.href}
                   className="px-3 py-2 rounded-full hover:text-ember-50 hover:bg-white/[0.04] transition-colors"
                 >
-                  {l.label}
+                  {l[lang]}
                 </a>
               </li>
             ))}
           </ul>
 
           <div className="hidden md:flex items-center gap-2">
+            <LangToggle />
+            <a
+              href={`tel:${site.contact.phone}`}
+              aria-label={`${t.callAria} ${site.contact.phoneDisplay}`}
+              className="hidden xl:inline-flex items-center gap-2 h-10 px-3 rounded-full text-sm text-ember-50/80 hover:text-ember-50 hover:bg-white/[0.04] transition-colors no-tap-highlight"
+            >
+              <Phone className="w-3.5 h-3.5 text-ember-300/85" />
+              <span className="tabular-nums">{site.contact.phoneDisplay}</span>
+            </a>
             <AnchorButton
-              href="/#contact"
+              href={bookingUrl || "/#contact"}
+              target={bookingUrl ? "_blank" : undefined}
+              rel={bookingUrl ? "noopener noreferrer" : undefined}
               size="sm"
               variant="primary"
               className="h-10 px-4 text-sm"
             >
-              Cotizar mi sitio
+              {bookingUrl ? t.book : t.cta}
               <ArrowUpRight className="w-4 h-4" />
             </AnchorButton>
           </div>
@@ -101,7 +122,7 @@ export function Navbar() {
             onClick={() => setOpen((v) => !v)}
             aria-expanded={open}
             aria-controls="mobile-menu"
-            aria-label={open ? "Cerrar menú" : "Abrir menú"}
+            aria-label={open ? t.close : t.open}
           >
             {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
@@ -135,21 +156,36 @@ export function Navbar() {
                   onClick={() => setOpen(false)}
                   className="flex items-center justify-between rounded-2xl px-4 py-4 text-ember-50/90 hover:text-ember-50 hover:bg-white/[0.04] text-base"
                 >
-                  <span>{l.label}</span>
+                  <span>{l[lang]}</span>
                   <ArrowUpRight className="w-4 h-4 text-ember-300/70" />
                 </a>
               </li>
             ))}
-            <li className="pt-2">
+            <li className="pt-2 space-y-2">
+              <div className="flex justify-center pb-1">
+                <LangToggle />
+              </div>
               <AnchorButton
-                href="/#contact"
+                href={bookingUrl || "/#contact"}
+                target={bookingUrl ? "_blank" : undefined}
+                rel={bookingUrl ? "noopener noreferrer" : undefined}
                 onClick={() => setOpen(false)}
                 size="lg"
                 className="w-full"
               >
-                Cotizar mi sitio
+                {bookingUrl ? t.book : t.cta}
                 <ArrowUpRight className="w-4 h-4" />
               </AnchorButton>
+              <a
+                href={`tel:${site.contact.phone}`}
+                onClick={() => setOpen(false)}
+                className="inline-flex items-center justify-center gap-2 w-full h-11 px-4 rounded-full border border-white/[0.08] bg-white/[0.02] text-ember-50/85 hover:text-ember-50 hover:bg-white/[0.05] transition-colors no-tap-highlight text-sm"
+              >
+                <Phone className="w-4 h-4 text-ember-300/85" />
+                <span className="tabular-nums">
+                  {t.call} · {site.contact.phoneDisplay}
+                </span>
+              </a>
             </li>
           </ul>
         </div>

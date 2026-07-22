@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import {
   AnimatePresence,
@@ -23,9 +24,10 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { BrandMark } from "@/components/brand";
-import { site, whatsappLink, mailtoLink } from "@/lib/site";
+import { getBookingUrl, site, whatsappLink, mailtoLink } from "@/lib/site";
 import { prefillQuote, type QuotePrefill } from "@/lib/prefill-quote";
 import { useBodyScrollLock } from "@/lib/use-body-scroll-lock";
+import { useLang, type Lang } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 interface FooterItem {
@@ -41,196 +43,323 @@ interface FooterItem {
   prefill: QuotePrefill;
 }
 
-const estudioItems: FooterItem[] = [
+type FooterCopy = Pick<
+  FooterItem,
+  "label" | "modalTitle" | "modalDesc" | "bullets" | "navigateLabel"
+>;
+
+interface RawFooterItem {
+  id: string;
+  icon: LucideIcon;
+  navigateTo: string;
+  prefill: QuotePrefill;
+  es: FooterCopy;
+  en: FooterCopy;
+}
+
+function localizeFooter(items: RawFooterItem[], lang: Lang): FooterItem[] {
+  return items.map((it) => ({
+    id: it.id,
+    icon: it.icon,
+    navigateTo: it.navigateTo,
+    prefill: it.prefill,
+    ...it[lang],
+  }));
+}
+
+const ESTUDIO_RAW: RawFooterItem[] = [
   {
     id: "servicios",
     icon: Sparkles,
-    label: "Servicios",
-    modalTitle: "Lo que entregamos en cada proyecto",
-    modalDesc:
-      "Diseño hecho a la medida con todo lo que tu negocio necesita para verse profesional online — sin plantillas, sin templates de WordPress.",
-    bullets: [
-      "Diseño cinematográfico hecho a la medida",
-      "Mobile-first probado en celulares reales",
-      "Velocidad y Core Web Vitals optimizados",
-      "SEO local + Google Maps",
-      "Catálogos, reservas y WhatsApp",
-      "Soporte y mantenimiento mensual",
-    ],
     navigateTo: "#servicios",
-    navigateLabel: "Ver sistema orbital de servicios",
     prefill: {
       type: "Sitio nuevo",
-      message:
-        "Quiero información sobre los servicios: diseño cinematográfico, mobile-first, velocidad, SEO local, catálogos/reservas y soporte mensual.",
+      message: "Quiero información sobre los servicios.",
       fromLabel: "Servicios (footer)",
+    },
+    es: {
+      label: "Servicios",
+      modalTitle: "Lo que entregamos en cada proyecto",
+      modalDesc: "Diseño hecho a la medida con todo lo que tu negocio necesita para verse profesional online — sin plantillas, sin templates de WordPress.",
+      bullets: [
+        "Diseño cinematográfico hecho a la medida",
+        "Mobile-first probado en celulares reales",
+        "Velocidad y Core Web Vitals optimizados",
+        "SEO local + Google Maps",
+        "Catálogos, reservas y WhatsApp",
+        "Soporte y mantenimiento mensual",
+      ],
+      navigateLabel: "Ver sistema orbital de servicios",
+    },
+    en: {
+      label: "Services",
+      modalTitle: "What we deliver in every project",
+      modalDesc: "Custom design with everything your business needs to look professional online — no templates, no WordPress page-builders.",
+      bullets: [
+        "Custom cinematic design",
+        "Mobile-first tested on real phones",
+        "Speed & Core Web Vitals optimized",
+        "Local SEO + Google Maps",
+        "Catalogs, bookings & WhatsApp",
+        "Monthly support & maintenance",
+      ],
+      navigateLabel: "See the orbital services system",
     },
   },
   {
     id: "proceso",
     icon: Compass,
-    label: "Proceso",
-    modalTitle: "De la primera llamada al lanzamiento",
-    modalDesc:
-      "Un proceso claro de 14 días sin sorpresas. Tú apruebas en cada etapa, nosotros entregamos.",
-    bullets: [
-      "Día 1 — Descubrimiento: llamada de 30 min sobre tu negocio",
-      "Días 2–5 — Diseño: propuesta visual + copy en español",
-      "Días 6–12 — Desarrollo: construimos en Next.js, lo revisas en vivo",
-      "Día 13–14 — Lanzamiento: dominio, analítica y handoff",
-    ],
     navigateTo: "#proceso",
-    navigateLabel: "Ver proceso detallado",
     prefill: {
       type: "Sitio nuevo",
       timeline: "En 30 días",
-      message:
-        "Me interesa empezar pronto. Por favor cuéntenme más sobre el proceso de 14 días.",
+      message: "Me interesa empezar pronto. Cuéntenme más sobre el proceso de 14 días.",
       fromLabel: "Proceso (footer)",
+    },
+    es: {
+      label: "Proceso",
+      modalTitle: "De la primera llamada al lanzamiento",
+      modalDesc: "Un proceso claro de 14 días sin sorpresas. Tú apruebas en cada etapa, nosotros entregamos.",
+      bullets: [
+        "Día 1 — Descubrimiento: llamada de 30 min sobre tu negocio",
+        "Días 2–5 — Diseño: propuesta visual + copy en español",
+        "Días 6–12 — Desarrollo: construimos en Next.js, lo revisas en vivo",
+        "Día 13–14 — Lanzamiento: dominio, analítica y handoff",
+      ],
+      navigateLabel: "Ver proceso detallado",
+    },
+    en: {
+      label: "Process",
+      modalTitle: "From the first call to launch",
+      modalDesc: "A clear 14-day process with no surprises. You approve at every stage, we deliver.",
+      bullets: [
+        "Day 1 — Discovery: 30-min call about your business",
+        "Days 2–5 — Design: visual proposal + copy",
+        "Days 6–12 — Development: we build in Next.js, you review live",
+        "Day 13–14 — Launch: domain, analytics and handoff",
+      ],
+      navigateLabel: "See the detailed process",
     },
   },
   {
     id: "paquetes",
     icon: CreditCard,
-    label: "Paquetes",
-    modalTitle: "Pago inicial + plan mensual",
-    modalDesc:
-      "Pago inicial para construir el sitio + plan mensual de cuidado y crecimiento. Sin contratos eternos, sin costos escondidos.",
-    bullets: [
-      "Starter Local — $900 + $99/mes · Landing premium para negocios locales",
-      "Growth Pro — $1,800 + $149/mes · Multipágina enfocada en conversión (recomendado)",
-      "Authority Premium — $3,500 + $299/mes · Marca premium con estrategia",
-      "Plan mensual mantiene tu sitio rápido, seguro y actualizado",
-      "Dominio y código siempre a nombre del cliente",
-    ],
     navigateTo: "#paquetes",
-    navigateLabel: "Comparar paquetes",
     prefill: {
       type: "Sitio nuevo",
-      message:
-        "Quiero información sobre los paquetes. Aún no estoy seguro cuál encaja mejor con mi negocio.",
+      message: "Quiero información sobre los paquetes.",
       fromLabel: "Paquetes (footer)",
+    },
+    es: {
+      label: "Paquetes",
+      modalTitle: "Pago inicial + plan mensual",
+      modalDesc: "Pago inicial para construir el sitio + plan mensual de cuidado y crecimiento. Sin contratos eternos, sin costos escondidos.",
+      bullets: [
+        "Starter Local — $900 + $99/mes · Landing premium para negocios locales",
+        "Growth Pro — $1,800 + $149/mes · Multipágina enfocada en conversión (recomendado)",
+        "Authority Premium — $3,500 + $299/mes · Marca premium con estrategia",
+        "Plan mensual mantiene tu sitio rápido, seguro y actualizado",
+        "Dominio y código siempre a nombre del cliente",
+      ],
+      navigateLabel: "Comparar paquetes",
+    },
+    en: {
+      label: "Pricing",
+      modalTitle: "Setup fee + monthly plan",
+      modalDesc: "A setup fee to build the site + a monthly care and growth plan. No endless contracts, no hidden costs.",
+      bullets: [
+        "Starter Local — $900 + $99/mo · Premium landing for local businesses",
+        "Growth Pro — $1,800 + $149/mo · Multi-page focused on conversion (recommended)",
+        "Authority Premium — $3,500 + $299/mo · Premium brand with strategy",
+        "The monthly plan keeps your site fast, secure and current",
+        "Domain and code always in the client's name",
+      ],
+      navigateLabel: "Compare packages",
     },
   },
   {
     id: "trabajo",
     icon: Briefcase,
-    label: "Trabajo",
-    modalTitle: "Conceptos por industria",
-    modalDesc:
-      "Cuatro conceptos demo que muestran exactamente cómo se vería tu negocio con un sitio Leyva. Haz clic en cualquier card del portfolio para abrir el preview completo.",
-    bullets: [
-      "Concepto Restaurante · Menú digital + reservas por WhatsApp",
-      "Concepto Contratista · Portafolio de obras + cotización al WhatsApp del dueño",
-      "Concepto Inmobiliaria · Catálogo con filtros + WhatsApp por ficha",
-      "Concepto Barbería · Galería de cortes + agenda online",
-    ],
     navigateTo: "#trabajo",
-    navigateLabel: "Ver portfolio completo",
     prefill: {
       type: "Sitio nuevo",
-      message:
-        "Vi el portfolio y me gustaría algo del mismo nivel. Cuéntenme cuál de los casos se parece más a lo que necesito.",
+      message: "Vi el portfolio y me gustaría algo del mismo nivel.",
       fromLabel: "Portfolio (footer)",
+    },
+    es: {
+      label: "Trabajo",
+      modalTitle: "Trabajo y conceptos premium",
+      modalDesc: "Un build oficial en vivo más conceptos premium por industria. Abre cualquiera para ver el sitio real en una pestaña nueva.",
+      bullets: [
+        "Leyva Web Studio · sitio oficial en vivo (Next.js + Cloudflare)",
+        "Tapatías Taquería · concepto premium para restaurante",
+        "Landscaping · demo para negocio de servicios",
+        "Chino Electrodomésticos · demo ecommerce de productos",
+      ],
+      navigateLabel: "Ver trabajo y conceptos",
+    },
+    en: {
+      label: "Work",
+      modalTitle: "Work & premium concepts",
+      modalDesc: "One live official build plus premium concepts by industry. Open any of them to see the real site in a new tab.",
+      bullets: [
+        "Leyva Web Studio · official live site (Next.js + Cloudflare)",
+        "Tapatías Taquería · premium restaurant concept",
+        "Landscaping · demo for a service business",
+        "Chino Appliances · ecommerce product demo",
+      ],
+      navigateLabel: "See work & concepts",
     },
   },
 ];
 
-const negociosItems: FooterItem[] = [
+const NEGOCIOS_RAW: RawFooterItem[] = [
   {
     id: "restaurantes",
     icon: UtensilsCrossed,
-    label: "Restaurantes",
-    modalTitle: "Sitios para restaurantes",
-    modalDesc:
-      "Capturamos la atmósfera de tu lugar online — el visitante reserva antes de cerrar la pestaña. Funciona desde food trucks hasta fine dining.",
-    bullets: [
-      "Menú digital cinematográfico que tú actualizas",
-      "Reservas por WhatsApp + agenda online sincronizada",
-      "Galería de platos con fotos optimizadas",
-      "Mapa interactivo + horarios siempre frescos",
-      "Concepto demo: \"Casa Olivar\" — restaurante mediterráneo",
-    ],
     navigateTo: "#trabajo",
-    navigateLabel: "Ver concepto Restaurante",
     prefill: {
       type: "Sitio nuevo",
       industry: "Restaurante",
-      message:
-        "Tengo un restaurante y quiero un sitio a la medida con menú digital, reservas por WhatsApp y galería de platos.",
+      message: "Tengo un restaurante y quiero un sitio con menú digital, reservas por WhatsApp y galería.",
       fromLabel: "Restaurantes",
+    },
+    es: {
+      label: "Restaurantes",
+      modalTitle: "Sitios para restaurantes",
+      modalDesc: "Capturamos la atmósfera de tu lugar online — el visitante reserva antes de cerrar la pestaña. Funciona desde food trucks hasta fine dining.",
+      bullets: [
+        "Menú digital cinematográfico que tú actualizas",
+        "Reservas por WhatsApp + agenda online sincronizada",
+        "Galería de platos con fotos optimizadas",
+        "Mapa interactivo + horarios siempre frescos",
+        "Demo en vivo: \"Tapatías Taquería\" — concepto premium",
+      ],
+      navigateLabel: "Ver concepto Restaurante",
+    },
+    en: {
+      label: "Restaurants",
+      modalTitle: "Websites for restaurants",
+      modalDesc: "We capture the atmosphere of your place online — visitors book before closing the tab. Works from food trucks to fine dining.",
+      bullets: [
+        "Cinematic digital menu you update yourself",
+        "WhatsApp reservations + synced online calendar",
+        "Dish gallery with optimized photos",
+        "Interactive map + always-fresh hours",
+        "Live demo: \"Tapatías Taquería\" — premium concept",
+      ],
+      navigateLabel: "See the Restaurant concept",
     },
   },
   {
     id: "contratistas",
     icon: HardHat,
-    label: "Contratistas",
-    modalTitle: "Sitios para contratistas",
-    modalDesc:
-      "Portafolio digital que genera cotizaciones serias. Mostramos tu trabajo, tu equipo y tu zona — la gente que te contacta ya viene calificada.",
-    bullets: [
-      "Portafolio de obras organizadas por tipo",
-      "Garantía clara comunicada sin letra chica",
-      "Cotización 24h directa al WhatsApp del dueño",
-      "Mapa con tu zona de cobertura",
-      "Concepto demo: \"Estructuras Vela\" — constructora regional",
-    ],
     navigateTo: "#trabajo",
-    navigateLabel: "Ver concepto Contratista",
     prefill: {
       type: "Sitio nuevo",
       industry: "Contratista / Constructor",
-      message:
-        "Soy contratista y quiero un portafolio digital con galería de obras, testimonios y cotización por WhatsApp.",
+      message: "Soy contratista y quiero un portafolio digital con galería de obras y cotización por WhatsApp.",
       fromLabel: "Contratistas",
+    },
+    es: {
+      label: "Contratistas",
+      modalTitle: "Sitios para contratistas",
+      modalDesc: "Portafolio digital que genera cotizaciones serias. Mostramos tu trabajo, tu equipo y tu zona — la gente que te contacta ya viene calificada.",
+      bullets: [
+        "Portafolio de obras organizadas por tipo",
+        "Garantía clara comunicada sin letra chica",
+        "Cotización 24h directa al WhatsApp del dueño",
+        "Mapa con tu zona de cobertura",
+        "Portafolio de obras a la medida según tu trabajo",
+      ],
+      navigateLabel: "Ver concepto Contratista",
+    },
+    en: {
+      label: "Contractors",
+      modalTitle: "Websites for contractors",
+      modalDesc: "A digital portfolio that generates serious quotes. We show your work, your team and your service area — the people who contact you arrive pre-qualified.",
+      bullets: [
+        "Portfolio of projects organized by type",
+        "Clear guarantee communicated without fine print",
+        "24h quote straight to the owner's WhatsApp",
+        "Map of your coverage area",
+        "Custom project portfolio based on your work",
+      ],
+      navigateLabel: "See the Contractor concept",
     },
   },
   {
     id: "inmobiliarias",
     icon: Home,
-    label: "Inmobiliarias",
-    modalTitle: "Sitios para inmobiliarias",
-    modalDesc:
-      "Plataforma de listados con filtros, fichas detalladas y CTAs por propiedad. Los prospectos llegan precalificados con preguntas específicas.",
-    bullets: [
-      "Catálogo de propiedades con filtros (precio, recámaras, zona)",
-      "Tour virtual 360° por propiedad",
-      "Agenda visitas directo por WhatsApp en la ficha",
-      "Vecindarios curados con datos reales",
-      "Concepto demo: \"Norte Realty\" — plataforma inmobiliaria regional",
-    ],
     navigateTo: "#trabajo",
-    navigateLabel: "Ver concepto Inmobiliaria",
     prefill: {
       type: "Sitio nuevo",
       industry: "Inmobiliaria",
-      message:
-        "Manejo una inmobiliaria y quiero una plataforma con listados, filtros, tour virtual y CTA a WhatsApp por propiedad.",
+      message: "Manejo una inmobiliaria y quiero una plataforma con listados, filtros y CTA a WhatsApp por propiedad.",
       fromLabel: "Inmobiliarias",
+    },
+    es: {
+      label: "Inmobiliarias",
+      modalTitle: "Sitios para inmobiliarias",
+      modalDesc: "Plataforma de listados con filtros, fichas detalladas y CTAs por propiedad. Los prospectos llegan precalificados con preguntas específicas.",
+      bullets: [
+        "Catálogo de propiedades con filtros (precio, recámaras, zona)",
+        "Tour virtual 360° por propiedad",
+        "Agenda visitas directo por WhatsApp en la ficha",
+        "Vecindarios curados con datos reales",
+        "Catálogo de propiedades a la medida según tu inventario",
+      ],
+      navigateLabel: "Ver concepto Inmobiliaria",
+    },
+    en: {
+      label: "Real estate",
+      modalTitle: "Websites for real estate",
+      modalDesc: "A listings platform with filters, detailed cards and CTAs per property. Prospects arrive pre-qualified with specific questions.",
+      bullets: [
+        "Property catalog with filters (price, bedrooms, area)",
+        "360° virtual tour per property",
+        "Book visits straight via WhatsApp on the listing",
+        "Curated neighborhoods with real data",
+        "Custom property catalog based on your inventory",
+      ],
+      navigateLabel: "See the Real estate concept",
     },
   },
   {
     id: "locales",
     icon: Scissors,
-    label: "Servicios locales",
-    modalTitle: "Sitios para servicios locales",
-    modalDesc:
-      "Barberías, salones, plomería, limpieza, autoservicio, gimnasios. Sitios dark elegantes con agenda online y WhatsApp directo.",
-    bullets: [
-      "Menú de servicios con precios claros",
-      "Agenda online cada 30 min con confirmación",
-      "Galería de trabajo que se actualiza con cada cliente",
-      "Ubicación, horarios y estacionamiento",
-      "Concepto demo: \"Don Felipe Barber\" — barbería premium",
-    ],
     navigateTo: "#trabajo",
-    navigateLabel: "Ver concepto Barbería",
     prefill: {
       type: "Sitio nuevo",
       industry: "Barbería / Estética",
-      message:
-        "Tengo un servicio local y quiero un sitio dark elegante con menú de servicios, agenda online y galería.",
+      message: "Tengo un servicio local y quiero un sitio elegante con menú de servicios, agenda online y galería.",
       fromLabel: "Servicios locales",
+    },
+    es: {
+      label: "Servicios locales",
+      modalTitle: "Sitios para servicios locales",
+      modalDesc: "Barberías, salones, plomería, limpieza, autoservicio, gimnasios. Sitios dark elegantes con agenda online y WhatsApp directo.",
+      bullets: [
+        "Menú de servicios con precios claros",
+        "Agenda online cada 30 min con confirmación",
+        "Galería de trabajo que se actualiza con cada cliente",
+        "Ubicación, horarios y estacionamiento",
+        "Demo en vivo: \"Landscaping\" — negocio de servicios",
+      ],
+      navigateLabel: "Ver concepto Servicios",
+    },
+    en: {
+      label: "Local services",
+      modalTitle: "Websites for local services",
+      modalDesc: "Barbers, salons, plumbing, cleaning, auto, gyms. Elegant dark sites with online booking and direct WhatsApp.",
+      bullets: [
+        "Services menu with clear prices",
+        "Online booking every 30 min with confirmation",
+        "Work gallery that updates with each client",
+        "Location, hours and parking",
+        "Live demo: \"Landscaping\" — service business",
+      ],
+      navigateLabel: "See the Services concept",
     },
   },
 ];
@@ -238,7 +367,12 @@ const negociosItems: FooterItem[] = [
 const EASE_PREMIUM = cubicBezier(0.22, 1, 0.36, 1);
 
 export function Footer() {
+  const { lang } = useLang();
+  const en = lang === "en";
+  const estudioItems = localizeFooter(ESTUDIO_RAW, lang);
+  const negociosItems = localizeFooter(NEGOCIOS_RAW, lang);
   const [active, setActive] = useState<FooterItem | null>(null);
+  const bookingUrl = getBookingUrl();
 
   return (
     <footer className="relative border-t border-white/[0.06] bg-ink-950">
@@ -251,33 +385,58 @@ export function Footer() {
           <div className="relative grid grid-cols-1 md:grid-cols-[1fr_auto] gap-8 items-end">
             <div>
               <p className="text-xs uppercase tracking-[0.22em] text-ember-300">
-                ¿Listo para verte premium?
+                {en ? "Ready to look premium?" : "¿Listo para verte premium?"}
               </p>
               <h2 className="mt-3 font-display font-semibold tracking-tight text-[clamp(1.8rem,4.5vw,3rem)] leading-[1.05] text-ember-50 max-w-2xl">
-                Tu próximo cliente está buscando tu negocio.{" "}
-                <span className="gradient-text">
-                  Asegúrate de que te encuentre bien.
-                </span>
+                {en ? (
+                  <>
+                    Your next customer is searching for your business.{" "}
+                    <span className="gradient-text">
+                      Make sure they find you looking good.
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    Tu próximo cliente está buscando tu negocio.{" "}
+                    <span className="gradient-text">
+                      Asegúrate de que te encuentre bien.
+                    </span>
+                  </>
+                )}
               </h2>
             </div>
             <div className="flex flex-col sm:flex-row gap-3">
-              <a
-                href="/#contact"
-                className="inline-flex items-center justify-center gap-2 h-12 px-6 rounded-full bg-gradient-to-b from-ember-200 via-ember-300 to-ember-400 text-ink-950 font-medium hover:shadow-glow transition-all"
-              >
-                Obtén mi sitio web
-                <ArrowUpRight className="w-4 h-4" />
-              </a>
+              {bookingUrl ? (
+                <a
+                  href={bookingUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 h-12 px-6 rounded-full bg-gradient-to-b from-ember-200 via-ember-300 to-ember-400 text-ink-950 font-medium hover:shadow-glow transition-all"
+                >
+                  {en ? "Book 15 min" : "Agendar 15 min"}
+                  <ArrowUpRight className="w-4 h-4" />
+                </a>
+              ) : (
+                <Link
+                  href="/#contact"
+                  className="inline-flex items-center justify-center gap-2 h-12 px-6 rounded-full bg-gradient-to-b from-ember-200 via-ember-300 to-ember-400 text-ink-950 font-medium hover:shadow-glow transition-all"
+                >
+                  {en ? "Get my website" : "Obtén mi sitio web"}
+                  <ArrowUpRight className="w-4 h-4" />
+                </Link>
+              )}
               <a
                 href={whatsappLink(
-                  "Hola Leyva, quiero información sobre los paquetes.",
+                  en
+                    ? "Hi Leyva, I'd like info about your packages."
+                    : "Hola Leyva, quiero información sobre los paquetes.",
                 )}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-2 h-12 px-6 rounded-full border border-ember-300/30 bg-ember-300/[0.04] text-ember-50 hover:bg-ember-300/[0.10] transition-colors"
               >
                 <MessageCircle className="w-4 h-4" />
-                Hablar por WhatsApp
+                {en ? "Chat on WhatsApp" : "Hablar por WhatsApp"}
               </a>
             </div>
           </div>
@@ -436,11 +595,16 @@ function ExplainerModal({
 
   useEffect(() => {
     if (!isOpen) return;
+    // Remember what was focused so we can restore it on close (a11y).
+    const trigger = document.activeElement as HTMLElement | null;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
     };
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      trigger?.focus?.({ preventScroll: true });
+    };
   }, [isOpen, onClose]);
 
   const handleNavigate = (href: string) => {

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 interface RevealProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -12,9 +12,12 @@ interface RevealProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 /**
- * Section reveal — fade-up on scroll. Runs on every device, always.
- * No reduced-motion or mobile fallback by design: the visual experience
- * is the product.
+ * Section reveal — fade-up on scroll.
+ *
+ * Respects `prefers-reduced-motion`: under that preference we render
+ * children at their final visual state with no animation. A 14px y-shift
+ * is below most vestibular thresholds, but compounded across ~20 Reveal
+ * instances per page it adds up enough to warrant the gate.
  */
 export function Reveal({
   className,
@@ -26,6 +29,15 @@ export function Reveal({
   ...rest
 }: RevealProps) {
   const MotionTag = motion[as] as React.ElementType;
+  const reducedMotion = useReducedMotion();
+
+  if (reducedMotion) {
+    return (
+      <MotionTag className={cn(className)} {...rest}>
+        {children}
+      </MotionTag>
+    );
+  }
 
   return (
     <MotionTag

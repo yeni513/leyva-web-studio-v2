@@ -24,7 +24,7 @@ import {
 import { SectionHeading } from "@/components/section-heading";
 import { Reveal } from "@/components/ui/reveal";
 import { useBodyScrollLock } from "@/lib/use-body-scroll-lock";
-import { cn } from "@/lib/utils";
+import { useLang, type Lang } from "@/lib/i18n";
 
 interface Guarantee {
   id: string;
@@ -37,96 +37,163 @@ interface Guarantee {
   palette: number;
 }
 
-const guarantees: Guarantee[] = [
+type GuaranteeCopy = Pick<Guarantee, "title" | "category" | "promise" | "detail">;
+
+interface RawGuarantee {
+  id: string;
+  icon: LucideIcon;
+  palette: number;
+  es: GuaranteeCopy;
+  en: GuaranteeCopy;
+}
+
+const GUARANTEES_RAW: RawGuarantee[] = [
   {
     id: "refund",
     icon: ShieldCheck,
-    title: "Cancelación pre-desarrollo",
-    category: "Tu inversión protegida",
-    promise:
-      "Si después de la primera propuesta visual y las revisiones incluidas no encontramos una dirección aprobada, puedes cancelar antes de iniciar desarrollo según los términos del contrato.",
-    detail:
-      "Trabajamos primero el diseño visual y aplicamos las rondas de revisión incluidas en tu paquete. Si al cierre de esas revisiones no llegamos a una dirección que apruebes, tienes la opción de cancelar antes de que comencemos desarrollo. El reembolso o ajuste del anticipo se rige por los términos del contrato firmado al inicio del proyecto.",
     palette: 0,
+    es: {
+      title: "Cancelación pre-desarrollo",
+      category: "Tu inversión protegida",
+      promise: "Si después de la primera propuesta visual y las revisiones incluidas no encontramos una dirección aprobada, puedes cancelar antes de iniciar desarrollo según los términos del contrato.",
+      detail: "Trabajamos primero el diseño visual y aplicamos las rondas de revisión incluidas en tu paquete. Si al cierre de esas revisiones no llegamos a una dirección que apruebes, tienes la opción de cancelar antes de que comencemos desarrollo. El reembolso o ajuste del anticipo se rige por los términos del contrato firmado al inicio del proyecto.",
+    },
+    en: {
+      title: "Pre-development cancellation",
+      category: "Your investment protected",
+      promise: "If after the first visual proposal and the included revisions we don't reach an approved direction, you can cancel before development starts, per the contract terms.",
+      detail: "We work on the visual design first and apply the revision rounds included in your package. If, at the end of those revisions, we haven't reached a direction you approve, you can cancel before we begin development. Any refund or deposit adjustment follows the terms of the contract signed at the start of the project.",
+    },
   },
   {
     id: "ownership",
     icon: KeyRound,
-    title: "Tú dueño del código",
-    category: "Sin candados",
-    promise:
-      "Al completar el proyecto, el código del sitio queda bajo tu propiedad según los términos del contrato.",
-    detail:
-      "Te damos acceso al repositorio (GitHub) a tu nombre cuando el proyecto se entrega. Nada queda atado a nosotros: ni el dominio, ni el hosting, ni las cuentas. Si decides irte, no negociamos rescates ni amenazamos con bajar el sitio.",
     palette: 1,
+    es: {
+      title: "Tú dueño del código",
+      category: "Sin candados",
+      promise: "Al completar el proyecto, el código del sitio queda bajo tu propiedad según los términos del contrato.",
+      detail: "Te damos acceso al repositorio (GitHub) a tu nombre cuando el proyecto se entrega. Nada queda atado a nosotros: ni el dominio, ni el hosting, ni las cuentas. Si decides irte, no negociamos rescates ni amenazamos con bajar el sitio.",
+    },
+    en: {
+      title: "You own the code",
+      category: "No lock-in",
+      promise: "When the project is complete, the site's code becomes your property per the contract terms.",
+      detail: "We give you access to the repository (GitHub) in your name when the project is delivered. Nothing is tied to us: not the domain, not the hosting, not the accounts. If you decide to leave, we don't negotiate ransoms or threaten to take the site down.",
+    },
   },
   {
     id: "fixed-price",
     icon: CreditCard,
-    title: "Precio fijo del alcance",
-    category: "Sin sorpresas",
-    promise:
-      "Cotización fija para el alcance aprobado al firmar. Si el trabajo toma más tiempo del estimado dentro del alcance, no se aplica un costo adicional al cliente.",
-    detail:
-      "El precio que ves en la propuesta es el que firmas y el que pagas, siempre que el alcance no cambie. Si nuestra estimación resulta corta, asumimos la diferencia internamente. Si decides ampliar el alcance, te enviamos una cotización aparte y tú decides si avanzas.",
     palette: 2,
+    es: {
+      title: "Precio fijo del alcance",
+      category: "Sin sorpresas",
+      promise: "Cotización fija para el alcance aprobado al firmar. Si el trabajo toma más tiempo del estimado dentro del alcance, no se aplica un costo adicional al cliente.",
+      detail: "El precio que ves en la propuesta es el que firmas y el que pagas, siempre que el alcance no cambie. Si nuestra estimación resulta corta, asumimos la diferencia internamente. Si decides ampliar el alcance, te enviamos una cotización aparte y tú decides si avanzas.",
+    },
+    en: {
+      title: "Fixed scope price",
+      category: "No surprises",
+      promise: "A fixed quote for the scope approved at signing. If the work takes longer than estimated within that scope, no extra cost is passed to the client.",
+      detail: "The price you see in the proposal is the one you sign and pay, as long as the scope doesn't change. If our estimate runs short, we absorb the difference internally. If you decide to expand the scope, we send a separate quote and you decide whether to proceed.",
+    },
   },
   {
     id: "delivery",
     icon: Zap,
-    title: "Entrega en 14 días",
-    category: "Tiempo garantizado",
-    promise:
-      "Si por causas nuestras nos atrasamos, aplicamos un crédito o descuento acordado por escrito según el alcance aprobado.",
-    detail:
-      "El cronograma de 14 días aplica al alcance aprobado al firmar y asume que recibimos tus materiales (textos, fotos, accesos) dentro de los plazos acordados. Si por causas nuestras nos atrasamos, aplicamos un crédito o descuento acordado por escrito según el alcance aprobado. Si hay cambios de alcance o demoras del cliente, ajustamos la fecha de común acuerdo.",
     palette: 3,
+    es: {
+      title: "Entrega en 14 días",
+      category: "Tiempo garantizado",
+      promise: "Si por causas nuestras nos atrasamos, aplicamos un crédito o descuento acordado por escrito según el alcance aprobado.",
+      detail: "El cronograma de 14 días aplica al alcance aprobado al firmar y asume que recibimos tus materiales (textos, fotos, accesos) dentro de los plazos acordados. Si por causas nuestras nos atrasamos, aplicamos un crédito o descuento acordado por escrito según el alcance aprobado. Si hay cambios de alcance o demoras del cliente, ajustamos la fecha de común acuerdo.",
+    },
+    en: {
+      title: "Delivery in 14 days",
+      category: "Guaranteed timeline",
+      promise: "If we're late for reasons on our end, we apply a credit or discount agreed in writing based on the approved scope.",
+      detail: "The 14-day schedule applies to the scope approved at signing and assumes we receive your materials (text, photos, access) within the agreed timeframes. If we're late for reasons on our end, we apply a credit or discount agreed in writing based on the approved scope. If there are scope changes or client delays, we adjust the date by mutual agreement.",
+    },
   },
   {
     id: "response",
     icon: Timer,
-    title: "Respuesta en 4 horas",
-    category: "Comunicación real",
-    promise:
-      "De lunes a viernes en horario laboral contestamos en menos de 4 horas hábiles. Si tardamos, te avisamos por qué.",
-    detail:
-      "Cada mensaje tuyo se contesta el mismo día hábil. Nada de \"te respondo cuando pueda\" ni desaparecer una semana. Si en algún momento se nos pasan las 4 horas hábiles, te avisamos por mensaje o por teléfono para explicar la razón.",
     palette: 4,
+    es: {
+      title: "Respuesta en 4 horas",
+      category: "Comunicación real",
+      promise: "De lunes a viernes en horario laboral contestamos en menos de 4 horas hábiles. Si tardamos, te avisamos por qué.",
+      detail: "Cada mensaje tuyo se contesta el mismo día hábil. Nada de \"te respondo cuando pueda\" ni desaparecer una semana. Si en algún momento se nos pasan las 4 horas hábiles, te avisamos por mensaje o por teléfono para explicar la razón.",
+    },
+    en: {
+      title: "Reply within 4 hours",
+      category: "Real communication",
+      promise: "Monday to Friday, during business hours, we reply in under 4 business hours. If we take longer, we tell you why.",
+      detail: "Every message of yours is answered the same business day. None of that \"I'll reply when I can\" or disappearing for a week. If we ever go past the 4 business hours, we let you know by message or phone to explain why.",
+    },
   },
   {
     id: "revisions",
     icon: RefreshCw,
-    title: "Rondas de revisión incluidas",
-    category: "Tu opinión cuenta",
-    promise:
-      "Rondas de revisión incluidas según paquete (1 en Starter, 2 en Growth Pro, 3 en Authority). Sin letra chica.",
-    detail:
-      "Después de entregar la propuesta visual, tienes las rondas que tu paquete incluye para pedir cambios — tipografía, colores, estructura, copy, secciones. Si necesitas más rondas que las incluidas, las cotizamos aparte de forma transparente.",
     palette: 0,
+    es: {
+      title: "Rondas de revisión incluidas",
+      category: "Tu opinión cuenta",
+      promise: "Rondas de revisión incluidas según paquete (1 en Starter, 2 en Growth Pro, 3 en Authority). Sin letra chica.",
+      detail: "Después de entregar la propuesta visual, tienes las rondas que tu paquete incluye para pedir cambios — tipografía, colores, estructura, copy, secciones. Si necesitas más rondas que las incluidas, las cotizamos aparte de forma transparente.",
+    },
+    en: {
+      title: "Revision rounds included",
+      category: "Your input counts",
+      promise: "Revision rounds included per package (1 in Starter, 2 in Growth Pro, 3 in Authority). No fine print.",
+      detail: "After we deliver the visual proposal, you have the rounds your package includes to request changes — typography, colors, structure, copy, sections. If you need more rounds than included, we quote them separately and transparently.",
+    },
   },
   {
     id: "no-lock-in",
     icon: Unlock,
-    title: "Sin contratos eternos",
-    category: "Sin amarres",
-    promise:
-      "Plan mensual con cancelación simple según el plan acordado. Sin multas de salida ni \"plazo mínimo\" oculto.",
-    detail:
-      "Después del lanzamiento, el plan mensual de cuidado y crecimiento se puede cancelar por email según los términos acordados al iniciar. Cero penalidades sorpresa. Si en algún momento decides pausarlo, te explicamos qué deja de cubrirse (hosting gestionado, soporte, mejoras) y procedemos sin discusión.",
     palette: 1,
+    es: {
+      title: "Sin contratos eternos",
+      category: "Sin amarres",
+      promise: "Plan mensual con cancelación simple según el plan acordado. Sin multas de salida ni \"plazo mínimo\" oculto.",
+      detail: "Después del lanzamiento, el plan mensual de cuidado y crecimiento se puede cancelar por email según los términos acordados al iniciar. Cero penalidades sorpresa. Si en algún momento decides pausarlo, te explicamos qué deja de cubrirse (hosting gestionado, soporte, mejoras) y procedemos sin discusión.",
+    },
+    en: {
+      title: "No endless contracts",
+      category: "No strings attached",
+      promise: "A monthly plan with simple cancellation per the agreed plan. No exit penalties or hidden \"minimum term\".",
+      detail: "After launch, the monthly care and growth plan can be cancelled by email per the terms agreed at the start. Zero surprise penalties. If you ever decide to pause it, we explain what stops being covered (managed hosting, support, improvements) and proceed without argument.",
+    },
   },
   {
     id: "payment",
     icon: BadgeCheck,
-    title: "Pago 50/50",
-    category: "Pago justo",
-    promise:
-      "Anticipo del 50% al firmar, 50% al entregar el sitio en producción. No pagas todo a ciegas.",
-    detail:
-      "Nunca pagas el total por adelantado. El primer 50% cubre el inicio del proyecto (diseño + desarrollo); el segundo 50% se cobra al entregar el sitio funcionando en tu dominio. Si por algún motivo no llegamos a la entrega, el segundo pago no se cobra.",
     palette: 2,
+    es: {
+      title: "Pago 50/50",
+      category: "Pago justo",
+      promise: "Anticipo del 50% al firmar, 50% al entregar el sitio en producción. No pagas todo a ciegas.",
+      detail: "Nunca pagas el total por adelantado. El primer 50% cubre el inicio del proyecto (diseño + desarrollo); el segundo 50% se cobra al entregar el sitio funcionando en tu dominio. Si por algún motivo no llegamos a la entrega, el segundo pago no se cobra.",
+    },
+    en: {
+      title: "50/50 payment",
+      category: "Fair payment",
+      promise: "50% deposit at signing, 50% when the site goes live in production. You don't pay everything blindly.",
+      detail: "You never pay the full amount upfront. The first 50% covers the start of the project (design + development); the second 50% is charged when the site is delivered live on your domain. If for any reason we don't reach delivery, the second payment isn't charged.",
+    },
   },
 ];
+
+function localizeGuarantees(lang: Lang): Guarantee[] {
+  return GUARANTEES_RAW.map((g) => ({
+    id: g.id,
+    icon: g.icon,
+    palette: g.palette,
+    ...g[lang],
+  }));
+}
 
 interface Stat {
   icon: LucideIcon;
@@ -134,35 +201,44 @@ interface Stat {
   label: string;
 }
 
-const stats: Stat[] = [
+const STATS_RAW: { icon: LucideIcon; es: Stat; en: Stat }[] = [
   {
     icon: Zap,
-    display: "14 días",
-    label: "Tiempo de entrega",
+    es: { icon: Zap, display: "14 días", label: "Tiempo de entrega" },
+    en: { icon: Zap, display: "14 days", label: "Delivery time" },
   },
   {
     icon: ShieldCheck,
-    display: "100%",
-    label: "Código a tu nombre",
+    es: { icon: ShieldCheck, display: "100%", label: "Código a tu nombre" },
+    en: { icon: ShieldCheck, display: "100%", label: "Code in your name" },
   },
   {
     icon: RefreshCw,
-    display: "2 rondas",
-    label: "Revisiones incluidas (Growth Pro)",
+    es: { icon: RefreshCw, display: "2 rondas", label: "Revisiones incluidas (Growth Pro)" },
+    en: { icon: RefreshCw, display: "2 rounds", label: "Revisions included (Growth Pro)" },
   },
   {
     icon: Heart,
-    display: "4 horas",
-    label: "Respuesta lun–vie",
+    es: { icon: Heart, display: "4 horas", label: "Respuesta lun–vie" },
+    en: { icon: Heart, display: "4 hours", label: "Reply Mon–Fri" },
   },
 ];
+
+function localizeStats(lang: Lang): Stat[] {
+  return STATS_RAW.map((s) => s[lang]);
+}
 
 const EASE_PREMIUM = cubicBezier(0.22, 1, 0.36, 1);
 
 export function Guarantees() {
+  const { lang } = useLang();
+  const en = lang === "en";
+  const guarantees = localizeGuarantees(lang);
+  const stats = localizeStats(lang);
+
   return (
     <section
-      aria-label="Garantías firmadas"
+      aria-label={en ? "Signed guarantees" : "Garantías firmadas"}
       className="relative py-10 sm:py-16 overflow-hidden"
     >
       <div
@@ -173,19 +249,30 @@ export function Guarantees() {
       <div className="container relative">
         <Reveal>
           <SectionHeading
-            eyebrow="Compromisos firmados"
+            eyebrow={en ? "Signed commitments" : "Compromisos firmados"}
             title={
-              <>
-                Cada palabra que te decimos,{" "}
-                <span className="gradient-text">la firmamos en contrato.</span>
-              </>
+              en ? (
+                <>
+                  Every word we tell you,{" "}
+                  <span className="gradient-text">we sign in the contract.</span>
+                </>
+              ) : (
+                <>
+                  Cada palabra que te decimos,{" "}
+                  <span className="gradient-text">la firmamos en contrato.</span>
+                </>
+              )
             }
-            description="Estamos arrancando, así que en lugar de testimonios prestados te ofrecemos algo mejor: compromisos por escrito. Si no cumplimos uno solo, nos cuesta a nosotros — no a ti."
+            description={
+              en
+                ? "Eight written commitments that go into the contract we sign with you. If we break even one, it costs us — not you."
+                : "Ocho compromisos por escrito que entran en el contrato que firmamos contigo. Si no cumplimos uno solo, nos cuesta a nosotros — no a ti."
+            }
           />
         </Reveal>
       </div>
 
-      <Carousel items={guarantees} />
+      <Carousel items={guarantees} lang={lang} />
 
       <div className="container relative mt-20 sm:mt-24">
         <Reveal>
@@ -203,8 +290,9 @@ export function Guarantees() {
 // ─────────────────────────────────────────────────
 // Carousel — auto-scroll + hover pause + arrow nav
 // ─────────────────────────────────────────────────
-function Carousel({ items }: { items: Guarantee[] }) {
+function Carousel({ items, lang }: { items: Guarantee[]; lang: Lang }) {
   const [expanded, setExpanded] = useState<Guarantee | null>(null);
+  const en = lang === "en";
 
   // Animation duration: at ~32px/s scroll speed, traversing 50% of the
   // (duplicated) row takes one full card-set duration. We pick a single
@@ -227,7 +315,9 @@ function Carousel({ items }: { items: Guarantee[] }) {
         />
 
         <div
-          aria-label="Carrusel de compromisos firmados"
+          aria-label={
+            en ? "Carousel of signed commitments" : "Carrusel de compromisos firmados"
+          }
           className="overflow-hidden py-6 sm:py-8"
         >
           <div
@@ -242,6 +332,7 @@ function Carousel({ items }: { items: Guarantee[] }) {
                 key={`a-${g.id}`}
                 guarantee={g}
                 index={i}
+                lang={lang}
                 onOpen={() => setExpanded(g)}
               />
             ))}
@@ -260,6 +351,7 @@ function Carousel({ items }: { items: Guarantee[] }) {
                   key={`b-${g.id}`}
                   guarantee={g}
                   index={items.length + i}
+                  lang={lang}
                   onOpen={() => setExpanded(g)}
                   ariaHidden
                 />
@@ -271,6 +363,7 @@ function Carousel({ items }: { items: Guarantee[] }) {
 
       <ExpandedModal
         guarantee={expanded}
+        lang={lang}
         onClose={() => setExpanded(null)}
       />
     </>
@@ -283,16 +376,19 @@ function Carousel({ items }: { items: Guarantee[] }) {
 function GuaranteeCard({
   guarantee,
   index,
+  lang,
   onOpen,
   ariaHidden = false,
 }: {
   guarantee: Guarantee;
   index: number;
+  lang: Lang;
   onOpen: () => void;
   /** True when this card is a duplicate rendered solely for the
    *  seamless-loop autoscroll. Hidden from AT + crawlers + keyboard. */
   ariaHidden?: boolean;
 }) {
+  const en = lang === "en";
   const baseRotate = index % 2 === 0 ? -0.6 : 0.6;
   const hoverRotate = index % 2 === 0 ? 2 : -2;
 
@@ -331,7 +427,7 @@ function GuaranteeCard({
           <span className="grid place-items-center w-3.5 h-3.5 rounded-full bg-ember-300/20">
             <BadgeCheck className="w-2.5 h-2.5" />
           </span>
-          Firmado
+          {en ? "Signed" : "Firmado"}
         </span>
         <Sparkles
           className="w-5 h-5 text-ember-300/60 transition-transform duration-500 group-hover/card:scale-110 group-hover/card:rotate-12"
@@ -361,7 +457,7 @@ function GuaranteeCard({
           className="mx-auto mt-3 inline-flex items-center gap-1 text-[9px] uppercase tracking-[0.20em] text-ember-300/60 group-hover/card:text-ember-300 transition-colors duration-300"
           aria-hidden
         >
-          <span>Leer compromiso</span>
+          <span>{en ? "Read commitment" : "Leer compromiso"}</span>
           <span>+</span>
         </div>
       </div>
@@ -437,22 +533,30 @@ function GuaranteeSeal({
 // ─────────────────────────────────────────────────
 function ExpandedModal({
   guarantee,
+  lang,
   onClose,
 }: {
   guarantee: Guarantee | null;
+  lang: Lang;
   onClose: () => void;
 }) {
+  const en = lang === "en";
   const isOpen = guarantee !== null;
 
   useBodyScrollLock(isOpen);
 
   useEffect(() => {
     if (!isOpen) return;
+    // Remember what was focused so we can restore it on close (a11y).
+    const trigger = document.activeElement as HTMLElement | null;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
     };
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      trigger?.focus?.({ preventScroll: true });
+    };
   }, [isOpen, onClose]);
 
   return (
@@ -475,7 +579,7 @@ function ExpandedModal({
             onClick={(e) => e.stopPropagation()}
             role="dialog"
             aria-modal="true"
-            aria-label={`Compromiso: ${guarantee.title}`}
+            aria-label={`${en ? "Commitment" : "Compromiso"}: ${guarantee.title}`}
             className="relative w-full max-w-3xl rounded-3xl border border-ember-300/30 bg-gradient-to-b from-ink-900 to-ink-950 p-7 sm:p-12 shadow-[0_30px_90px_-10px_rgba(0,0,0,0.7)]"
           >
             <div className="absolute -top-px inset-x-14 h-px bg-gradient-to-r from-transparent via-ember-300/50 to-transparent" />
@@ -486,7 +590,7 @@ function ExpandedModal({
 
             <button
               type="button"
-              aria-label="Cerrar"
+              aria-label={en ? "Close" : "Cerrar"}
               onClick={onClose}
               className="absolute top-3 right-3 grid place-items-center w-11 h-11 rounded-full border border-white/[0.10] bg-white/[0.04] text-ember-50/70 hover:text-ember-50 hover:bg-white/[0.10] hover:border-white/[0.20] transition-colors"
             >
@@ -495,7 +599,7 @@ function ExpandedModal({
 
             <div className="relative inline-flex items-center gap-2 pl-2 pr-3 py-1.5 rounded-full border border-ember-300/40 bg-ember-300/[0.10] text-[11px] font-medium uppercase tracking-[0.20em] text-ember-300">
               <BadgeCheck className="w-3.5 h-3.5" />
-              Compromiso firmado en contrato
+              {en ? "Commitment signed in contract" : "Compromiso firmado en contrato"}
             </div>
 
             <div className="relative mt-7 flex flex-col sm:flex-row sm:items-start gap-5 sm:gap-7">
@@ -523,7 +627,9 @@ function ExpandedModal({
 
             <div className="relative mt-8 sm:mt-10 pt-6 border-t border-white/[0.06] flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <p className="text-[12px] text-ember-50/55">
-                Este punto se incluye, palabra por palabra, en el contrato que firmas al iniciar tu proyecto.
+                {en
+                  ? "This point is included, word for word, in the contract you sign at the start of your project."
+                  : "Este punto se incluye, palabra por palabra, en el contrato que firmas al iniciar tu proyecto."}
               </p>
               <a
                 href="#contact"
@@ -531,7 +637,7 @@ function ExpandedModal({
                 className="inline-flex items-center justify-center gap-2 h-11 px-5 rounded-full bg-gradient-to-b from-ember-200 via-ember-300 to-ember-400 text-ink-950 font-medium text-sm shadow-glow-sm hover:shadow-glow transition-all whitespace-nowrap"
               >
                 <MessageCircle className="w-4 h-4" />
-                Cotizar mi sitio
+                {en ? "Get my website" : "Cotizar mi sitio"}
               </a>
             </div>
           </motion.div>

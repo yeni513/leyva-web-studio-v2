@@ -27,18 +27,18 @@ export function SectionHeading({
       {eyebrow && (
         <div
           className={cn(
-            "inline-flex items-center gap-2 px-3 py-1 rounded-full border border-ember-300/20 bg-ember-300/[0.04] text-[11px] uppercase tracking-[0.18em] text-ember-300/90",
+            "inline-flex items-center gap-2 px-3 py-1 rounded-full border border-ember-300/18 bg-ink-950/35 text-[11px] uppercase tracking-[0.22em] text-ember-200/85",
           )}
         >
-          <span className="w-1 h-1 rounded-full bg-ember-300 animate-pulse-glow" />
+          <span className="w-1 h-1 rounded-full bg-ember-300/85" />
           {eyebrow}
         </div>
       )}
-      <h2 className="mt-4 font-display font-semibold tracking-tight text-balance text-[clamp(1.9rem,4.5vw,3.2rem)] leading-[1.05] text-ember-50">
+      <h2 className="mt-4 font-display font-semibold tracking-tight text-balance text-[clamp(1.85rem,4.2vw,3.05rem)] leading-[1.06] text-ember-50">
         {title}
       </h2>
       {description && (
-        <p className="mt-4 text-base sm:text-lg text-ember-50/70 leading-relaxed text-pretty">
+        <p className="mt-4 text-base sm:text-[17px] text-ember-50/68 leading-relaxed text-pretty">
           {description}
         </p>
       )}
