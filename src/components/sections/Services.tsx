@@ -175,9 +175,9 @@ function ServicesOrbit() {
       <div
         className="group/orbital absolute top-1/2 left-1/2 w-[800px] h-[800px] origin-center
                    [transform:translate(-50%,-50%)]
-                   max-[900px]:[transform:scale(0.85)_translate(-50%,-50%)]
-                   max-[640px]:[transform:scale(0.62)_translate(-50%,-50%)]
-                   max-[440px]:[transform:scale(0.45)_translate(-50%,-50%)]"
+                   max-[900px]:[transform:translate(-50%,-50%)_scale(0.85)]
+                   max-[640px]:[transform:translate(-50%,-50%)_scale(0.62)]
+                   max-[440px]:[transform:translate(-50%,-50%)_scale(0.45)]"
       >
         {/* Orbit paths */}
         <OrbitRing radius={INNER_RADIUS} delay={0} />

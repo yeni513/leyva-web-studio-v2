@@ -1,7 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import "./studio.css";
 import { site } from "@/lib/site";
 import { StructuredData } from "@/components/structured-data";
+import { LazyChatbot } from "@/components/chatbot/LazyChatbot";
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -90,8 +92,19 @@ export default function RootLayout({
   return (
     <html lang="es-US" className="dark">
       <body className="min-h-screen bg-ink-950 text-ember-50/90 font-sans antialiased overflow-x-hidden">
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Bitcount+Grid+Single:wght@100..900&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Zalando+Sans+SemiExpanded:ital,wght@0,200..900;1,200..900&display=swap"
+        />
         <StructuredData />
         {children}
+        <LazyChatbot />
       </body>
     </html>
   );
